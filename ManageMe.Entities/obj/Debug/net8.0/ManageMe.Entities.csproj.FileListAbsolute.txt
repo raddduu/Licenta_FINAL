@@ -1,0 +1,16 @@
+C:\Users\RaduI\source\repos\ManageMe\ManageMe.Entities\bin\Debug\net8.0\ManageMe.Entities.deps.json
+C:\Users\RaduI\source\repos\ManageMe\ManageMe.Entities\bin\Debug\net8.0\ManageMe.Entities.dll
+C:\Users\RaduI\source\repos\ManageMe\ManageMe.Entities\bin\Debug\net8.0\ManageMe.Entities.pdb
+C:\Users\RaduI\source\repos\ManageMe\ManageMe.Entities\bin\Debug\net8.0\ManageMe.Common.dll
+C:\Users\RaduI\source\repos\ManageMe\ManageMe.Entities\bin\Debug\net8.0\ManageMe.Common.pdb
+C:\Users\RaduI\source\repos\ManageMe\ManageMe.Entities\obj\Debug\net8.0\ManageMe.Entities.csproj.AssemblyReference.cache
+C:\Users\RaduI\source\repos\ManageMe\ManageMe.Entities\obj\Debug\net8.0\ManageMe.Entities.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\RaduI\source\repos\ManageMe\ManageMe.Entities\obj\Debug\net8.0\ManageMe.Entities.AssemblyInfoInputs.cache
+C:\Users\RaduI\source\repos\ManageMe\ManageMe.Entities\obj\Debug\net8.0\ManageMe.Entities.AssemblyInfo.cs
+C:\Users\RaduI\source\repos\ManageMe\ManageMe.Entities\obj\Debug\net8.0\ManageMe.Entities.csproj.CoreCompileInputs.cache
+C:\Users\RaduI\source\repos\ManageMe\ManageMe.Entities\obj\Debug\net8.0\ManageMe.D23FFC7C.Up2Date
+C:\Users\RaduI\source\repos\ManageMe\ManageMe.Entities\obj\Debug\net8.0\ManageMe.Entities.dll
+C:\Users\RaduI\source\repos\ManageMe\ManageMe.Entities\obj\Debug\net8.0\refint\ManageMe.Entities.dll
+C:\Users\RaduI\source\repos\ManageMe\ManageMe.Entities\obj\Debug\net8.0\ManageMe.Entities.pdb
+C:\Users\RaduI\source\repos\ManageMe\ManageMe.Entities\obj\Debug\net8.0\ref\ManageMe.Entities.dll
+C:\Users\RaduI\source\repos\ManageMe\ManageMe.Entities\obj\Debug\net8.0\ManageMe.Entities.sourcelink.json

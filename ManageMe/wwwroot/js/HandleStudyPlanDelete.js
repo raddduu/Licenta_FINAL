@@ -1,0 +1,3 @@
+﻿function HandleStudyPlanDelete(studyDomainId, subjectId) {
+    
+}

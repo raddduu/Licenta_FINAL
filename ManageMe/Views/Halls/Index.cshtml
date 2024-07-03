@@ -1,0 +1,114 @@
+﻿@model Tuple<List<ManageMe.BusinessLogic.HallVM>, int>
+
+@{
+    ViewData["Title"] = "Index";
+
+    var halls = Model.Item1;
+    var buildingId = Model.Item2;
+    var maxFloor = halls.FirstOrDefault()?.Floor ?? 0;
+    var minFloor = halls.LastOrDefault()?.Floor ?? 0;
+    var hallIndex = 0;
+    var maxItemsPerRow = 0;
+}
+
+<div>
+    <a asp-action="Create" asp-route-buildingId="@buildingId">Create New</a>
+</div>
+
+<div class="table" style="display:grid">
+    @for (int currentFloor = maxFloor; currentFloor >= minFloor; currentFloor--)
+    {
+        <div style="display:inline">
+
+            <h5 style="display:inline">Floor @currentFloor</h5>
+
+
+            @for (var currentHallIndex = hallIndex; currentHallIndex < halls.Count; currentHallIndex++)
+            {
+                if (halls[currentHallIndex].Floor == currentFloor)
+                {
+                    <p style="display:inline">
+                        <a class="hall" hallId="@halls[currentHallIndex].Id">@halls[currentHallIndex].FullName</a>
+                    </p>
+                }
+                else
+                {
+                    hallIndex = currentHallIndex;
+                    break;
+                }
+            }
+        </div>
+    }
+</div>
+
+@section Scripts{
+    <script type="text/javascript" src="~/js/ActionNotification.js"></script>
+    <script type="text/javascript" src="~/js/PopUp.js"></script>
+    <script type="text/javascript" src="~/js/FadeBackground.js"></script>
+    <script type="text/javascript" src="~/js/LocalOptions.js"></script>
+    <script type="text/javascript">
+        $('.hall').click(function () {
+            var buildingId = '@buildingId';
+
+            let deleteButton = $('<p class="delete-button">Delete</p>');
+
+            let hallId = $(this).attr('hallId');
+
+            deleteButton.click(function () {
+                FadeBackground(true);
+
+                function callback() {
+                    $.ajax({
+                        url: '/Halls/Delete',
+                        type: 'POST',
+                        data: {
+                            id: hallId,
+                        },
+                        success: function (result) {
+                            if (result.success) {
+                                new ActionNotification('notificationsContainer', 'Hall deleted successfully!', 'Success', 4000);
+                                $(`[hallId=${hallId}]`).parent().remove();
+                                FadeBackground(false);
+                                $('.AlertPopUp').remove();
+                            }
+                            else {
+                                new ActionNotification('notificationsContainer', 'Something went wrong!', 'Error', 4000);
+                                FadeBackground(false);
+                                $('.AlertPopUp').remove();
+                            }
+
+                        },
+                        error: function () {
+                            new ActionNotification('notificationsContainer', 'Something went wrong!', 'Error', 4000);
+                            FadeBackground(false);
+                            $('.AlertPopUp').remove();
+                        }
+                    });
+                }
+
+                var message = "Are you sure that you want to delete this hall?";
+                var status = "WARNING";
+                new PopUp(status, message, callback, "Delete", "AlertPopUp");
+            });
+
+            let options = [deleteButton]
+
+            let top = event.pageY;
+            let left = event.pageX;
+
+            let localOptions = new LocalOptions(top, left, options, $(this));
+        });
+
+        $('tr').each(function () {
+            itemsPerRow = $(this).children().length;
+
+            if (itemsPerRow > @maxItemsPerRow)
+            {
+                //leave the first maxItemsPerRow items in the row and move the rest to the next row
+                $(this).children().slice(@maxItemsPerRow).each(function () {
+                    $(this).parent().next().append($(this));
+                });
+            }
+        });
+    </script>
+}

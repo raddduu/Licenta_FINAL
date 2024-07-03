@@ -1,0 +1,66 @@
+﻿@model List<ManageMe.BusinessLogic.ClassbookStudentVM>
+@using System.Security.Claims;
+
+@{
+    ViewBag.Title = "Classbook";
+    var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+}
+
+<h2>Final Grades</h2>
+<h3>If you are sure that these are correct
+    and you don't want to make any further modifications you can
+    <a asp-controller="FinalGrades"
+       asp-action="AddFinalGradesFromClassbook"
+       asp-route-subjectId="@Model.FirstOrDefault()?.SubjectId"
+       asp-route-groupId="@Model.FirstOrDefault()?.GroupId">submit</a> them.</a>
+</h3>
+
+<div class="AlertPopUp" id="grade-details-modal" style="display: none;"></div>
+<table class="table">
+    <thead>
+        <tr>
+            <th scope="col">Student</th>
+            <th scope="col">Final Grade</th>
+            <th scope="col">Rounded Grade</th>
+            <th scope="col">Status</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var student in Model)
+        {
+            <tr class="@(student.PassStatus == "Passed" ? "pass-student" : "fail-student")">
+                <td>@student.Name</td>
+                <td>@student.TotalPoints</td>
+                <td>@student.RoundedGrade</td>
+                <td><a class="openDetails" style="text-decoration-color:var(--accent);">@student.PassStatus</a></td>
+                <td id="@student.Id" style="display:none;">@String.Join(',',student.ActivityGrades.Select(ag => $"{ag.ActivityName}: {ag.Points}"))</td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts{
+    <script type="text/javascript" src="~/js/FadeBackground.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".fail-student > td > .openDetails").click(function () {
+                var studentName = $(this).closest("tr").find("td:eq(0)").text();
+                var data = $(this).closest("tr").find("td:eq(4)").text();
+                var modal = $("#grade-details-modal");
+                modal.html(`<h3>${studentName}</h3>`);
+                $.each(data.split(','), function (i, val) {
+                    modal.append(`<p>${val}</p>`);
+                });
+                var cancelButton = $('<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>');
+                modal.append(cancelButton);
+                modal.css("display", "");
+                FadeBackground(true);
+                cancelButton.click(function () {
+                    modal.hide();
+                    FadeBackground(false);
+                });
+            });
+        });
+        
+    </script>
+}

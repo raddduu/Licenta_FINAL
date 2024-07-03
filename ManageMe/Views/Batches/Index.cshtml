@@ -1,0 +1,35 @@
+﻿@model List<ManageMe.BusinessLogic.BatchVM>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+@foreach(var batch in Model)
+{
+    <div class="card" style="margin-top:1rem; margin-bottom:1rem;">
+        <div class="card-body subject-info">
+            <h3 class="card-title alert-success py-3 px-3 rounded-2 subject-name">Series: @batch.Number</h3>
+            <h3 class="card-title alert-success py-3 px-3 rounded-2 subject-name">Domain: @batch.StudyDomainName</h3>
+            <a class="btn btn-primary" asp-controller="Groups" asp-action="Index" asp-route-batchId="@batch.Id">
+                Groups
+            </a>
+            @if (User.IsInRole("Admin") || User.IsInRole("Dean"))
+            {
+                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@batch.Id">
+                    Delete
+                </a>
+            }
+        </div>
+    </div>
+
+}
+
+<div>
+    <a class="btn btn-primary" asp-action="Create" style="margin-left:0;">Create New</a>
+</div>
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+}
+
+<script type="text/javascript" src="~/js/FetchDataIntoSelect.js"></script>

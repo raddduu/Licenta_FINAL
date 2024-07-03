@@ -1,0 +1,286 @@
+﻿@model ManageMe.BusinessLogic.DetailsGroupVM
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<div id="AddStudentsModal" class="EnterInputPopUp multi-select-popup" style="display:none; overflow-y: auto;"></div>
+<div id="AddTeacherToGroupModal" class="EnterInputPopUp multi-select-popup" style="display:none; overflow:scroll;"></div>
+
+<div class="Group Subjects List">
+    <h3>Group Subjects</h3>
+    @foreach (var subject in Model.Subjects)
+    {
+        var criteria = subject.SubjectGradingCriterion;
+        <div class="card">
+            <div class="card-body subject-group">
+                <h3 class="card-title alert-success py-3 px-3 rounded-2 subject-name">@subject.Name</h3>
+                <div>
+                    <h4><b>Grading Criteria:</b></h4>
+                    <h5><b>Total Points Allocation:</b></h5>
+                    <ul>
+                        @foreach (var activityPoints in criteria.PointsAllocation)
+                        {
+
+                            <li>@activityPoints.ActivityName: @activityPoints.Points</li>
+                        }
+                    </ul>
+
+
+                    @if (criteria.MinimumPointsFromActivitiesToPass.Any())
+                    {
+                        <h5><b>Minimum Points For Each Activity To Pass:</b></h5>
+                        <ul>
+                            @foreach (var minimumPointsForActivity in criteria.MinimumPointsFromActivitiesToPass)
+                            {
+                                <li>@minimumPointsForActivity.ActivityName: @minimumPointsForActivity.Points</li>
+                            }
+                        </ul>
+                    }
+
+                    @if (criteria.ActivitiesSummatedToComputePassEvaluation.Any())
+                    {
+                        <h5><b>Additional Cummulative Pass Condition:</b></h5>
+                        <p>
+                            @String.Join(" + ", criteria.ActivitiesSummatedToComputePassEvaluation)
+                            >= @criteria.MinimalPointsToPass
+                        </p>
+                    }
+
+                </div>
+
+                @if (subject.HasCourse)
+                {
+                    <div style="display:block">
+                        <h4>Lectors: </h4>
+                        @foreach (var user in subject.CourseTeacherNames)
+                        {
+                            <p>@user.Item1</p>
+
+                            @if (User.IsInRole("Admin") || User.IsInRole("Dean") || User.IsInRole("Secretary"))
+                            {
+                                <a class="btn btn-danger removeTeacherFromGroup" subjectId="@subject.Id" activityId="4" userId="@user.Item2">
+                                    Remove
+                                </a>
+                            }
+                        }
+
+                        @if (User.IsInRole("Admin") || User.IsInRole("Dean") || User.IsInRole("Secretary"))
+                        {
+                            <a class="btn btn-success add-teacher-for-subject" subjectId="@subject.Id" activityId="4">
+                                Add Lector
+                            </a>
+                        }
+                    </div>
+                }
+
+                @if (subject.HasLaboratory)
+                {
+                    <div style="display:block">
+                        <h4>Laborants: </h4>
+                        @foreach (var user in subject.LaboratoryTeacherNames)
+                        {
+                            <p>@user.Item1</p>
+
+                            @if (User.IsInRole("Admin") || User.IsInRole("Dean") || User.IsInRole("Secretary"))
+                            {
+                                <a class="btn btn-danger removeTeacherFromGroup" subjectId="@subject.Id" activityId="3" userId="@user.Item2">
+                                    Remove
+                                </a>
+                            }
+                        }
+
+                        @if (User.IsInRole("Admin") || User.IsInRole("Dean") || User.IsInRole("Secretary"))
+                        {
+                            <a class="btn btn-success add-teacher-for-subject" subjectId="@subject.Id" activityId="3">
+                                Add Laborant
+                            </a>
+                        }
+                    </div>
+                }
+
+                @if (subject.HasSeminary)
+                {
+                    <div style="display:block">
+                        <h4>Seminarists: </h4>
+                        @foreach (var user in subject.SeminaryTeacherNames)
+                        {
+                            <p>@user.Item1</p>
+
+                            @if (User.IsInRole("Admin") || User.IsInRole("Dean") || User.IsInRole("Secretary"))
+                            {
+                                <a class="btn btn-danger removeTeacherFromGroup" subjectId="@subject.Id" activityId="6" userId="@user.Item2">
+                                    Remove
+                                </a>
+                            }
+                        }
+
+                        @if (User.IsInRole("Admin") || User.IsInRole("Dean") || User.IsInRole("Secretary"))
+                        {
+                            <a class="btn btn-success add-teacher-for-subject" subjectId="@subject.Id" activityId="6">
+                                Add Seminarist
+                            </a>
+                        }
+                    </div>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+<div class="Group Students List">
+    <div style="display: inline-flex">
+        <h3>Group Students</h3>
+
+        @if (User.IsInRole("Admin") || User.IsInRole("Dean") || User.IsInRole("Secretary"))
+        {
+            <a class="btn btn-success add-students" style="font-weight:900;">
+                +
+            </a>
+        }
+    </div>
+
+    @foreach (var user in Model.Students)
+    {
+        <div class="card channel-member">
+            <div class="card-body channel-member">
+                <div>
+                    <img src="@Url.Action("GetProfilePicture", "Users", new { id = user.Id })" style="width: 9vh; height: 9vh; border-radius: 50%"
+                         alt="Unavailable" />
+                </div>
+                <p>@user.Name</p>
+                <p>@user.Email</p>
+                @if (User.IsInRole("Admin") || User.IsInRole("Dean") || User.IsInRole("Secretary"))
+                {
+                    <a class="btn btn-danger remove-student-from-group"
+                       studentId="@user.Id">
+                        Remove Student
+                    </a>
+                }
+            </div>
+        </div>
+    }
+</div>
+
+@section Scripts{
+    <script type="text/javascript" src="~/js/FadeBackground.js"></script>
+    <script type="text/javascript" src="~/js/ActionNotification.js"></script>
+    <script type="text/javascript" src="~/js/PopUp.js"></script>
+    <script type="text/javascript" src="~/js/UserInput.js"></script>
+    <script type="text/javascript" src="~/js/LaunchStudentsSelection.js"></script>
+    <script type="text/javascript" src="~/js/LaunchTeacherSelectionForGroup.js"></script>
+    <script type="text/javascript">
+        if (localStorage.getItem("reloadPage") === "true") {
+            localStorage.setItem("reloadPage", false);
+            if (localStorage.getItem("notificationMessage") !== null) {
+                new ActionNotification("notificationsContainer", localStorage.getItem("notificationMessage"), "Delete", 4000);
+                localStorage.removeItem("notificationMessage");
+            }
+
+            if (localStorage.getItem("failedAddsCount") !== null && localStorage.getItem("succsessAddsCount") !== null) {
+                if (localStorage.getItem("failedAddsCount") != 0) {
+                    new ActionNotification("notificationsContainer", localStorage.getItem("failedAddsCount") + " students failed to be added!", "Add", 4000);
+                    localStorage.removeItem("failedAddsCount");
+                }
+
+                else {
+                    new ActionNotification("notificationsContainer", "All " + localStorage.getItem("succsessAddsCount") + " students added!", "Add", 4000);
+                    localStorage.removeItem("succsessAddsCount");
+                }
+            }
+
+            if (localStorage.getItem("failedTeacherAddsCount") !== null && localStorage.getItem("succsessTeacherAddsCount") !== null) {
+                if (localStorage.getItem("failedTeacherAddsCount") != 0) {
+                    new ActionNotification("notificationsContainer", localStorage.getItem("failedTeacherAddsCount") + " teachers failed to be added to this group!", "Add", 4000);
+                    localStorage.removeItem("failedTeacherAddsCount");
+                }
+
+                else {
+                    new ActionNotification("notificationsContainer", "All " + localStorage.getItem("succsessTeacherAddsCount") + " teachers added to this group!", "Add", 4000);
+                    localStorage.removeItem("succsessTeacherAddsCount");
+                }
+            }
+        }
+
+
+        $("body").on("click", ".add-students", function (e) {
+            LaunchStudentsSelection(@Model.Id);
+        });
+
+
+        $("body").on("click", ".add-teacher-for-subject", function (e) {
+            LaunchTeacherSelectionForGroup(@Model.Id, $(this).attr("subjectId"), $(this).attr("activityId"))
+        });
+
+        $("body").on("click", ".removeTeacherFromGroup", function () {
+            var subjectId = $(this).attr("subjectId");
+            var activityId = $(this).attr("activityId");
+            var userId = $(this).attr("userId");
+            var groupId = @Model.Id;
+            FadeBackground(true);
+
+            function callback() {
+                $.ajax({
+                    url: "/Groups/RemoveTeacherFromGroup",
+                    type: "POST",
+                    data: {
+                        subjectId: subjectId,
+                        activityId: activityId,
+                        teacherId: userId,
+                        groupId: groupId
+                    },
+                    success: function (data) {
+                        if (data.success) {
+                            FadeBackground(false);
+                            localStorage.setItem("reloadPage", true);
+                            localStorage.setItem("notificationMessage", "Teacher removed from group!");
+                            location.reload();
+
+                        }
+                        else {
+                            new ActionNotification("notificationsContainer", "Something went wrong!", "Delete", 4000);
+                        }
+                    }
+                });
+            }
+
+            var message = "You are about to remove this teacher from this group.\nAre you sure you want to do this ?";
+            var status = "WARNING";
+            new PopUp(status, message, callback, "Delete", "AlertPopUp");
+        });
+
+
+        $("body").on("click", ".remove-student-from-group", function () {
+            var studentId = $(this).attr("studentId");
+            var groupId = @Model.Id;
+            FadeBackground(true);
+
+            function callback() {
+                $.ajax({
+                    url: "/Groups/RemoveStudentFromGroup",
+                    type: "POST",
+                    data: {
+                        studentId: studentId,
+                        groupId: groupId
+                    },
+                    success: function (data) {
+                        if (data.success) {
+                            FadeBackground(false);
+                            localStorage.setItem("reloadPage", true);
+                            localStorage.setItem("notificationMessage", "Student removed from group!");
+                            location.reload();
+
+                        }
+                        else {
+                            new ActionNotification("notificationsContainer", "Something went wrong!", "Delete", 4000);
+                        }
+                    }
+                });
+            }
+
+            var message = "You are about to remove this student from this group.\nAre you sure you want to do this ?";
+            var status = "WARNING";
+            new PopUp(status, message, callback, "Delete", "AlertPopUp");
+        });
+    </script>
+    }

@@ -1,0 +1,124 @@
+﻿@model List<ManageMe.BusinessLogic.BuildingVM>
+
+@{
+    ViewData["Title"] = "Index";
+}
+
+<div>
+    <a class="btn btn-primary" asp-action="Create">Create New</a>
+</div>
+
+<table class="table">
+    <thead>
+        <tr>
+            <th>
+                Name
+            </th>
+            <th>
+                Address
+            </th>
+            <th></th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var item in Model)
+        {
+            <tr>
+                <td class="editable" initialValue="@item.Name" buildingId="@item.Id">
+                    @Html.DisplayFor(modelItem => item.Name)
+                </td>
+                <td class="editable" initialValue="@item.Address" buildingId="@item.Id">
+                    @Html.DisplayFor(modelItem => item.Address)
+                </td>
+                <td>
+                    <a class="btn btn-primary edit-button" buildingId="@item.Id">Edit</a>
+                    <a class="btn btn-primary save-button d-none" buildingId="@item.Id">Save</a>
+                    <a class="btn btn-danger delete-button" buildingId="@item.Id">Delete</a>
+                    <a class="btn btn-secondary" asp-controller="Halls" asp-action="Index" asp-route-buildingId="@item.Id">Details</a>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
+
+@section Scripts {
+    <script type="text/javascript" src="~/js/ActionNotification.js"></script>
+    <script type="text/javascript" src="~/js/PopUp.js"></script>
+    <script type="text/javascript" src="~/js/FadeBackground.js"></script>
+    <script type="text/javascript">
+        $('.edit-button').click(function () {
+            var buildingId = $(this).attr('buildingId');
+
+            $('.edit-button').addClass('d-none');
+            $('.delete-button').addClass('d-none');
+            $('.save-button[buildingId="' + buildingId + '"]').removeClass('d-none');
+
+            var name = $('.table tr td:first-child[buildingId="' + buildingId + '"]').text();
+            var address = $('.table tr td:nth-child(2)[buildingId="' + buildingId + '"]').text();
+
+            $('.table tr td:first-child[buildingId="' + buildingId + '"]').html('<input type="text" class="form-control" value="' + name + '" />');
+            $('.table tr td:nth-child(2)[buildingId="' + buildingId + '"]').html('<input type="text" class="form-control" value="' + address + '" />');
+        });
+
+        $('.save-button').click(function () {
+            var buildingId = $(this).attr('buildingId');
+
+            $(this).addClass('d-none');
+            $('.edit-button').removeClass('d-none');
+            $('.delete-button').removeClass('d-none');
+
+            var name = $('.table tr td:first-child[buildingId="' + buildingId + '"] input').val();
+            var address = $('.table tr td:nth-child(2)[buildingId="' + buildingId + '"] input').val();
+
+            $('.table tr td:first-child[buildingId="' + buildingId + '"]').html(name);
+            $('.table tr td:nth-child(2)[buildingId="' + buildingId + '"]').html(address);
+
+            $.ajax({
+                url: '/Buildings/Edit',
+                type: 'POST',
+                data: {
+                    id: buildingId,
+                    name: name,
+                    address: address
+                },
+                success: function (data) {
+                    new ActionNotification('notificationsContainer', 'Building info updated successfully!', 'Success', 4000);
+                },
+                error: function (data) {
+                    new ActionNotification('notificationsContainer', 'Something went wrong!', 'Error', 4000);
+                }
+            });
+        });
+
+
+        $('.delete-button').click(function () {
+            var buildingId = $(this).attr('buildingId');
+            FadeBackground(true);
+
+            function callback(){
+                $.ajax({
+                    url: '/Buildings/Delete',
+                    type: 'POST',
+                    data: {
+                        id: buildingId
+                    },
+                    success: function (data) {
+                        new ActionNotification('notificationsContainer', 'Building deleted successfully!', 'Success', 4000);
+                        $('.table tr td[buildingId="' + buildingId + '"]').parent().remove();
+                        FadeBackground(false);
+                        $('.AlertPopUp').remove();
+                    },
+                    error: function (data) {
+                        new ActionNotification('notificationsContainer', 'Something went wrong!', 'Error', 4000);
+                        FadeBackground(false);
+                        $('.AlertPopUp').remove();
+                    }
+                });
+            }
+
+            var message = "Are you sure that you want to delete this building?";
+            var status = "WARNING";
+            new PopUp(status, message, callback, "Delete", "AlertPopUp");
+        });
+    </script>
+}

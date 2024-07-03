@@ -1,0 +1,14 @@
+﻿{
+  "NumberOfTopValues": 10,
+  "LLMs": [
+    {
+      "Name": "ChatGPT",
+      "PyhonFilePath": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\PythonCodeBase\\answer_question_GPT.py"
+    },
+    {
+      "Name": "RO-Mistral",
+      "PyhonFilePath": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\PythonCodeBase\\answer_question_ROMISTRAL.py"
+    }
+  ],
+  "UsedModel": "ChatGPT"
+}

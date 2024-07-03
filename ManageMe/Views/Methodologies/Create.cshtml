@@ -1,0 +1,72 @@
+﻿@model ManageMe.BusinessLogic.CreateMethodologyVM
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div style="text-align:center;">
+    <h1>Create Methodology</h1>
+
+    <div class="row">
+        <div class="col-md-12">
+            <form asp-action="Create">
+                <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+                <div class="form-group">
+                    <label asp-for="Name" class="control-label"></label>
+                    <input asp-for="Name" class="form-control" id="Name" />
+                    <span asp-validation-for="Name" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <label asp-for="Description" class="control-label"></label>
+                    <input asp-for="Description" class="form-control" id="Description" />
+                    <span asp-validation-for="Description" class="text-danger"></span>
+                </div>
+                <div class="form-group">
+                    <a id="submitButton" class="btn btn-primary">
+                        Add
+                    </a>
+                    <a id="cancelButton" class="btn btn-outline-secondary">
+                        Cancel
+                    </a>
+                </div>
+            </form>
+        </div>
+    </div>
+    
+</div>
+
+@{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+
+    <script>
+        $("body").on("click", "#submitButton", function (e) {
+            var name = $("#Name").val();
+            var description = $("#Description").val();
+
+            if (name === "" || description === "") {
+                new ActionNotification("notificationsContainer", "Please fill in all the fields!", "Error", 4000);
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/Methodologies/Create",
+                data: {
+                        Name: name,
+                        Description: description
+                },
+                success: () => {
+                        location.reload();
+                },
+                error: () => {
+                        new ActionNotification("notificationsContainer", "Something went wrong! Please try again later!", "Error", 4000);
+                }
+            });
+        });
+
+        $("body").on("click", "#cancelButton", function (e) {
+            $("#AddMethodologyModal").css("display", "none");
+            FadeBackground(false);
+        });
+    </script>

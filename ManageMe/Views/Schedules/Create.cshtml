@@ -1,0 +1,87 @@
+﻿@model ManageMe.BusinessLogic.ScheduleCreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <input type="hidden" asp-for="GroupId" value="@Model.GroupId" />
+            <input type="hidden" asp-for="DayOfWeek" value="@Model.DayOfWeek" />
+            <input type="hidden" asp-for="Hour" value="@Model.Hour" />
+            <input type="hidden" asp-for="Minute" value="@Model.Minute" />
+
+            <div class="form-group">
+                <label class="control-label">Subject</label>
+                <select id="SelectSubject" asp-for="SubjectId" class="form-control" asp-items="ViewBag.SubjectId"></select>
+            </div>
+            <div class="form-group">
+                <label asp-for="Duration" class="control-label"></label>
+                <input id="DurationInput" asp-for="Duration" class="form-control" value="2"/>
+                <span asp-validation-for="Duration" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Distribution</label>
+                <select id="SelectDistribution" asp-for="DistributionId" class="form-control" asp-items="ViewBag.DistributionId"></select>
+            </div>
+            <div class="form-group">
+                <label class="control-label">Frequency</label>
+                <select id="SelectFrequency" asp-for="ActivityFrequencyId" class="form-control" asp-items="ViewBag.Frequnecy"></select>
+            </div>
+            <div class="form-group d-none">
+                <label class="control-label">Activity</label>
+                <select id="SelectActivity" asp-for="ActivityId" class="form-control" asp-items="ViewBag.Activity"></select>
+            </div>
+            <div class="form-group d-none">
+                <label class="control-label">Teacher</label>
+                <select id="SelectTeacher" asp-for="TeacherId" class="form-control" asp-items="ViewBag.TeacherId"></select>
+            </div>
+            <div class="form-group d-none">
+                <label class="control-label">Classroom</label>
+                <select id="SelectClassroom" asp-for="HallId" class="form-control" asp-items="ViewBag.HallId"></select>
+            </div>
+            <div class="form-group d-none">
+                <label class="control-label">Group</label>
+                <select id="SelectGroup" asp-for="GroupId" class="form-control" asp-items="ViewBag.GroupId" multiple></select>
+            </div>
+            <div class="form-group">
+                <a id="submitButton" class="btn btn-primary">
+                    Add
+                </a>
+                <a id="cancelButton" class="btn btn-outline-secondary">
+                    Cancel
+                </a>
+            </div>
+        </form>
+        
+    </div>
+</div>
+
+@{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+
+<script type="text/javascript" src="~/js/FetchDataIntoSelect.js"></script>
+<script type="text/javascript">
+    $(document).ready(function () {
+        var groupId = @Model.GroupId;
+        var dayOfWeek = @Model.DayOfWeek;
+        var hour = @Model.Hour;
+        var minute = @Model.Minute;
+
+        Y(groupId, dayOfWeek, hour, minute);
+
+        var durationInput = $("#DurationInput");
+
+        durationInput.on("input", function () {
+            var currentValue = parseInt($(this).val());
+
+            if (currentValue < 1) {
+                $(this).val(1);
+            }
+        });
+    });
+
+</script>

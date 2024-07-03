@@ -1,0 +1,434 @@
+﻿@model ManageMe.BusinessLogic.DetailsStudyDomainVM
+@using ManageMe.BusinessLogic
+
+@{
+    ViewData["Title"] = "Details";
+
+    var studyPlan = new CreateStudyPlanVM
+            {
+                StudyDomainId = @Model.Id,
+            };
+}
+
+<div id="AddStudyPlanModal" class="EnterInputPopUp" style="display:none"></div>
+<div id="EditStudyPlanModal" class="EnterInputPopUp" style="display:none"></div>
+
+<div>
+    <h1>Curricullum</h1>
+    <div class="curricullum-list">
+        @for (int i = 1; i <= Model.StudyYears; i++)
+        {
+            <div class="card" style="margin-bottom:1.5rem;">
+                <div class="card-header">
+                    <h2>Year @i</h2>
+                </div>
+
+                @for (int semesterCount = 1; semesterCount <= 2; semesterCount++)
+                {
+                    var semesterNumeral = semesterCount == 1 ? "First" : "Second";
+                    <div class="card-title" style="display:inline-flex">
+                        <h6>@semesterNumeral Semester</h6>
+                    </div>
+                    <div class="card-body">
+                        <h3>Mandatory Subjects</h3>
+                        @if (User.IsInRole("Admin") || User.IsInRole("Dean"))
+                        {
+                            <a class="btn btn-success add-study-plan" semester="@((i - 1) * 2 + semesterCount)" optionality="1">
+                                +
+                            </a>
+                        }
+                        @if (!Model.StudyPlans.Any(x => x.StudyYear == i && x.StudySemester == semesterCount && x.SubjectOptionality == 1))
+                        {
+                            <p>No mandatory subjects for this semester</p>
+                        }
+                        else
+                        {
+                            <table>
+                                <tr>
+                                    <th>Subject Name</th>
+                                    <th>Subject Type</th>
+                                    <th>Course Credits</th>
+                                    <th>Laboratory Credits</th>
+                                    <th>Seminary Credits</th>
+                                    <th>Project Credits</th>
+                                    <th>Total Credits</th>
+                                    <th>Evaluation Form</th>
+                                    @* <th>Course Frequency</th>
+                        <th>Seminary Frequency</th>
+                        <th>Laboratory Frequency</th> *@
+                                    @if (User.IsInRole("Admin") || User.IsInRole("Dean"))
+                                    {
+                                        <th>Actions</th>
+                                    }
+                                </tr>
+                                @foreach (var studyPlanInfo in Model.StudyPlans.Where(x => x.StudyYear == i && x.StudySemester == semesterCount && x.SubjectOptionality == 1))
+                                {
+                                    <tr>
+                                        <td>
+                                            <a asp-controller="Subjects" asp-action="Details" asp-route-id="@studyPlanInfo.SubjectId">@studyPlanInfo.SubjectName</a>
+                                        </td>
+                                        <td>@studyPlanInfo.SubjectTypeName</td>
+                                        <td>@studyPlanInfo.CourseCredits</td>
+                                        <td>@studyPlanInfo.LaboratoryCredits</td>
+                                        <td>@studyPlanInfo.SeminaryCredits</td>
+                                        <td>@studyPlanInfo.ProjectCredits</td>
+                                        <td>@studyPlanInfo.TotalCredits</td>
+                                        <td>@studyPlanInfo.EvaluationFormName</td>
+                                        @* <td>
+                        @studyPlanInfo.CourseFrequency
+                        @if (studyPlanInfo.CourseCredits > 0)
+                        {
+                        <div>
+                        <select id="selectFrequency-@(Model.Id)-@(studyPlanInfo.SubjectId)-@(4)" style="display: none">
+                        @foreach (var selectListItem in ViewBag.Frequencies)
+                        {
+                        <option value="@selectListItem.Value">@selectListItem.Text</option>
+                        }
+                        </select>
+
+                        @if (User.IsInRole("Admin") || User.IsInRole("Dean"))
+                        {
+                        <a class="btn btn-primary edit-frequnecy">
+                        Edit
+                        </a>
+
+                        <a class="btn btn-success d-none" studyDomainId="@Model.Id" subjectId="@studyPlanInfo.SubjectId" activityId="4">
+                        Save Changes
+                        </a>
+                        }
+                        </div>
+                        }
+                        </td>
+                        <td>
+                        @studyPlanInfo.SeminaryFrequency
+                        @if (studyPlanInfo.SeminaryCredits > 0)
+                        {
+                        <div>
+                        <select id="selectFrequency-@(Model.Id)-@(studyPlanInfo.SubjectId)-@(6)" style="display: none">
+                        @foreach (var selectListItem in ViewBag.Frequencies)
+                        {
+                        <option value="@selectListItem.Value">@selectListItem.Text</option>
+                        }
+                        </select>
+
+                        @if (User.IsInRole("Admin") || User.IsInRole("Dean"))
+                        {
+                        <a class="btn btn-primary edit-frequnecy">
+                        Edit
+                        </a>
+
+                        <a class="btn btn-success d-none" studyDomainId="@Model.Id" subjectId="@studyPlanInfo.SubjectId" activityId="6">
+                        Save Changes
+                        </a>
+                        }
+                        </div>
+                        }
+                        </td>
+                        <td>
+                        @studyPlanInfo.LaboratoryFrequency
+                        @if (studyPlanInfo.LaboratoryCredits > 0)
+                        {
+                        <div>
+                        <select id="selectFrequency-@(Model.Id)-@(studyPlanInfo.SubjectId)-@(3)" style="display: none">
+                        @foreach (var selectListItem in ViewBag.Frequencies)
+                        {
+                        <option value="@selectListItem.Value">@selectListItem.Text</option>
+                        }
+                        </select>
+
+                        @if (User.IsInRole("Admin") || User.IsInRole("Dean"))
+                        {
+                        <a class="btn btn-primary edit-frequnecy">
+                        Edit
+                        </a>
+
+                        <a class="btn btn-success d-none" studyDomainId="@Model.Id" subjectId="@studyPlanInfo.SubjectId" activityId="3">
+                        Save Changes
+                        </a>
+                        }
+                        </div>
+                        }
+                        </td> *@
+
+                                        @if (User.IsInRole("Admin") || User.IsInRole("Dean"))
+                                        {
+                                            <td>
+                                                <a class="btn btn-danger remove-study-plan" studyDomainId="@Model.Id" subjectId="@studyPlanInfo.SubjectId">
+                                                    Remove
+                                                </a>
+
+                                                <a class="btn btn-primary edit-study-plan" subjectId="@studyPlanInfo.SubjectId">
+                                                    Edit
+                                                </a>
+                                            </td>
+                                        }
+
+                                    </tr>
+                                }
+                            </table>
+                        }                     
+                    </div>
+                    <div class="card-body">
+                        <h3>Optional Subjects</h3>
+                        @if (User.IsInRole("Admin") || User.IsInRole("Dean"))
+                        {
+                            <a class="btn btn-success add-study-plan" semester="@((i - 1) * 2 + semesterCount)" optionality="2">
+                                +
+                            </a>
+                        }
+                        @if (!Model.StudyPlans.Any(x => x.StudyYear == i && x.StudySemester == semesterCount && x.SubjectOptionality == 2))
+                        {
+                            <p>No optional subjects for this semester</p>
+                        }
+                        else
+                        {
+                            <table>
+                                <tr>
+                                    <th>Subject Name</th>
+                                    <th>Subject Type</th>
+                                    <th>Course Credits</th>
+                                    <th>Laboratory Credits</th>
+                                    <th>Seminary Credits</th>
+                                    <th>Project Credits</th>
+                                    <th>Total Credits</th>
+                                    <th>Evaluation Form</th>
+                                    @if (User.IsInRole("Admin") || User.IsInRole("Dean"))
+                                    {
+                                        <th>Actions</th>
+                                    }
+                                </tr>
+                                @foreach (var studyPlanInfo in Model.StudyPlans.Where(x => x.StudyYear == i && x.StudySemester == semesterCount && x.SubjectOptionality == 2))
+                                {
+                                    <tr>
+                                        <td>
+                                            <a asp-controller="Subjects" asp-action="Details" asp-route-id="@studyPlanInfo.SubjectId">@studyPlanInfo.SubjectName</a>
+                                        </td>
+                                        <td>@studyPlanInfo.SubjectTypeName</td>
+                                        <td>@studyPlanInfo.CourseCredits</td>
+                                        <td>@studyPlanInfo.LaboratoryCredits</td>
+                                        <td>@studyPlanInfo.SeminaryCredits</td>
+                                        <td>@studyPlanInfo.ProjectCredits</td>
+                                        <td>@studyPlanInfo.TotalCredits</td>
+                                        <td>@studyPlanInfo.EvaluationFormName</td>
+
+                                        @if (User.IsInRole("Admin") || User.IsInRole("Dean"))
+                                        {
+                                            <td>
+                                                <a class="btn btn-danger remove-study-plan" studyDomainId="@Model.Id" subjectId="@studyPlanInfo.SubjectId">
+                                                    Remove
+                                                </a>
+
+                                                <a class="btn btn-primary edit-study-plan" subjectId="@studyPlanInfo.SubjectId">
+                                                    Edit
+                                                </a>
+                                            </td>
+                                        }
+
+                                    </tr>
+                                }
+                            </table>
+                        }
+                    </div>
+                    <div class="card-body">
+                        <h3>Facultative Subjects</h3>
+                        @if (User.IsInRole("Admin") || User.IsInRole("Dean"))
+                        {
+                            <a class="btn btn-success add-study-plan" semester="@((i - 1) * 2 + semesterCount)" optionality="3">
+                                +
+                            </a>
+                        }
+                        @if (!Model.StudyPlans.Any(x => x.StudyYear == i && x.StudySemester == semesterCount && x.SubjectOptionality == 3))
+                        {
+                            <p>No facultative subjects for this semester</p>
+                        }
+                        else
+                        {
+                            <table>
+                                <tr>
+                                    <th>Subject Name</th>
+                                    <th>Subject Type</th>
+                                    <th>Course Credits</th>
+                                    <th>Laboratory Credits</th>
+                                    <th>Seminary Credits</th>
+                                    <th>Project Credits</th>
+                                    <th>Total Credits</th>
+                                    <th>Evaluation Form</th>
+                                    @if (User.IsInRole("Admin") || User.IsInRole("Dean"))
+                                    {
+                                        <th>Actions</th>
+                                    }
+                                </tr>
+                                @foreach (var studyPlanInfo in Model.StudyPlans.Where(x => x.StudyYear == i && x.StudySemester == semesterCount && x.SubjectOptionality == 3))
+                                {
+                                    <tr>
+                                        <td>
+                                            <a asp-controller="Subjects" asp-action="Details" asp-route-id="@studyPlanInfo.SubjectId">@studyPlanInfo.SubjectName</a>
+                                        </td>
+                                        <td>@studyPlanInfo.SubjectTypeName</td>
+                                        <td>@studyPlanInfo.CourseCredits</td>
+                                        <td>@studyPlanInfo.LaboratoryCredits</td>
+                                        <td>@studyPlanInfo.SeminaryCredits</td>
+                                        <td>@studyPlanInfo.ProjectCredits</td>
+                                        <td>@studyPlanInfo.TotalCredits</td>
+                                        <td>@studyPlanInfo.EvaluationFormName</td>
+                                        @if (User.IsInRole("Admin") || User.IsInRole("Dean"))
+                                        {
+                                            <td>
+                                                <a class="btn btn-danger remove-study-plan" studyDomainId="@Model.Id" subjectId="@studyPlanInfo.SubjectId">
+                                                    Remove
+                                                </a>
+
+                                                <a class="btn btn-primary edit-study-plan" subjectId="@studyPlanInfo.SubjectId">
+                                                    Edit
+                                                </a>
+                                            </td>
+                                        }
+
+                                    </tr>
+                                }
+                            </table>
+                        }
+                    </div>
+                }
+            </div>
+        }
+    </div>
+</div>
+@section Scripts{
+    <script type="text/javascript" src="~/js/HandleJoin.js"></script>
+    <script type="text/javascript" src="~/js/HandleLeave.js"></script>
+    <script type="text/javascript" src="~/js/HandleDelete.js"></script>
+    <script type="text/javascript" src="~/js/FadeBackground.js"></script>
+    <script type="text/javascript" src="~/js/PopUp.js"></script>
+    <script type="text/javascript" src="~/js/AddMemberToChannel.js"></script>
+    <script type="text/javascript" src="~/js/UserInput.js"></script>
+    <script type="text/javascript">
+        if (localStorage.getItem("reloadPage")) {
+            localStorage.removeItem("reloadPage");
+
+            if (localStorage.getItem("notificationMessage")) {
+                new ActionNotification("notificationsContainer", localStorage.getItem("notificationMessage"), "Succsess", 4000);
+                localStorage.removeItem("notificationMessage");
+            }
+        }
+
+
+        function addStudyPlanToStudyDomain(button) {
+            let semester = button.getAttribute("semester");
+            let optionality = button.getAttribute("optionality");
+            $.ajax({
+                type: "GET",
+                url: `/StudyPlan/AddNewStudyPlan?studyDomainId=@Model.Id&semester=${semester}&optionality=${optionality}`,
+                success: function (data) {
+                    var modal = $("#AddStudyPlanModal");
+                    FadeBackground(true);
+                    modal.html(data);
+                    modal.css("display", "block");
+                },
+                error: function () {
+                    new ActionNotification("notificationsContainer", "Something went wrong!", "Error", 4000);
+                }
+            });
+        }
+
+        $("body").on("click", ".add-study-plan", function (e) {
+            addStudyPlanToStudyDomain(e.currentTarget);
+        });
+
+        function editStudyPlan(button) {
+            let subjectId = button.getAttribute("subjectId");
+            $.ajax({
+                type: "GET",
+                url: `/StudyPlan/EditStudyPlan?studyDomainId=@Model.Id&subjectId=${subjectId}`,
+                success: function (data) {
+                    var modal = $("#EditStudyPlanModal");
+                    FadeBackground(true);
+                    modal.html(data);
+                    modal.css("display", "block");
+                },
+                error: function () {
+                    new ActionNotification("notificationsContainer", "Something went wrong!", "Error", 4000);
+                }
+            });
+        }
+
+        $("body").on("click", ".edit-study-plan", function (e) {
+            editStudyPlan(e.currentTarget);
+        });
+
+        $("body").on("click", ".remove-study-plan", function () {
+            let studyDomainId = $(this).attr("studyDomainId");
+            let subjectId = $(this).attr("subjectId");
+
+            FadeBackground(true);
+
+            function callback() {
+                $.ajax({
+                    url: "/StudyPlan/DeleteStudyPlan",
+                    type: "DELETE",
+                    data: {
+                        studyDomainId: studyDomainId,
+                        subjectId: subjectId
+                    },
+                    success: function (data) {
+                        if (data.success) {
+                            FadeBackground(false);
+                            localStorage.setItem("reloadPage", true);
+                            localStorage.setItem("notificationMessage", "Subject removed from study plan!");
+                            location.reload();
+
+                        }
+                        else {
+                            new ActionNotification("notificationsContainer", "Something went wrong!", "Delete", 4000);
+                        }
+                    }
+                });
+            }
+
+            var message = "You are about to remove this subject from this study domain.\nAre you sure you want to do this ?";
+            var status = "WARNING";
+            new PopUp(status, message, callback, "Delete", "AlertPopUp");
+        })
+
+
+        $("body").on("click", ".edit-frequnecy", function (e) {
+            let selectFrequency = $(this).siblings("select");
+            let saveChanges = $(this).siblings("a.btn-success");
+            let editFrequency = $(this);
+
+            selectFrequency.css("display", "block");
+            saveChanges.removeClass("d-none");
+            $(".edit-frequnecy").addClass("d-none");
+
+            saveChanges.on("click", function () {
+                let studyDomainId = $(this).attr("studyDomainId");
+                let subjectId = $(this).attr("subjectId");
+                let activityId = $(this).attr("activityId");
+                let frequency = $(this).siblings("select").val();
+
+                $.ajax({
+                    url: "/SubjectActivityFrequencies/Edit",
+                    type: "POST",
+                    data: {
+                        studyDomainId: studyDomainId,
+                        subjectId: subjectId,
+                        activityId: activityId,
+                        subjectActivityFrequencyId: frequency
+                    },
+                    success: function (data) {
+                        if (data.success) {
+                            FadeBackground(false);
+                            localStorage.setItem("reloadPage", true);
+                            localStorage.setItem("notificationMessage", "Frequency succsessfully updated!", "Succsess", 4000);
+                            location.reload();
+                        }
+                        else {
+                            new ActionNotification("notificationsContainer", "Something went wrong!", "Delete", 4000);
+                        }
+                    }
+                });
+            });
+        });
+
+    </script>
+}

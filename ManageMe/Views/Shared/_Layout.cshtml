@@ -1,0 +1,151 @@
+﻿@using Microsoft.AspNetCore.Identity
+@inject SignInManager<ApplicationUser> SignInManager
+@inject UserManager<ApplicationUser> UserManager
+
+@{
+    var currentUserId = SignInManager.IsSignedIn(User) ? UserManager.GetUserId(User) : null;
+    var pageTitle = (ViewData["Title"] as string)?.Replace(" ", "");
+    var controllerName = ViewContext.RouteData.Values["controller"] as string;
+}
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>@ViewData["Title"] - ManageMe</title>
+    <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
+    <link rel="stylesheet" href="~/css/site.css" asp-append-version="true" />
+    <link rel="stylesheet" href="~/ManageMe.styles.css" asp-append-version="true" />
+</head>
+<body class="lightmode">
+    <div id="notificationsContainer"></div>
+    <div id="fadeOverlay" class="hidden"></div>
+    <header>
+        <nav class="main-navbar navbar navbar-expand-sm flex-column navbar-light bg-white border-right box-shadow">
+            <div class="container-fluid">
+                <a id = "HomeButton" class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">
+                    <img src="~/images/logo-fmi.png" alt="ManageMe" style="width:40px;">
+                </a>
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
+                        aria-expanded="false" aria-label="Toggle navigation">
+                    <span class="navbar-toggler-icon"></span>
+                </button>
+                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
+                    <ul class="navbar-nav flex-grow-1">
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="StudyDomains" asp-action="Index">Study Domains</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Subjects" asp-action="Index">Subjects</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Batches" asp-action="Index">Batches</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" asp-area="" asp-controller="Methodologies" asp-action="Index">Methodolgies</a>
+                        </li>
+                        @if (User.IsInRole("Admin") || User.IsInRole("Secretary") || User.IsInRole("Student")
+                            || User.IsInRole("Dean") || User.IsInRole("Lector") || User.IsInRole("Assistant"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Users" asp-action="Index">Users</a>
+                            </li>
+                        }
+                        @if (User.IsInRole("Admin") || User.IsInRole("Secretary") || User.IsInRole("Dean"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Buildings" asp-action="Index">Infrastructure</a>
+                            </li>
+                        }
+                        @if (!User.IsInRole("Admin") && (User.IsInRole("Secretary") || User.IsInRole("Student")
+                        || User.IsInRole("Dean") || User.IsInRole("Lector") || User.IsInRole("Assistant")))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="" asp-controller="Users" asp-action="Details">My Account</a>
+                            </li>
+                        }
+                        @if (User.IsInRole("Student"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area=""
+                                asp-controller="Groups"
+                                asp-action="MyGroup"
+                                asp-route-userId="@currentUserId">My Group</a>
+                            </li>
+                            <li class="nav-item">
+                               <a class="nav-link" asp-area=""
+                                asp-controller="FinalGrades"
+                                asp-action="IndexForStudent"
+                                asp-route-userId="@currentUserId">My Grades</a>
+                            </li>
+                        }
+                        @if (User.IsInRole("Lector") || User.IsInRole("Assistant"))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area=""
+                                asp-controller="Groups"
+                                asp-action="TeacherGroups"
+                                asp-route-userId="@currentUserId">My Activities</a>
+                            </li>
+                        }
+                        @if (!User.IsInRole("Admin") && (User.IsInRole("Secretary") || User.IsInRole("Student")
+                        || User.IsInRole("Dean") || User.IsInRole("Lector") || User.IsInRole("Assistant")))
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Channels" asp-action="Index">Channels</a>
+                            </li>
+                        }
+                        @if (!User.IsInRole("Admin") && (User.IsInRole("Secretary") || User.IsInRole("Student")
+                        || User.IsInRole("Dean") || User.IsInRole("Lector") || User.IsInRole("Assistant")))
+                        {
+                            <li class="nav-item">
+                                <a id="SchedulesNavButton" class="nav-link">Schedules</a>
+                            </li>
+                        }
+                    </ul>
+                    <partial name="_LoginPartial" />
+                </div>
+            </div>
+        </nav>
+    </header>
+    <div class="container @(controllerName) @(pageTitle)" id="PageContent">
+        <main role="main" class="pb-3">
+            @RenderBody()
+        </main>
+    </div>
+
+    <script src="~/lib/jquery/dist/jquery.min.js"></script>
+    <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
+    <script type="text/javascript" src="~/js/ActionNotification.js"></script>
+    <script type="text/javascript" src="~/js/LocalOptions.js"></script>
+    <script src="~/js/site.js" asp-append-version="true"></script>
+    <script type="text/javascript">
+        $("#SchedulesNavButton").mouseover(function () {
+            $(this).css('cursor', 'default');
+            var currentUserId = '@currentUserId';
+
+            let scheduleForStudentGroupButton = $('<p>My Schedule</p>');
+
+            scheduleForStudentGroupButton.click(function () {
+                window.location.href = `/Schedules/UserSchedule?userId=${currentUserId}`;
+            });
+
+            let allSchedulesButton = $('<p>All Schedules</p>');
+
+            allSchedulesButton.click(function () {
+                window.location.href = `/Schedules/Index`;
+            });
+
+            let options = [scheduleForStudentGroupButton, allSchedulesButton];
+
+            let top = $("#SchedulesNavButton").offset().top + $("#SchedulesNavButton").height() / 2;
+            let left = $("#SchedulesNavButton").offset().left + $("#SchedulesNavButton").width() / 2;
+
+            let localOptions = new LocalOptions(top, left, options, $(this));
+        });
+    </script>
+    
+    @await RenderSectionAsync("Scripts", required: false)
+</body>
+</html>

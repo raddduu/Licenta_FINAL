@@ -1,0 +1,119 @@
+﻿@using System.Security.Claims;
+@model IEnumerable<ManageMe.BusinessLogic.ChannelVM>
+
+@{
+    ViewData["Title"] = "Index";
+    var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    var paginationSettings = ViewBag.PaginationSettings as ManageMe.Common.PaginationSettings;
+}
+
+@*<span>
+    @Html.Partial("SearchEngine", paginationSettings)
+</span>*@
+
+<div>
+    <a class="btn btn-primary" asp-action="Create" style="margin-left:0;">+</a>
+</div>
+
+@if (Model == null)
+{
+    <h2>No Channels Found, but you can create your own!</h2>
+}
+else
+{
+    @foreach (var channel in Model)
+    {
+        <div class="card-body index-channel" style="background-image: url('@Url.Action("GetChannelPic", "Channels", new { id = channel.Id })')">
+                <div class="image-overlay" style="padding: 1rem;">
+                    <h3 class="card-title alert-success py-3 px-3 rounded-2">@channel.Title</h3>
+                    <h4 class="card-title alert-success py-3 px-3 rounded-2">@channel.Subject</h4>
+                    <h4 class="card-title alert-success py-3 px-3 rounded-2">@channel.AccessType</h4>
+                    <h5 id="RolesSection-@channel.Id" class="card-title alert-success py-3 px-3 rounded-2">@String.Join(", ", channel.Roles)</h5>
+                </div>
+                <div class="ChannelOptions">
+                    <a class="btn btn-success" href="/Channels/Details/@channel.Id">View Channel</a>
+                    @if (channel.ChannelMembers.Where(cm => cm.Id == currentUserId).Count() > 0)
+                    {
+                        <a class="btn btn-success leaveButton"
+                           id="@channel.Id"
+                           accessType="@channel.AccessType"
+                           userId="@currentUserId">Leave Channel</a>
+                    }
+                    else
+                    {
+                        if (channel.AccessType.Equals("JoinRequest")
+                        && channel.ChannelRequesters
+                        .Select(cru => cru.Id)
+                        .Contains(currentUserId))
+                        {
+                            <a id="@channel.Id" class="btn btn-secondary pendingButton"
+                               accessType="@channel.AccessType"
+                               userId="@currentUserId">Pending Request</a>
+                        }
+                        else
+                        {
+                            <a id="@channel.Id" class="btn btn-success joinButton"
+                               accessType="@channel.AccessType"
+                               userId="@currentUserId">Join Channel</a>
+                        }
+
+                    }
+                    @if (User.IsInRole("Admin")
+                   || channel.ChannelMembers.Where(m => m.IsModerator && m.Id == currentUserId).Count() != 0)
+                    {
+                        <a id="@channel.Id" class="btn btn-success deleteButton">Delete Channel</a>
+                    }
+                </div>
+            </div>
+    }
+}
+
+@section Scripts{
+    <script type="text/javascript" src="~/js/HandleJoin.js"></script>
+    <script type="text/javascript" src="~/js/HandleLeave.js"></script>
+    <script type="text/javascript" src="~/js/HandleDelete.js"></script>
+    <script type="text/javascript" src="~/js/FadeBackground.js"></script>
+    <script type="text/javascript" src="~/js/PopUp.js"></script>
+    <script type="text/javascript" src="~/js/AddMemberToChannel.js"></script>
+    <script type="text/javascript" src="~/js/UserInput.js"></script>
+    <script type="text/javascript">
+        function handleJoinClick(button) {
+            let channelId = button.getAttribute("id");
+            let accessType = button.getAttribute("accessType");
+            let userId = button.getAttribute("userId");
+            HandleJoin(channelId, accessType, userId);
+        }
+
+        function handleLeaveClick(button) {
+            let channelId = button.getAttribute("id");
+            let userId = button.getAttribute("userId");
+            HandleLeave(channelId, userId);
+        }
+
+        function handleDelete(button) {
+            let channelId = button.getAttribute("id");
+            let deleteLink = `Channels/Delete`;
+            HandleDelete(channelId, deleteLink);
+        }
+
+        $("body").on("click", ".joinButton", function (e) {
+            handleJoinClick(e.currentTarget);
+        })
+
+        $("body").on("click", ".leaveButton", function (e) {
+            handleLeaveClick(e.currentTarget);
+        })
+
+        $("body").on("click", ".deleteButton", function (e) {
+            handleDelete(e.currentTarget);
+        })
+
+        $("body").on("click", ".pendingButton", function (e) {
+            new ActionNotification("notificationsContainer",
+                "Please wait for your membership request to be processed!",
+                "Wait", 4000);
+        })
+
+    </script>
+}
+

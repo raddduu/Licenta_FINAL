@@ -1,0 +1,57 @@
+﻿@model ManageMe.Common.PaginationSettings
+
+@{
+    var currentpage = Model.CurrentPage;
+    var pagesToBeDisplayed = new bool[(int)Model.LastPage + 4];
+    var isInWhiteArea = false;
+
+    for (int i = 1; i <= ((int)Model.LastPage < 5 ? Model.LastPage : 5); i++)
+    {
+        pagesToBeDisplayed[i] = true;
+    }
+
+    for (int i = (int)Model.LastPage - 4 > 0 ? (int)Model.LastPage - 4 : 1; i <= Model.LastPage; i++)
+    {
+        pagesToBeDisplayed[i] = true;
+    }
+
+    for (int i = currentpage - 2 < 1 ? 1 : currentpage - 2; i <= currentpage + 2; i++)
+    {
+        pagesToBeDisplayed[i] = true;
+    }
+}
+
+<div>
+    <nav aria-label="Page navigation example">
+        <ul class="pagination">
+            <li class="page-item">
+                <a class="page-link" href="@Model.PaginationBaseUrl=1" aria-label="Previous">
+                    <span aria-hidden="true">&laquo;</span>
+                </a>
+            </li>
+
+            @for (int i = 1; i <= Model.LastPage; i++)
+            {
+                if (pagesToBeDisplayed[i] || Model.LastPage <= 20)
+                {
+                    <li class="page-item"> <a class="page-link" href="@Model.PaginationBaseUrl=@i">@(i)</a> </li>
+                    isInWhiteArea = false;
+                }
+                else
+                {
+                    if (!isInWhiteArea)
+                    {
+                        <li class="page-item"> <a class="page-link" href="#">...</a> </li>
+                        isInWhiteArea = true;
+                    }
+                }
+            }
+
+            <li class="page-item">
+                <a class="page-link" href="@Model.PaginationBaseUrl=@(Model.LastPage)" aria-label="Next">
+                    <span aria-hidden="true">&raquo;</span>
+                </a>
+            </li>
+        </ul>
+    </nav>
+</div>

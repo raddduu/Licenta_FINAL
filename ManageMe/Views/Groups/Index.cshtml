@@ -1,0 +1,31 @@
+﻿@model IEnumerable<ManageMe.BusinessLogic.IndexGroupVM>
+
+@{
+    ViewData["Title"] = "Index";
+    var batchId = ViewBag.BatchId;
+}
+
+@if (User.IsInRole("Admin") || User.IsInRole("Secretary") || User.IsInRole("Dean"))
+{
+    <a class="btn btn-primary" asp-action="Create" asp-route-batchId="@batchId" style="margin-left:0;">Create New</a>
+}
+
+@foreach (var item in Model)
+{
+    <div class="card group-info" style="margin-top:1rem; margin-bottom:1rem;">
+        <div class="card-body group-info">
+            <p>@item.Number</p>
+            <p>@item.StudyDomainName</p>
+            <p>Year @item.StudyYear</p>
+            @if (User.IsInRole("Admin") || User.IsInRole("Secretary") || User.IsInRole("Student")
+           || User.IsInRole("Dean") || User.IsInRole("Lector") || User.IsInRole("Assistant"))
+            {
+                <a class="btn btn-primary" asp-controller="Groups" asp-action="Details" asp-route-id="@item.Id">Details</a>
+            }
+            @if (User.IsInRole("Admin") || User.IsInRole("Secretary") || User.IsInRole("Dean"))
+            {
+                <a class="btn btn-danger" asp-controller="Groups" asp-action="Delete" asp-route-id="@item.Id">Delete</a>
+            }
+        </div>
+    </div>
+}

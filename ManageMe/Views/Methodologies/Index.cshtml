@@ -1,0 +1,217 @@
+﻿@model List<ManageMe.BusinessLogic.IndexMethodologyVM>
+
+@{
+    ViewBag.Title = "Index";
+}
+
+<div id="AddMethodologyModal" class="EnterInputPopUp" style="display:none"></div>
+
+<div style="text-align:center; margin-top:5rem; margin-bottom:5rem;">
+    <h1>Methodologies - The Universitary Law</h1>
+    <h3>
+        On this page you can see the entire collection of documents that define how universitary procedures shall be performed.
+        Please constantly monitor this page for updates and cosnult it before taking any decission!
+    </h3>
+    @if (User.IsInRole("Admin") || User.IsInRole("Dean"))
+    {
+        <a id="AddMethodologyButton" style="margin-top: 3rem;" class="btn btn-primary">Create New Methodology</a>
+    }
+</div>
+
+<div class="row">
+    @foreach (var methodology in Model)
+    {
+        <div id="methodology-@methodology.Id">
+            <div class="card" style="margin-top:1rem; margin-bottom:1rem; padding:5px;">
+                <div class="card-body subject-info">
+                    <h3 class="card-title
+                        alert-success py-3 px-3 rounded-2 subject-name"
+                        style="text-align:center; width:10vw; margin: auto;">
+                        @methodology.Name
+                    </h3>
+
+                    <p style="text-align:center; width:60vw; margin: auto;">
+                        @methodology.Description
+                    </p>
+
+                    <a class="btn btn-primary" asp-controller="Methodologies" asp-action="Details" asp-route-id="@methodology.Id"
+                        style="width: 8vw;">
+                        Info
+                    </a>
+
+                    @if (User.IsInRole("Admin") || User.IsInRole("Dean"))
+                    {
+                        <a class="btn btn-danger delete-button" methodologyId="@methodology.Id"
+                           style="width: 8vw;">
+                            Delete
+                        </a>
+
+                        <a class="btn btn-primary editButton" methodologyId="@methodology.Id"
+                           style="width: 8vw;">
+                            Edit
+                        </a>
+
+                        <a class="btn btn-primary saveButton" methodologyId="@methodology.Id"
+                           style="width: 8vw; display:none;">
+                            Save
+                        </a>
+                    }
+                </div>
+            </div>
+        </div>
+    }
+</div>
+
+<div id="chatbot" style="margin:1.5rem; position: fixed; bottom: 0; right: 0; width: 210px; height: 280px;">
+    <img src="~/images/flat-woman-chatting-with-chatbot-communicating-ai-robot-assistant.png" style="width: 100%; height: 100%; object-fit: contain; cursor: pointer;" />
+</div>
+
+@section Scripts {
+    <script type="text/javascript" src="~/js/FadeBackground.js"></script>
+    <script type="text/javascript" src="~/js/PopUp.js"></script>
+    <script type="text/javascript" src="~/js/ActionNotification.js"></script>
+    <script type="text/javascript" src="~/js/UserInput.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            document.getElementById("chatbot").addEventListener("click", function () {
+                window.location.href = "/Methodologies/AIChat";
+            });
+
+            $(".delete-button").click(function () {
+                var methodologyId = $(this).attr("methodologyId");
+
+                FadeBackground(true);
+
+                function callback() {
+                    $.ajax({
+                        url: `/Methodologies/Delete?id=${methodologyId}`,
+                        type: "DELETE",
+                        success: function (data) {
+                            if (data.success) {
+                                new ActionNotification("notificationsContainer", "Methodology deleted succsessfully", "Success", 1000);
+                                FadeBackground(false);
+                                $('.AlertPopUp').remove();
+                                $(`#methodology-${methodologyId}`).remove();
+                            }
+                            else {
+                                new ActionNotification("notificationsContainer", "Methodology deletion failed", "Error", 1000);
+                                FadeBackground(false);
+                                $('.AlertPopUp').remove();
+                            }
+                        }
+                    });
+                }
+
+                var message = "Are you sure that you want to delete this Methodology?";
+                var status = "WARNING";
+                new PopUp(status, message, callback, "Delete", "AlertPopUp");
+            });
+
+            $("#AddMethodologyButton").on("click", function () {
+                $.ajax({
+                    type: "GET",
+                    url: `/Methodologies/Create`,
+                    success: function (data) {
+                        var modal = $("#AddMethodologyModal");
+                        FadeBackground(true);
+                        modal.html(data);
+                        modal.css("display", "block");
+                    },
+                    error: function () {
+                        new ActionNotification("notificationsContainer", "Something went wrong!", "Error", 4000);
+                    }
+                });
+            });
+
+            $(".editButton").click(function () {
+                var methodologyId = $(this).attr("methodologyId");
+
+                $(`#methodology-${methodologyId} .subject-name`).prop("contenteditable", true);
+                $(`#methodology-${methodologyId} .subject-info p`).prop("contenteditable", true);
+
+                $(this).hide();
+                $(`#methodology-${methodologyId} .saveButton`).show();
+
+                //add a 2px blue border to the divs with the name and description
+                $(`#methodology-${methodologyId} .subject-name`).css({
+                    "border": "2px solid var(--lightmode-primary)",
+                    "border-radius": "10px",
+                    "padding": "2px"
+                });
+                $(`#methodology-${methodologyId} .subject-info p`).css({
+                    "border": "2px solid var(--lightmode-primary)",
+                    "border-radius": "10px",
+                    "padding": "2px"
+                });
+            });
+
+            $(".saveButton").click(function () {
+                var methodologyId = $(this).attr("methodologyId");
+                var name = $(`#methodology-${methodologyId} .subject-name`);
+                var description = $(`#methodology-${methodologyId} .subject-info p`);
+
+                name.prop("contenteditable", false);
+                description.prop("contenteditable", false);
+
+                $(this).hide();
+                $(`#methodology-${methodologyId} .editButton`).show();
+
+                // Remove the blue border from the divs with the name and description
+                name.css({
+                    "border": "none",
+                    "padding": "0"
+                });
+                description.css({
+                    "border": "none",
+                    "padding": "0"
+                });
+
+                // Update the database
+                $.ajax({
+                    type: "PUT",
+                    url: "/Methodologies/Update", // Replace with your update method's URL
+                    data: {
+                        id: methodologyId, // Replace with the actual subject ID
+                        name: name.text().trim(),
+                        description: description.text().trim()
+                    },
+                    success: function (data) {
+                        if (data.success) {
+                            new ActionNotification("notificationsContainer", "Methodology data modified succsessfully", "Success", 3000);
+                        }
+                        else {
+                            new ActionNotification("notificationsContainer", "Methodology could not be modified", "Error", 3000);
+                        }
+                    },
+                    error: function () {
+                        new ActionNotification("notificationsContainer", "Something went wrong! Please try again later!", "Error", 3000);
+                    }
+                });
+            });
+
+            $("#chatbot-send").click(function () {
+                var question = $("#chatbot-input").val();
+                if (question.trim() != '') {
+                    // Call the QuestionAnswer method with the question
+                    $.ajax({
+                        type: "GET",
+                        url: "/Methodologies/QuestionAnswer", // Replace with your QuestionAnswer method's URL
+                        data: {
+                            question: question
+                        },
+                        success: function (data) {
+                            // Handle the response from the server
+                            // For example, you can add the server's response to the chatbot body
+                            $("#chatbot-body").append('<p><strong>Bot:</strong> ' + data.answer + '</p>');
+                            // Clear the input field
+                            $("#chatbot-input").val('');
+                        },
+                        error: function () {
+                            // Handle errors here
+                        }
+                    });
+                }
+            });
+        });
+    </script>
+}

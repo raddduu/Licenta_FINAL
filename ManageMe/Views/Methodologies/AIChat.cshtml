@@ -1,0 +1,70 @@
+﻿<div style="text-align:center; margin: 1.5rem;">
+    <h1>Welcome! How can I help you today?</h1>
+    <h5>
+        My name is MAREIA and I am your AI assistant.
+        I know that reading and reasoning through all the content
+        of the Methodologies can be overwhelming. I am here to help
+        you navigate through the Universitary Law and provide
+        you with the information you need as well as my sources,
+        all at just a click of a button!
+    </h5>
+</div>
+
+<div id="ChatBot" style="text-align:center;">
+    <div id="ChatBotInput" style="margin-bottom: 1.5rem;">
+        <textarea type="text" id="ChatBotInputText" placeholder="Type your message here..." style="width:100%; height: 30%;"></textarea>
+        <a class="btn btn-primary" id="ChatBotInputButton">Send</a>
+    </div>
+    <div id="ChatBotOutput" style="text-align:left;">
+        <div>
+            <p id="KnowledgeBase"></p>
+            <p id="ChatBotOutputText"></p>
+        </div>
+    </div>
+</div>
+
+@section Scripts {
+    <script>
+        var chatBotInputText = document.getElementById("ChatBotInputText");
+        var chatBotInputButton = document.getElementById("ChatBotInputButton");
+
+        chatBotInputButton.onclick = function () {
+            var knowledgeBase = document.getElementById("KnowledgeBase");
+            knowledgeBase.innerHTML = "";
+            var chatBotOutputText = document.getElementById("ChatBotOutputText");
+            chatBotOutputText.innerHTML = "";
+
+            knowledgeBase.innerHTML = "Searching for the relevant data..."
+
+            var question = chatBotInputText.value;
+            chatBotInputText.value = "";
+
+            $.ajax({
+                type: "GET",
+                url: "/Methodologies/GetKnowledgeBase",
+                data: {
+                    question: question.trim()
+                },
+                success: function (response) {
+                    var knowledgeBase = document.getElementById("KnowledgeBase");
+                    knowledgeBase.innerHTML = response.item1.replace(/(?:\r\n|\r|\n)/g, '<br>');
+                    knowledgeBase.innerHTML = knowledgeBase.innerHTML.replace(/\t/g, "&nbsp;&nbsp;&nbsp;&nbsp;");
+
+                    chatBotOutputText.innerHTML = "Analyzing the data..."
+
+                    $.ajax({
+                        type: "GET",
+                        url: "/Methodologies/GetAnswer",
+                        data: {
+                            question: question.trim(),
+                        },
+                        success: function (output) {
+                            var chatBotOutputText = document.getElementById("ChatBotOutputText");
+                            chatBotOutputText.innerHTML = output.item1.replace(/(?:\r\n|\r|\n)/g, '<br>');
+                        }
+                    });
+                }
+            });
+        }
+    </script>
+}

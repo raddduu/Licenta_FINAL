@@ -1,0 +1,91 @@
+﻿@model ManageMe.BusinessLogic.CreateGradingCriterionModel
+
+@{
+    ViewBag.Title = "Create";
+}
+
+<h1>Please provide the grading and passing criteria for this subject at this group</h1>
+
+<form asp-action="Create">
+    <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+    <input type="hidden" asp-for="GroupId" />
+    <input type="hidden" asp-for="SubjectId" />
+    <table>
+        <tr>
+            <th>Activity Name</th>
+            <th>Activity Points</th>
+            <th>Minimum to Pass</th>
+            <th>Is summated to obtain the final score to pass</th>
+        </tr>
+        <tr>
+            <td>Course Activity</td>
+            <td><input asp-for="CourseActivityPoints" /></td>
+            <td><input asp-for="MinimumPointsForPassCourseActivity" /></td>
+            <td><input asp-for="CourseActivityMattersForPassingTheSubject" /></td>
+        </tr>
+        <tr>
+            <td>Course Homeworks</td>
+            <td><input asp-for="CourseHomeworksPoints" /></td>
+            <td><input asp-for="MinimumPointsForPassCourseHomeworks" /></td>
+            <td><input asp-for="CourseHomeworksMattersForPassingTheSubject" /></td>
+        </tr>
+        <tr>
+            <td>Course Exam</td>
+            <td><input asp-for="CourseExamPoints" /></td>
+            <td><input asp-for="MinimumPointsForPassCourseExam" /></td>
+            <td><input asp-for="CourseExamMattersForPassingTheSubject" /></td>
+        </tr>
+        <tr>
+            <td>Seminary Activity</td>
+            <td><input asp-for="SeminaryActivityPoints" /></td>
+            <td><input asp-for="MinimumPointsForPassSeminaryActivity" /></td>
+            <td><input asp-for="SeminaryActivityMattersForPassingTheSubject" /></td>
+        </tr>
+        <tr>
+            <td>Seminary Homeworks</td>
+            <td><input asp-for="SeminaryHomeworksPoints" /></td>
+            <td><input asp-for="MinimumPointsForPassSeminaryHomeworks" /></td>
+            <td><input asp-for="SeminaryHomeworksMattersForPassingTheSubject" /></td>
+        </tr>
+        <tr>
+            <td>Seminary Exam</td>
+            <td><input asp-for="SeminaryExamPoints" /></td>
+            <td><input asp-for="MinimumPointsForPassSeminaryExam" /></td>
+            <td><input asp-for="SeminaryExamMattersForPassingTheSubject" /></td>
+        </tr>
+        <tr>
+            <td>Laboratory Activity</td>
+            <td><input asp-for="LaboratoryActivityPoints" /></td>
+            <td><input asp-for="MinimumPointsForPassLaboratoryActivity" /></td>
+            <td><input asp-for="LaboratoryActivityMattersForPassingTheSubject" /></td>
+        </tr>
+        <tr>
+            <td>Laboratory Homeworks</td>
+            <td><input asp-for="LaboratoryHomeworksPoints" /></td>
+            <td><input asp-for="MinimumPointsForPassLaboratoryHomeworks" /></td>
+            <td><input asp-for="LaboratoryHomeworksMattersForPassingTheSubject" /></td>
+        </tr>
+        <tr>
+            <td>Laboratory Exam</td>
+            <td><input asp-for="LaboratoryExamPoints" /></td>
+            <td><input asp-for="MinimumPointsForPassLaboratoryExam" /></td>
+            <td><input asp-for="LaboratoryExamMattersForPassingTheSubject" /></td>
+        </tr>
+        <tr>
+            <td>Bonus Points</td>
+            <td><input asp-for="BonusPoints" /></td>
+            <td><input asp-for="BonusMattersForPassingTheSubject" /></td>
+        </tr>
+        <tr>
+            <td>Minimum Grade to Pass</td>
+            <td>
+                <input asp-for="MinimumPointsForPassSubject" />
+            </td>
+        </tr>
+        <tr>
+            <td>
+                <input type="submit" value="Save" class="btn btn-primary" />
+            </td>
+        </tr>
+    </table>
+</form>

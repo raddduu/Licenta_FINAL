@@ -1,0 +1,88 @@
+﻿@using System.Security.Claims;
+@model Tuple<IEnumerable<ManageMe.BusinessLogic.IndexMessageVM>, int>
+
+@{
+    ViewData["Title"] = "Index";
+    var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+}
+<div id="GroupMessages">
+    @foreach (var m in Model.Item1)
+    {
+        var announcementClass = m.IsAnnouncement == true ? "announcement_message" : "";
+        var isOwn = m.Author?.Id == currentUserId ? "own" : "not-own";
+
+        <div id="@m.Id" class="message @isOwn @announcementClass">
+            <h5>@m.Text</h5>
+            @*<a id="openReplyInputButton-@m.Id" class="btn btn-primary openReplyInputButton">
+        <img src="~/images/reply-fill.png" style="width:1vw; height:1vw;" />
+        </a>
+        <div id="replyToButton-@m.Id" style="display:none">
+        <input id="typeMessageBar" type="text" placeholder="Enter your message here"></input>
+        <a class="btn btn-primary sendReplyMessageButton">
+        <img src="~/images/send-fill.png" style="width:1vw; height:1vw;" />
+        </a>
+        </div>*@
+            <p>
+                <small>@m.Author?.UserName, @m.Time</small>
+                @if (m.Author?.Id == currentUserId || User.IsInRole("Admin"))
+                {
+                    <small class="delete-message" messageId="@m.Id">
+                        <img src="~/images/trashbin.png" style="width:1vw; height:1vw;" />
+                    </small>
+                }
+            </p>
+        </div>
+    }
+</div>
+
+
+<div id="newMessageBar">
+    <input id="typeRootMessageBar" placeholder="Enter your message here"></input>
+    <a class="btn btn-primary sendRootMessageButton">
+        <img src="~/images/send-fill.png" style="width:1vw; height:1vw;" />
+    </a>
+    <a id="announcementCheckRoot" class="btn announcementCheck btn-outline-warning" isAnnouncement="false">
+        <img src="~/images/send-fill.png" style="width:1vw; height:1vw;" />
+    </a>
+</div>
+
+@section Scripts{
+    <script type="text/javascript" src="~/js/AddNewMessage.js"></script>
+    <script type="text/javascript">
+        //scroll to bottom of the page when it loads
+        $(document).ready(function () {
+            $("#GroupMessages").scrollTop($("#GroupMessages")[0].scrollHeight);
+        });
+        
+        function openReplyInput(button) {
+            let messageId = button.getAttribute("id");
+            $(`#replyToButton-${messageId}`).css("display", "");
+        }
+
+        $("body").on("click", ".openReplyInputButton", function (e) {
+            openReplyInput(e.currentTarget);
+        })
+
+        $("body").on("click", ".sendRootMessageButton", function (e) {
+            sendRootMessage(@Model.Item2);
+        })
+
+        $("body").on("click", ".announcementCheck", function (e) {
+            checkAnnouncement($(e.currentTarget));
+        })
+
+        $("body").on("click", ".delete-message", function (e) {
+            let messageId = e.currentTarget.getAttribute("messageId");
+            $.ajax({
+                url: `/Messages/Delete`,
+                type: "POST",
+                data: { id: messageId },
+                success: function (response) {
+                    $(`#${messageId}`).remove();
+                }
+            })
+        })
+
+
+    </script>
+}

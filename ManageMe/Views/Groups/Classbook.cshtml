@@ -1,0 +1,157 @@
+﻿@model Tuple<ManageMe.BusinessLogic.Classbook, List<GradingActivity>>
+@using System.Security.Claims;
+
+@{
+    ViewData["Title"] = "Classbook";
+    var classbookdata = Model.Item1;
+    var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+    //var isHeldInOddWeeks = classbookdata.SubjectActivityFrequencyValue == 1 || classbookdata.SubjectActivityFrequencyValue == 3;
+    //var isHeldInEvenWeeks = classbookdata.SubjectActivityFrequencyValue == 1 || classbookdata.SubjectActivityFrequencyValue == 2;
+    var isHeldInOddWeeks = true;
+    var isHeldInEvenWeeks = true;
+    var gradingActivities = Model.Item2;
+    var currentGradingActivityId = classbookdata.GradingActivityId;
+}
+
+<div style="display:inline-flex;">
+    <div style="margin-right:1rem;">
+        <h1>@classbookdata.SubjectName, @classbookdata.GradingActivityName</h1>
+    </div>
+    <div>
+        <a class="btn btn-primary edit-button">
+            Edit
+        </a>
+
+        <a class="btn btn-primary save-button" style="display:none">
+            Save
+        </a>
+    </div>
+</div>
+
+@if (gradingActivities.Count() == 2)
+{
+    var theOtherGradingActivity = gradingActivities.Where(ga => ga.Id != currentGradingActivityId).FirstOrDefault();
+    <div style="display: inline-flex;">
+        <h1 style="margin-right:1rem;">Also Check the ClassBook for: </h1>
+        <div>
+            <a class="btn btn-primary" asp-controller="Groups" asp-action="ClassbookForSpecificGradingActivity"
+               asp-route-groupId="@classbookdata.Id"
+               asp-route-subjectId="@classbookdata.SubjectId"
+               asp-route-gradingActivityId="@theOtherGradingActivity?.Id">
+                @theOtherGradingActivity?.Name
+            </a>
+        </div>
+    </div>
+
+}
+else if (gradingActivities.Count() > 2)
+{
+    <div style="display:inline-flex;">
+        <h1 style="margin-right:1rem;">Also Check the ClassBooks for: </h1>
+        <div>
+            @foreach (var gradingActivity in gradingActivities)
+            {
+                if (gradingActivity.Id != currentGradingActivityId)
+                {
+                    <a style="margin-right:1rem;" 
+                       class="btn btn-primary" asp-controller="Groups" asp-action="ClassbookForSpecificGradingActivity"
+                       asp-route-groupId="@classbookdata.Id"
+                       asp-route-subjectId="@classbookdata.SubjectId"
+                       asp-route-gradingActivityId="@gradingActivity?.Id">
+                        @gradingActivity?.Name
+                    </a>
+                }
+            }
+        </div>
+    </div>
+}
+
+<table style="border-collapse: collapse; width: 100%;">
+    <tr>
+        <th style="border: 1px solid black; background-color:var(--accent);">Student</th>
+        @for (int i = 1; i <= 14; i++)
+        {
+            <th style="border: 1px solid black; background-color:var(--accent);">W@(i)</th>
+        }
+    </tr>
+    @foreach (var student in classbookdata.Students)
+    {
+        <tr>
+            <td style="border: 1px solid black; background-color:var(--accent); color:var(--darkmode-text);">@student.Name</td>
+            @for (int i = 1; i <= 14; i++)
+            {
+                @if (i % 2 == 0 && isHeldInEvenWeeks || i % 2 == 1 && isHeldInOddWeeks)
+                {
+                    var initialValue = student.Grades.Where(g => g.GradingActivityId == currentGradingActivityId
+                    && g.SubjectId == classbookdata.SubjectId
+                    && g.WeekNumber == i).FirstOrDefault()?.Value;
+
+                    <td class="editable" style="border: 1px solid black; background-color:var(--secondary);"
+                        studentId="@student.Id"
+                        weekNumber="@i"
+                        initialValue="@initialValue">
+                        @(initialValue != 0 ? initialValue : "")
+                    </td>
+                }
+                else
+                {
+                    <td style="border: 1px solid black; background-color: lightgray"> </td>
+                }
+            }
+        </tr>
+    }
+</table>
+
+@section Scripts {
+    <script type="text/javascript" src="~/js/ActionNotification.js"></script>
+    <script type="text/javascript">
+        var classbookdata = {
+            SubjectId: @classbookdata.SubjectId,
+            GradingActivityId: @classbookdata.GradingActivityId}
+
+        $(".edit-button").click(function () {
+            $(this).hide();
+            $(".save-button").show();
+            $("td.editable").attr("contenteditable", "true");
+        });
+
+        $(".save-button").click(function () {
+            $(this).hide();
+            $(".edit-button").show();
+            $("table").attr("contenteditable", "false");
+            $("td").attr("contenteditable", "false");
+
+            var grades = [];
+            $("td.editable").each(function (index, element) {
+                var studentId = $(element).attr("studentId");
+                var weekNumber = $(element).attr("weekNumber");
+                var initialValue = $(element).attr("initialValue");
+                var newValue = $(element).text().replace(/<[^>]*>?/gm, '').trim();
+
+                if (initialValue != newValue && !isNaN(Number(newValue)) && !newValue.includes('\n') && newValue != "") {
+                    grades.push({
+                        StudentId: studentId,
+                        WeekNumber: weekNumber,
+                        Value: newValue
+                    });
+                }
+            });
+
+            $.ajax({
+                type: "POST",
+                url: "/Grades/UpdateGrades",
+                data: {
+                    gradeCreateModels: grades,
+                    subjectId: classbookdata.SubjectId,
+                    gradingActivityId: classbookdata.GradingActivityId,
+                },
+                success: function (response) {
+                    location.reload();
+                },
+                failure: function (response) {
+                    new ActionNotification("notificationsContainer", "Something Went Wrong!", "Error", 4000);
+                }
+            });
+        });
+    </script>
+}

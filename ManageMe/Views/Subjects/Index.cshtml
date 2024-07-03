@@ -1,0 +1,76 @@
+﻿@model IEnumerable<ManageMe.Entities.Subject>
+
+@{
+    ViewData["Title"] = "Index";
+    var paginationSettings = ViewBag.PaginationSettings as ManageMe.Common.PaginationSettings;
+}
+
+@if (User.IsInRole("Admin") || User.IsInRole("Dean"))
+{
+    <p>
+        <a class = "btn btn-primary" asp-action="Create" style="margin-left:0;">Create New</a>
+    </p>
+}
+
+@Html.Partial("SearchEngine", paginationSettings)
+
+@Html.Partial("PaginatedNavigation", paginationSettings)
+
+@foreach (var subject in Model)
+{
+    <div class="card" style="margin-top:1rem; margin-bottom:1rem;">
+        <div class="card-body subject-info">
+            <h3 class="card-title alert-success py-3 px-3 rounded-2 subject-name">@subject.Name (@subject.ShortName)</h3>
+            <a class="btn btn-primary" asp-controller="Subjects" asp-action="Details" asp-route-id="@subject.Id">
+                Info
+            </a>
+            @if (User.IsInRole("Admin") || User.IsInRole("Dean"))
+            {
+                <a class="btn btn-danger delete-button" subjectId="@subject.Id">
+                    Delete
+                </a>
+            }
+        </div>
+    </div>
+}
+
+@Html.Partial("PaginatedNavigation", paginationSettings)
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+    <script type="text/javascript" src="~/js/FadeBackground.js"></script>
+    <script type="text/javascript" src="~/js/PopUp.js"></script>
+    <script type="text/javascript" src="~/js/ActionNotification.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $(".delete-button").click(function () {
+                var subjectId = $(this).attr("subjectId");
+                var url = "/Subjects/Delete/" + subjectId;
+
+                FadeBackground(true);
+
+                function callback() {
+                    $.ajax({
+                        url: url,
+                        type: "POST",
+                        success: function (data) {
+                            if (data.success) {
+                                new ActionNotification("notificationsContainer", "Subject deleted succsessfully", "Success", 1000);
+                            }
+                            else {
+                                new ActionNotification("notificationsContainer", "Subject could not be deleted", "Error", 1000);
+                            }
+                        },
+                        error: function () {
+                            new ActionNotification("notificationsContainer", "Something went wrong! Please try again later!", "Error", 1000);
+                        }
+                    });
+                }
+
+                var message = "Are you sure that you want to delete this subject?";
+                var status = "WARNING";
+                new PopUp(status, message, callback, "Delete", "AlertPopUp");
+            });
+        });
+    </script>
+}

@@ -1,0 +1,60 @@
+﻿@model IEnumerable<ManageMe.BusinessLogic.TeacherGroupVM>
+@using System.Security.Claims;
+
+@{
+    ViewBag.Title = "TeacherGroups";
+    var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+}
+
+@foreach (var group in Model)
+{
+    <div class="card">
+        <div class="card-header">
+            <h4>Group @group.Number</h4>
+        </div>
+        <div class="card-body">
+            <p class="card-text">Study Domain: @group.StudyDomainName</p>
+            <p class="card-text">Study Year: @group.StudyYear</p>
+
+            @if (User.IsInRole("Lector"))
+            {
+                <a class="btn btn-primary"
+                   asp-controller="GradingCriteria"
+                   asp-action="Create"
+                   asp-route-groupId="@group.Id"
+                   asp-route-subjectId="@group.ActivityList.First().SubjectId">
+                   Grading Criteria
+                </a>
+            }
+
+            @if (User.IsInRole("Lector"))
+            {
+                <a class="btn btn-primary"
+                   asp-controller="Grades"
+                   asp-action="FinalGrades"
+                   asp-route-groupId="@group.Id"
+                   asp-route-subjectId="@group.ActivityList.First().SubjectId">
+                    Get Final Grades
+                </a>
+            }
+
+            @foreach (var subjectActivity in group.ActivityList)
+            {
+                <div class="card-group">
+                    <p style="margin-right:0.5rem;">@subjectActivity.SubjectName</p>
+                    <p>@subjectActivity.ActivityName</p>
+                </div>
+
+                <a class="btn btn-primary"
+                    asp-controller="Groups"
+                    asp-action="Classbook"
+                    asp-route-groupId="@group.Id"
+                    asp-route-subjectId="@subjectActivity.SubjectId"
+                    asp-route-activityId="@subjectActivity.ActivityTypeId">
+                    View Classbook
+                </a>
+            }
+        </div>
+    </div>
+}
+

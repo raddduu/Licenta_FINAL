@@ -1,0 +1,13 @@
+C:\Users\RaduI\source\repos\ManageMe\ManageMe.Common\bin\Debug\net8.0\ManageMe.Common.deps.json
+C:\Users\RaduI\source\repos\ManageMe\ManageMe.Common\bin\Debug\net8.0\ManageMe.Common.dll
+C:\Users\RaduI\source\repos\ManageMe\ManageMe.Common\bin\Debug\net8.0\ManageMe.Common.pdb
+C:\Users\RaduI\source\repos\ManageMe\ManageMe.Common\obj\Debug\net8.0\ManageMe.Common.csproj.AssemblyReference.cache
+C:\Users\RaduI\source\repos\ManageMe\ManageMe.Common\obj\Debug\net8.0\ManageMe.Common.GeneratedMSBuildEditorConfig.editorconfig
+C:\Users\RaduI\source\repos\ManageMe\ManageMe.Common\obj\Debug\net8.0\ManageMe.Common.AssemblyInfoInputs.cache
+C:\Users\RaduI\source\repos\ManageMe\ManageMe.Common\obj\Debug\net8.0\ManageMe.Common.AssemblyInfo.cs
+C:\Users\RaduI\source\repos\ManageMe\ManageMe.Common\obj\Debug\net8.0\ManageMe.Common.csproj.CoreCompileInputs.cache
+C:\Users\RaduI\source\repos\ManageMe\ManageMe.Common\obj\Debug\net8.0\ManageMe.Common.dll
+C:\Users\RaduI\source\repos\ManageMe\ManageMe.Common\obj\Debug\net8.0\refint\ManageMe.Common.dll
+C:\Users\RaduI\source\repos\ManageMe\ManageMe.Common\obj\Debug\net8.0\ManageMe.Common.pdb
+C:\Users\RaduI\source\repos\ManageMe\ManageMe.Common\obj\Debug\net8.0\ref\ManageMe.Common.dll
+C:\Users\RaduI\source\repos\ManageMe\ManageMe.Common\obj\Debug\net8.0\ManageMe.Common.sourcelink.json

@@ -1,0 +1,55 @@
+﻿@model ManageMe.BusinessLogic.HallCreateModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+
+            <div class="form-group">
+                <label asp-for="Number" class="control-label">Number</label>
+                <input asp-for="Number" class="form-control" />
+                <span asp-validation-for="Number" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="AdditionalLetter" class="control-label">Additional Letter</label>
+                <input asp-for="AdditionalLetter" class="form-control" />
+                <span asp-validation-for="AdditionalLetter" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Name" class="control-label">Name</label>
+                <input asp-for="Name" class="form-control" />
+                <span asp-validation-for="Name" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Capacity" class="control-label">Capacity</label>
+                <input asp-for="Capacity" class="form-control" />
+                <span asp-validation-for="Capacity" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="HasComputers" class="control-label">Has Computers</label>
+                <input asp-for="HasComputers" type="checkbox" />
+                <span asp-validation-for="HasComputers" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <label asp-for="Floor" class="control-label">Floor</label>
+                <input asp-for="Floor" class="form-control" />
+                <span asp-validation-for="Floor" class="text-danger"></span>
+            </div>
+
+            <input type="hidden" asp-for="BuildingId" value="@Model.BuildingId" />
+
+            <div class="form-group">
+                <input type="submit" value="Create" class="btn btn-primary" />
+            </div>
+        </form>
+    </div>
+</div>

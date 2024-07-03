@@ -1,0 +1,83 @@
+﻿@using System.Security.Claims;
+@model ManageMe.BusinessLogic.DetailsChannelVM
+
+@{
+    ViewData["Title"] = "Details";
+
+    var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+}
+
+<div>
+    <h5>@Model.Description</h5>
+
+    <div style="display: inline-block">
+        @if (User.IsInRole("Admin") || Model.ChannelMembers.Any(cm => cm.Id == currentUserId))
+        {
+            <a class="btn btn-primary" asp-controller="Messages" asp-action="Index" asp-route-channelId="@Model?.Id">Enter Channel Chat</a>
+        }
+    </div>
+
+    <div class="Channel Members List">
+        <h3>Channel Members</h3>
+        @foreach (var user in Model.ChannelMembers)
+        {
+            <div class="card channel-member">
+                <div class="card-body channel-member">
+                    <div>
+                        <img src="@Url.Action("GetProfilePicture", "Users", new { id = user.Id })" />
+                    </div>
+                    <p>@user.Name</p>
+                    <p>@user.Email</p>
+                    @if (user.IsModerator)
+                    {
+                        <p>Moderator</p>
+                    }
+                    else
+                    {
+                        <p>Participant</p>
+                    }
+                    @if (User.IsInRole("Admin") ||
+                   (user.IsModerator == false
+                   && Model.ChannelMembers.Any(m => m.IsModerator && m.Id == currentUserId)))
+                    {
+                        <a asp-controller="Channels" asp-action="PromoteMember" asp-route-channelId="@Model.Id" asp-route-userId="@user.Id">
+                            <img src="@Url.Content("~/images/upgrade.png")" alt="YES" style="background-color:forestgreen; height:auto;" />
+                        </a>
+
+                        <a asp-controller="Channels" asp-action="KickMember" asp-route-channelId="@Model.Id" asp-route-userId="@user.Id">
+                            <img src="@Url.Content("~/images/personRemove.png")" alt="NO" style="background-color:red; height:auto;" />
+                        </a>
+                    }
+                </div>
+            </div>
+            
+        }
+    </div>
+    @if (User.IsInRole("Admin")
+    || Model.ChannelMembers.Where(m => m.IsModerator && m.Id == currentUserId).Count() != 0)
+    {
+        <div class="Channel Requests List">
+            <h3>Channel Requests</h3>
+            @foreach (var user in Model.ChannelRequesters)
+            {
+                <div class="card channel-member">
+                    <div class="card-body channel-member">
+                        <div>
+                            <img src="@Url.Action("GetProfilePicture", "Users", new { id = user.Id })"@* style="width: 9vh; height: 9vh; border-radius: 50%"  *@/>
+                        </div>
+                        <p>@user.Name</p>
+                        <p>@user.Email</p>
+                        <p>@user.Date</p>
+                        <a asp-controller="Channels" asp-action="AcceptRequest" asp-route-channelId="@Model.Id" asp-route-userId="@user.Id">
+                            <img src="@Url.Content("~/images/yes.png")" alt="YES" style="background-color:forestgreen; height:auto;" />
+                        </a>
+
+                        <a asp-controller="Channels" asp-action="RejectRequest" asp-route-channelId="@Model.Id" asp-route-userId="@user.Id">
+                            <img src="@Url.Content("~/images/no.png")" alt="NO" style="background-color:red; height:auto;" />
+                        </a>
+                    </div>
+                </div> 
+            }
+        </div>
+    }
+</div>

@@ -1,0 +1,868 @@
+:root {
+    --font-size: 16px;
+    --succsess-background: #BFD9BF;
+    --succsesS-text: #0A3D08;
+    --fail: #F0B2B2;
+    --fail-text: #610B0B;
+    --darkmode-text: #f7f7f8;
+    --lightmode-text: #04070b;
+    --lightmode-background: #f7f7f8;
+    --lightmode-primary: #0a45b8;
+    --lightmode-primary-hover: #3F70CF;
+    --lightmode-secondary: #d0e4fb;
+    --lightmode-accent: #3f71ab;
+    --lightmode-accent-hover: #628DBF;
+    --lightmode-main-font-family: "Times New Roman", Times, serif;
+    font-size: var(--font-size);
+}
+
+script {
+    display: none !important;
+}
+
+html > * {
+    background-color: var(--background);
+    color: var(--text);
+    font-family: var(--main-font-family);
+}
+
+@media (min-width: 768px) {
+    html {
+        font-size: 16px;
+        overflow-x: hidden;
+    }
+}
+
+.btn {
+    margin: 0.3rem;
+}
+
+.btn:focus, .btn:active:focus, .btn-link.nav-link:focus, .form-control:focus, .form-check-input:focus {
+    box-shadow: 0 0 0 0.1rem white, 0 0 0 0.25rem #258cfb;
+}
+
+html {
+    position: relative;
+    min-height: 100%;
+}
+
+a {
+    text-decoration: none;
+    color: var(--primary);
+}
+
+body.lightmode * {
+    --background: var(--lightmode-background);
+    --text: var(--lightmode-text);
+    --primary: var(--lightmode-primary);
+    --primary-hover: var(--lightmode-primary-hover);
+    --secondary: var(--lightmode-secondary);
+    --accent: var(--lightmode-accent);
+    --accent-hover: var(--lightmode-accent-hover);
+}
+
+body.lightmode {
+    background-color: var(--lightmode-background);
+}
+
+.btn-primary, .btn-success {
+    background-color: var(--primary);
+    border-color: var(--primary);
+}
+
+    .btn-primary:hover, .btn-success:hover {
+        background-color: var(--primary-hover);
+        border-color: var(--primary-hover);
+        box-shadow: 0 0 0.7rem var(--primary);
+    }
+
+.btn-secondary {
+    background-color: var(--secondary);
+    border-color: var(--secondary);
+}
+
+.btn-danger {
+    background-color: var(--accent);
+    border-color: var(--accent);
+}
+
+.btn-danger:hover {
+    background-color: var(--accent-hover);
+    border-color: var(--accent-hover);
+    box-shadow: 0 0 0.7rem var(--accent);
+}
+
+.btn-light {
+    background-color: var(--background);
+    border-color: var(--background);
+}
+
+.btn-light:hover {
+    background-color: var(--secondary);
+    border-color: var(--secondary);
+    box-shadow: 0 0 0.7rem var(--secondary);
+}
+
+.navbar {
+    padding: 0;
+}
+
+    .navbar > * {
+        background-color: var(--secondary);
+    }
+
+.navbar.Home.Index {
+    background-color: var(--background);
+}
+
+.main-navbar > div > div > ul > li > a, .main-navbar > div > div > ul > li > form > button {
+    color: var(--lightmode-text) !important;
+    background-color: var(--secondary);
+    border:0;
+    font-size: calc(var(--font-size) * 1.5);
+}
+
+    .main-navbar > div > div > ul > li > a:hover, .main-navbar > div > div > ul > li > form > button:hover {
+        background-color: #91b3fa;
+    }
+
+.card-title {
+    background-color: var(--secondary);
+    color: var(--text);
+}
+
+#notificationsContainer {
+    position: fixed;
+    right: 1%;
+    bottom: 7%;
+z-index: 10000;
+}
+
+.notificationPopUp {
+    width: 20rem;
+    text-align: center;
+    border-radius: 10rem;
+    opacity: 1;
+    transition: opacity 0.5s ease, transform 2s linear;
+    z-index: 10000;
+}
+
+.notificationPopUp:hover {
+    opacity: 0;
+}
+
+.notificationPopUp.hide {
+    opacity: 0;
+}
+
+.notificationPopUp.move {
+    transform: translateX(-100px);
+}
+
+.notificationPopUp.success {
+    background-color: var(--succsess-background);
+    color: var(--succsesS-text);
+}
+
+.notificationPopUp.fail {
+    background-color: var(--fail);
+    color: var(--fail-text);
+}
+
+.AlertPopUp {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    text-align: center;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #ddd;
+    z-index: 20;
+}
+
+.EnterInputPopUp {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    text-align: center;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 0.5rem;
+    border: 1px solid #ddd;
+    z-index: 20;
+    display: inline-block;
+}
+
+    .EnterInputPopUp > * {
+        width: 25rem;
+        padding: 0%;
+        display: block;
+        padding: 0.2rem;
+        margin-top: 0.5rem;
+        margin-bottom: 0;
+    }
+
+.option {
+    display: inline-flex;
+    width: 100%;
+    text-align: center;
+}
+
+.studyPlanSubjectInfo {
+    display: inline-flex;
+    width: 100%;
+    text-align: center;
+}
+
+    .studyPlanSubjectInfo > * {
+        margin-right: 1rem;
+    }
+
+.FormPopUp {
+    position: fixed;
+    top: 50%;
+    left: 50%;
+    text-align: center;
+    transform: translate(-50%, -50%);
+    background-color: white;
+    padding: 20px;
+    border: 1px solid #ddd;
+    z-index: 20;
+    display: inline-grid;
+}
+
+    .FormPopUp > * {
+        margin: 0.5rem;
+    }
+
+#fadeOverlay {
+    position: fixed;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.8);
+    z-index: 10;
+}
+
+.hidden {
+    display: none;
+}
+
+
+.ChannelOptions {
+    display: inline;
+}
+
+#GroupChat {
+    background-color: #D7EDB0;
+    padding: 1%;
+    border-radius: 10%
+}
+
+#newMessageBar{
+    height: 3rem;
+    position: absolute;
+    bottom: 5%;
+    width: 80vw;
+}
+
+#GroupMessages {
+    height: 80vh;
+    width: 80vw;
+    overflow-y: scroll;
+    overflow-x: hidden;
+    position: absolute;
+    top: 6%;
+}
+
+#newMessageBar > * {
+    margin-right: 0.5rem;
+}
+
+#newMessageBar > input {
+    width: 90%;
+}
+
+#typeRootMessageBar {
+    width: 60vw;
+    height: 3rem;
+}
+.message {
+    background-color: var(--secondary);
+    padding: 1%;
+    margin: 2%;
+    border-radius: 2rem;
+}
+
+.own {
+    margin-left: 50%;
+}
+
+.not-own {
+    margin-right: 50%;
+}
+
+.announcement_message {
+    background-color: pink;
+    color: red;
+    font-weight: 500;
+}
+
+.subject-info {
+    display: inline-flex;
+    height: 5rem;
+}
+
+    .subject-info > * {
+        margin-right: 1rem;
+    }
+
+    .subject-info > .subject-name {
+        width: 80%;
+    }
+
+    .subject-info > a {
+        width: 9%;
+    }
+
+.card-body.subject-info > * {
+    height: 100%;
+    font-size: calc(var(--font-size) * 1.5);
+}
+
+.card-body.subject-info > a {
+    text-align: center;
+}
+
+.index-user {
+    display: inline-flex;
+}
+
+    .index-user > * {
+        margin-right: 1rem;
+    }
+
+.card-body.index-user {
+    display: inline-flex;
+    width: 100%;
+    text-align: center;
+}
+
+    .card-body.index-user > .vizual-info {
+        display: inline-flex;
+        width: 37.5%;
+    }
+
+        .card-body.index-user > .vizual-info > * {
+            padding: 0.5rem;
+            text-align: center;
+            vertical-align: middle;
+        }
+
+
+    .card-body.index-user > * {
+        height: 5rem;
+    }
+
+    .card-body.index-user > a {
+        height: 5rem;
+        text-align: center;
+    }
+
+.multi-select-popup {
+    max-height: 80vh;
+    flex-direction: column;
+    align-items: center;
+}
+
+
+
+.multi-select-popup .card-body {
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    height: 10vh;
+    display: block;
+    margin-bottom: 10px;
+    background-color: rgba(255,255,255,0.7);
+    width: 50rem;
+    border-radius: 5vh;
+    padding: 0.5vh 0.5vh;
+}
+
+    .multi-select-popup .card-body > * {
+        color: black;
+        display: inline-block;
+        margin-right: 1vh;
+    }
+
+.group-student .card-body {
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    height: 10vh;
+    display: block;
+    margin-bottom: 10px;
+    background-color: rgba(255,255,255,0.7);
+    width: 50rem;
+    border-radius: 5vh;
+    padding: 0.5vh 0.5vh;
+}
+
+    .group-student .card-body > * {
+        color: black;
+        display: inline-block;
+        margin-right: 1vh;
+    }
+
+.unselected {
+    background-color: white;
+}
+
+    .unselected:hover {
+        background-color: #6e9ef5
+    }
+
+.selected {
+    border: 3px solid #6e9ef5;
+    color: white;
+}
+
+
+
+.channel-member.card {
+    padding: 0.5%;
+    width: 40%;
+    background: none;
+    border: none;
+}
+
+.channel-member .card-body {
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    background-color: var(--secondary);
+    height: 10vh;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 10px;
+    width: 50rem;
+    border-radius: 5vh;
+    padding: 0.5vh;
+}
+
+    .channel-member .card-body > * {
+        color: black;
+        flex: 1;
+        text-align: center;
+    }
+
+    .channel-member .card-body > div {
+        display: flex;
+        flex: 0;
+        justify-content: center;
+    }
+
+        .channel-member .card-body > div img {
+            width: 4.7vw;
+            height: 4.7vw;
+            border-radius: 50%;
+            flex: 1;
+        }
+
+    .channel-member .card-body > a.btn {
+        flex: 0.5;
+        margin-right: 1rem;
+        align-content: center;
+        border-radius: 5rem;
+    }
+
+.index-channel .card-body {
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    height: 10vw;
+    color: red;
+    display: block;
+    margin-bottom: 10rem;
+    border-radius: 5vh;
+    padding: 0.5vh 0.5vh;
+    border: none !important;
+}
+
+    .index-channel .card-body > div > a {
+        color: red;
+        display: inline-block;
+        margin-right: 1vh;
+    }
+
+.index-user .card-body {
+    position: relative;
+    background-size: cover;
+    background-position: center;
+    height: 10vh;
+    display: block;
+    margin-bottom: 10px;
+    background-color: rgba(255,255,255,0.7);
+    width: 50rem;
+    border-radius: 5vh;
+    padding: 0.5vh 0.5vh;
+}
+
+    .index-user .card-body > * {
+        color: black;
+        display: inline-block;
+        margin-right: 1vh;
+    }
+
+.image-overlay {
+    display: block;
+}
+
+    .image-overlay > * {
+        background-color: rgba(255,255,255,0.7);
+        color: black;
+        display: inline-block;
+    }
+
+.card-body.group-info {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+    .card-body.group-info > * {
+        flex: 1;
+    }
+
+    .card-body.group-info > div a {
+        border-radius: 5rem;
+    }
+
+td,th {
+    vertical-align: middle !important;
+    text-align: center !important;
+}
+
+th{
+    font-size: calc(var(--font-size) * 1.2);
+    background-color: var(--accent);
+    color: var(--darkmode-text);
+}
+
+table {
+    background-color: var(--secondary);
+}
+
+.curricullum-list tr:nth-child(2n) {
+    background-color: var(--lightmode-background);
+}
+
+.card-title > * {
+    font-size: calc(var(--font-size) * 2);
+}
+
+.card-title > .btn {
+    font-size: var(--font-size);
+}
+
+.studyPlanSubjectInfo {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+    .studyPlanSubjectInfo > * {
+        flex: 1;
+    }
+
+    .studyPlanSubjectInfo > div a {
+        border-radius: 2rem;
+    }
+
+.container.HomePage{
+    margin: 0;
+    padding: 0;
+}
+
+.container.HomePage > main {
+    width: 100vw;
+    padding: 0;
+    margin: 0;
+}
+
+    .container.HomePage > main > div:nth-child(1) {
+        background-color: var(--primary);
+    }
+
+    .container.HomePage > main > div > div:first-child {
+        color: var(--darkmode-text)
+    }
+
+.container.HomePage > main > div > div:first-child > *{
+    text-align: center;
+    margin: 8rem;
+}
+
+.container.HomePage > main > div > div:nth-child(2) > img{
+    margin: 1rem;
+    width: 80%;
+}
+
+    .container.HomePage > main > h1 {
+        background-color: var(--primary);
+        font-size: calc(var(--font-size) * 5);
+        text-align: center;
+        padding-top: 7rem;
+        padding-bottom: 7rem;
+        color: var(--darkmode-text);
+        margin-bottom:0;
+    }
+
+.functionality-description {
+    display: flex;
+    background-color: var(--secondary);
+}
+
+.functionality-description-image{
+    flex: 1;
+    margin-top: 0;
+}
+
+.functionality-description-image > img{
+    width: 80%;
+    margin-top: 0;
+}
+
+.functionality-description-text{
+    padding-top: 18rem;
+    flex: 1;
+    vertical-align: middle;
+    font-size: calc(var(--font-size) * 1.5);
+    color: var(--lightmode-text);
+}
+
+.functionality-description-text:first-child {
+    padding-top: 0;
+}
+
+.functionality-description-text > * {
+    text-align: center;
+    margin: 6rem;
+    color: var(--lightmode-text);
+}
+
+.functionality-description-text > h2 {
+    font-weight: bold;
+    
+}
+
+.Login > main > div > .col-md-6 {
+    background-size: cover; 
+    background-repeat: no-repeat; 
+    background-position: center center;
+    background-image: url(../images/happy-diverse-students.jpg);
+    height: 20rem;
+    width: 20rem;
+    border-radius:50%;
+    margin-left: 10rem;
+}
+
+.Login > main > div > .col-md-6 > section{
+    display: none;
+}
+
+.Register > main > div > .col-md-6 {
+    background-size: cover;
+    background-repeat: no-repeat;
+    background-position: center center;
+    background-image: url(../images/study.jpg);
+    height: 30rem;
+    width: 30rem;
+    border-radius: 50%;
+    margin-left: 10rem;
+}
+
+    .Register > main > div > .col-md-6 > section {
+        display: none;
+    }
+
+#resend-confirmation {
+    display: none;
+}
+
+#forgot-password {
+    display: none;
+}
+
+#profile , #email, #change-password, #two-factor, #personal-data{
+    color: var(--primary);
+}
+
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+    color: var(--darkmode-text) !important;
+    background-color: var(--primary);
+}
+
+.container.Resetauthenticatorkey > main > div > div > div:nth-child(2) > .alert{
+    background-color: var(--secondary);
+    color: var(--lightmode-text);
+    border:none;
+}
+
+.container.Users.Details {
+    margin: 0;
+    height: 100vh;
+    width: 100vw;
+    position: fixed;
+}
+
+.container.Users.Details > main {
+    margin: 0;
+    height: 100vh;
+}
+
+.container.Users.Details div > dl > dd{
+    align-items: center;
+    margin: 0;
+}
+
+    .container.Users.Details > main div > dl > div:first-child {
+        background-color: var(--secondary);
+        margin: 0;
+        height: 100vh;
+        padding: 3rem;
+    }
+
+    .container.Users.Details > main > div > dl > div > dd:first-child {
+        display: flex;
+        flex-direction: column; 
+        justify-content: center;
+        align-items: center;
+        margin: 2rem
+    }
+
+    .container.Users.Details > main > div > dl > div > dd:first-child > a {
+        margin-top:1.5rem;
+    }
+
+.Channels.Index {
+    margin:0;
+    padding:0;
+}
+
+.Channels.Index > main {
+    display: flex;
+    flex-wrap : wrap;
+    width: 100vw;
+}
+
+.Channels.Index > main > * {
+    width: 29vw !important;
+    margin: 2rem;
+    background: var(--secondary);
+}
+
+    .Channels.Index > main > div:first-child {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        margin: 2rem;
+        padding: 0 0.5vw;
+        box-sizing: content-box;
+    }
+
+        .Channels.Index > main > div:first-child > a {
+            font-size: calc(var(--font-size) * 5);
+            font-weight: 900;
+            aspect-ratio: 1/1;
+        }
+
+.pass-student{
+    background-color: var(--succsess-background);
+}
+
+.fail-student{
+    background-color: var(--fail);
+}
+
+.Halls.Index {
+    margin: 0;
+    padding: 0;
+}
+
+.Halls.Index > main {
+    width: 100vw;
+}
+
+.Halls.Index tr {
+    width: 100vw;
+}
+
+.Halls.Index td {
+    border: solid 1px var(--primary);
+}
+
+.Schedules.Index {
+    margin: 0;
+    padding:0;
+}
+
+.Schedules.Index > main {
+    width: 100vw;
+}
+
+.schedule{
+    width:calc(99vw - 2rem);
+    margin: 1rem;
+    border: solid 1px var(--primary);
+    padding:0;
+}
+
+    .schedule tr {
+        width: calc(99vw - 2rem);
+        padding: 0;
+        margin: 0;
+        height: 2rem !important;
+    }
+
+
+.schedule td {
+    border: solid 1px var(--primary);
+    padding: 0;
+    margin: 0;
+    width: calc(100% / 13) !important;
+    height: 9.9rem;
+}
+
+    .schedule td.parent {
+        position: relative;
+        padding: 0;
+        background-color: var(--background);
+    }
+
+        .schedule td.parent.compiled {
+            position: static;
+        }
+
+.time-cell.empty {
+    background-color: var(--background);
+}
+
+.optionsDiv {
+    position: absolute;
+    z-index: 1000;
+    background-color: var(--background);
+    border: 1px solid black;
+    width: 7rem;
+    box-shadow: 0px 0px 5px 0px rgba(0,0,0,0.75);
+    cursor: default;
+}
+
+.optionsDiv > * {
+    text-align: center;
+    background-color:inherit;
+    margin-bottom: 0;
+}

@@ -1,0 +1,37 @@
+﻿@model List<ManageMe.BusinessLogic.FinalGradeVM>
+
+@{
+    var pageScope = ViewBag.PageScope;
+}
+
+<table class="table">
+    <thead>
+        <tr>
+            @if (pageScope != "PersonalGrades")
+            {
+                <th scope="col">Student</th>
+            }
+            @if (pageScope != "SubjectGrades")
+            {
+                <th scope="col">Subject</th>
+            }
+            <th scope="col">Final Grade</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var finalGrade in Model)
+        {
+            <tr>
+                @if (pageScope != "PersonalGrades")
+                {
+                    <td>@finalGrade.StudentName</td>
+                }
+                @if (pageScope != "SubjectGrades")
+                {
+                    <td>@finalGrade.SubjectName</td>
+                }
+                <td>@finalGrade.Grade</td>
+            </tr>
+        }
+    </tbody>
+</table>

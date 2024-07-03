@@ -1,0 +1,66 @@
+﻿@using System.Security.Claims;
+
+@{
+    ViewData["Title"] = "Home Page";
+    var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+}
+
+<div id="upper-welcome-page" style="display:flex;">
+    <div style="flex:1;">
+        <h1 class="display-4">Welcome to ManageMe!</h1>
+        <h2>Use the power of technology to fully digitalize your college life!</h2>
+        <h3>Discover your colleagues, chat with your teachers, visualize your important university info and many more, all in one place!</h3>
+    </div>
+    <div style="flex:1;">
+        <img class="rounded-circle"
+             src="~/images/university-building.jpg"
+             alt="Let the adventure startu now!" />
+    </div>
+</div>
+
+<h1>What can we do for you?</h1>
+
+<div class="functionality-description">
+    <div class="functionality-description-image" style="flex:1;">
+        <img class="rounded-circle" src="~/images/Thesis-rafiki.png" alt="ManageMe" />
+    </div>
+    <div class="functionality-description-text" style="flex:1;">
+        <h2>Manage your study domains</h2>
+        <p>ManageMe allows you to create and manage your 
+            <a asp-controller="StudyDomains" asp-action="Index">study domains</a>,
+            <a asp-controller="Subjects" asp-action="Index">subjects</a> and
+            <a asp-controller="Groups" asp-action="Index">groups</a>.
+            You can also assign teachers to subjects and groups.
+        </p>
+    </div>
+</div>
+
+<div class="functionality-description">
+    <div class="functionality-description-text" style="flex:1;">
+        <h2>Talk with colleagues and teachers</h2>
+        <p>ManageMe allows you to
+            <a asp-controller="Channels" asp-action="Index">chat</a> with your colleagues, teachers and administrative personnel. Just join the right channels or
+            <a asp-controller="Channels" asp-action="Create">create your own channel</a>!
+        </p>
+    </div>
+    <div class="functionality-description-image" style="flex:1;">
+        <img class="rounded-circle" src="~/images/administration.jpg" alt="ManageMe" />
+    </div>
+</div>
+
+<div class="functionality-description">
+    <div class="functionality-description-image" style="flex:1;">
+        <img class="rounded-circle" src="~/images/Classroom-rafiki.png" alt="ManageMe" />
+    </div>
+    <div class="functionality-description-text" style="flex:1;">
+        <h2>Organize your academic activity</h2>
+        <p>
+            ManageMe allows you to better keep track of your academic activity. You can see your
+            <a asp-area=""
+               asp-controller="Groups"
+               asp-action="TeacherGroups"
+               asp-route-userId="@currentUserId">academic activities</a> and
+            grade your students as well as establish grading criteria for your subjects.
+        </p>
+    </div>
+</div>

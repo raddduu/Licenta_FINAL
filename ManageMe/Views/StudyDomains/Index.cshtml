@@ -1,0 +1,61 @@
+﻿@model IEnumerable<ManageMe.Entities.StudyDomain>
+
+@{
+    ViewData["Title"] = "Index";
+
+    var currentSemester = ViewBag.CurrentSemester;
+}
+
+@if (User.IsInRole("Admin") || User.IsInRole("Dean"))
+{
+    <p>
+        <a class="btn btn-primary" asp-action="Create" style="margin-left:0;">Create New</a>
+    </p>
+}
+
+@if (User.IsInRole("Admin") || User.IsInRole("Dean"))
+{
+    //create two buttons for chosing the semester
+    <div class="btn-group" role="group" aria-label="Semester">
+        <a class="btn btn-primary semesterButton" semester="1">Semester 1</a>
+        <a class="btn btn-primary semesterButton" semester="2">Semester 2</a>
+    </div>
+}
+
+@foreach (var item in Model) {
+    <div class="card" style="margin-top:1rem; margin-bottom:1rem;">
+        <div class="card-body subject-info">
+            <h3 class="card-title alert-success py-3 px-3 rounded-2 subject-name">@item.Name</h3>
+            <a class="btn btn-primary" asp-action="Details" asp-route-id="@item.Id">
+                Info
+            </a>
+            @if (User.IsInRole("Admin") || User.IsInRole("Dean"))
+            {
+                <a class="btn btn-danger" asp-action="Delete" asp-route-id="@item.Id">
+                    Delete
+                </a>
+            }
+        </div>
+    </div>
+}
+
+@section Scripts {
+    <script type="text/javascript" src="~/js/ActionNotification.js"></script>
+    <script type="text/javascript">
+            $(".semesterButton").click(function () {
+                var semester = $(this).attr("semester");
+                
+                $.ajax({
+                    url: "/StudyDomains/SetSemester",
+                    type: "POST",
+                    data: { semester: semester },
+                    success: function () {
+                        new ActionNotification("notificationsContainer", "Semester set to " + semester, "Success", 4000);
+                    },
+                    error: function () {
+                        new ActionNotification("notificationsContainer", "Something went wrong! Please try again later!", "Error", 4000);
+                    }
+                });
+            });
+    </script>
+}

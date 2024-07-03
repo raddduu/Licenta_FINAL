@@ -1,0 +1,370 @@
+﻿@model Tuple<List<ManageMe.BusinessLogic.ScheduleVM>, List<Tuple<string, string>>>
+@using ManageMe.BusinessLogic;
+@using ManageMe.Web.Code.Utils;
+
+@{
+    ViewData["Title"] = "Index";
+    var scope = (string)ViewBag.Scope;
+    var userIsAdminOrDean = User.IsInRole("Admin") || User.IsInRole("Dean") ? "true" : "false";
+
+    var schedules = Model.Item1;
+    var scopeNames = Model.Item2;
+    var currentSchedulesIndex = 0;
+    var daysDictionary = new Dictionary<int, string>
+    {
+        { 0, "Monday" },
+        { 1, "Tuesday" },
+        { 2, "Wednesday" },
+        { 3, "Thursday" },
+        { 4, "Friday" }
+    };
+    var scopeIndexDictionary = new Dictionary<string, int>();
+
+    for (int i = 0; i < scopeNames.Count; i++)
+    {
+        scopeIndexDictionary.Add(scopeNames[i].Item1, i);
+    }
+
+    var scheduleMatrix = new ScheduleVM[scopeNames.Count(), 5, 13, 4];
+
+    var currentTimeCellSlot = 0;
+    var lastTimeCell = Tuple.Create(-1, -1, -1);
+
+    for (int i = 0; i < schedules.Count; i++)
+    {
+        var currentSchedule = schedules[i];
+        var currentScopeItemIndex = 0;
+
+        switch (scope)
+        {
+            case "group":
+                currentScopeItemIndex = scopeIndexDictionary[currentSchedule.GroupNumber.ToString()];
+                break;
+            case "teacher":
+                currentScopeItemIndex = scopeIndexDictionary[currentSchedule.TeacherName];
+                break;
+            case "hall":
+                currentScopeItemIndex = scopeIndexDictionary[currentSchedule.HallName];
+                break;
+            default:
+                break;
+        }
+
+        var currentDayIndex = currentSchedule.DayOfWeek;
+        var currentStartHour = currentSchedule.StartHour;
+        var currentEndHour = currentSchedule.EndHour;
+        var currentFrequency = currentSchedule.ActivityFrequencyId;
+        var currentDistribution = currentSchedule.DistributionId;
+
+        var currentTimeCell = Tuple.Create(currentScopeItemIndex, currentDayIndex, currentStartHour);
+
+        if (!currentTimeCell.Equals(lastTimeCell))
+        {
+            currentTimeCellSlot = 0;
+        }
+
+        for (int j = currentStartHour; j < currentEndHour; j++)
+        {
+            if (currentFrequency == 1 && currentDistribution == 1)
+            {
+                for (int k = currentTimeCellSlot; k < 4; k++, currentTimeCellSlot++)
+                {
+                    scheduleMatrix[currentScopeItemIndex, currentDayIndex, j - 8, k] = currentSchedule;
+                }
+            }
+
+            else if (currentFrequency == 1 && currentDistribution != 1 || currentFrequency != 1 && currentDistribution == 1)
+            {
+                for (int k = 0; k < 2; k++)
+                {
+                    scheduleMatrix[currentScopeItemIndex, currentDayIndex, j - 8, currentTimeCellSlot++] = currentSchedule;
+                }
+            }
+
+            else
+            {
+                scheduleMatrix[currentScopeItemIndex, currentDayIndex, j - 8, currentTimeCellSlot] = currentSchedule;
+                currentTimeCellSlot++;
+            }
+
+            break;
+        }
+
+        lastTimeCell = currentTimeCell;
+    }
+}
+
+<div id="AddScheduleModal" class="EnterInputPopUp" style="display:none"></div>
+
+@* <h2>Check the schedules for <a asp-controller="Schedules"
+                                    asp-action="Index"
+                                    asp-route-scope="teacher">teachers</a>, <a asp-controller ="Schedules"
+                                                                                               asp-action="Index"
+                                                                                               asp-route-scope="hall">halls</a> or
+<a asp-controller="Schedules"
+    asp-action="Index"
+    asp-route-scope="group">groups</a>.
+</h2> *@
+
+@foreach (var scopeItem in scopeNames)
+{
+    <table class="schedule">
+        <tr>
+
+            <th>
+                @scopeItem.Item1
+            </th>
+
+            @for (int i = 8; i < 20; i++)
+            {
+                <th>
+                    @i - @(i + 1)
+                </th>
+            }
+        </tr>
+        @for (int i = 0; i < 5; i++)
+        {
+            <tr>
+                <td class="day">@daysDictionary[i]</td>
+                @for (int j = 8; j < 20; j++)
+                {
+                    var filledStatus = "empty";
+
+                    var groupIds = new List<string>();
+                    var activityIds = new List<string>();
+                    var subjectIds = new List<string>();
+                    var hallIds = new List<string>();
+                    var teacherIds = new List<string>();
+                    var durations = new List<string>();
+                    var groupnumbers = new List<string>();
+                    var activitynames = new List<string>();
+                    var hallnames = new List<string>();
+                    var teachernames = new List<string>();
+                    var subjectnames = new List<string>();
+                    var distributionIds = new List<string>();
+                    var frequencyIds = new List<string>();
+                    var backgroundColors = new List<string>();
+                    var textColors = new List<string>();
+
+                    for (int k = 0; k < 4; k++)
+                    {
+                        var currentElement = scheduleMatrix[scopeIndexDictionary[scopeItem.Item1], i, j - 8, k];
+
+                        if (currentElement == null)
+                        {
+                            continue;
+                        }
+
+                        filledStatus = "parent";
+                        var duration = currentElement != null ? (currentElement.EndHour - currentElement.StartHour).ToString() : "0";
+                        var textColor = currentElement != null ? currentElement.HasLightModeText : true;
+                        var groupNumber = currentElement != null ? currentElement.GroupNumber.ToString() : "";
+                        var activityName = currentElement != null ? currentElement.ActivityName : "";
+                        var hallName = currentElement != null ? currentElement.HallName : "";
+                        var teacherName = currentElement != null ? currentElement.TeacherName : "";
+                        var subjectName = currentElement != null ? currentElement.SubjectName : "";
+                        var distributionId = currentElement != null ? currentElement.DistributionId.ToString() : "";
+                        var frequencyId = currentElement != null ? currentElement.ActivityFrequencyId.ToString() : "";
+                        var backgroundColor = currentElement != null ? currentElement.Color : "";
+
+                        var hopLength = 0;
+
+                        if (distributionId == "1" && frequencyId == "1")
+                        {
+                            hopLength = 4;
+                        }
+                        else if (distributionId == "1" && frequencyId != "1" || distributionId != "1" && frequencyId == "1")
+                        {
+                            hopLength = 2;
+                        }
+                        else
+                        {
+                            hopLength = 1;
+                        }
+
+                        k += hopLength - 1;
+
+                        groupIds.Add(currentElement != null ? currentElement.GroupId.ToString() : "");
+                        activityIds.Add(currentElement != null ? currentElement.ActivityId.ToString() : "");
+                        subjectIds.Add(currentElement != null ? currentElement.SubjectId.ToString() : "");
+                        hallIds.Add(currentElement != null ? currentElement.HallId.ToString() : "");
+                        teacherIds.Add(currentElement != null ? currentElement.TeacherId.ToString() : "");
+                        durations.Add(duration);
+                        groupnumbers.Add(groupNumber);
+                        activitynames.Add(activityName);
+                        hallnames.Add(String.Join('-', hallName.Trim().Split()));
+                        teachernames.Add(String.Join('-', teacherName.Trim().Split()));
+                        subjectnames.Add(subjectName);
+                        distributionIds.Add(distributionId);
+                        frequencyIds.Add(frequencyId);
+                        backgroundColors.Add(backgroundColor);
+                        textColors.Add(textColor ? "var(--lightmode-text)" : "var(--darkmode-text)");
+                    }
+
+                    <td class="time-cell @filledStatus"
+                        groupIds="@String.Join(" ", groupIds)"
+                        activityIds="@String.Join(" ", activityIds)"
+                        subjectIds="@String.Join(" ", subjectIds)"
+                        hallIds="@String.Join(" ", hallIds)"
+                        teacherIds="@String.Join(" ", teacherIds)"
+                        durations="@String.Join(" ", durations)"
+                        groupnumbers="@String.Join(" ", groupnumbers)"
+                        activitynames="@String.Join(" ", activitynames)"
+                        hallnames="@String.Join(" ", hallnames)"
+                        teachernames="@String.Join(" ", teachernames)"
+                        subjectnames="@String.Join(" ", subjectnames)"
+                        distributionIds="@String.Join(" ", distributionIds)"
+                        frequencyIds="@String.Join(" ", frequencyIds)"
+                        backgroundColors="@String.Join(" ", backgroundColors)"
+                        textColors="@String.Join(" ", textColors)"
+                        groupId="@(scope == "group" ? scopeItem.Item2 : null)"
+                        hour="@j"
+                        day="@i">
+                    </td>
+                }
+            </tr>
+        }
+    </table>
+}
+
+@section Scripts {
+    @{
+        await Html.RenderPartialAsync("_ValidationScriptsPartial");
+    }
+
+    <script type="text/javascript" src="~/js/FadeBackground.js"></script>
+    <script type="text/javascript" src="~/js/ActionNotification.js"></script>
+    <script type="text/javascript" src="~/js/PopUp.js"></script>
+    <script type="text/javascript" src="~/js/CalendarEdit.js"></script>
+    <script type="text/javascript" src="~/js/FetchDataIntoSelect.js"></script>
+    <script type="text/javascript">
+        var scope = '@scope';
+        CalendarEdit(scope);
+
+        var userHasPermission = @userIsAdminOrDean;
+
+        if (scope == 'group' && userHasPermission) {
+            $('.time-cell').click(function () {
+                var currentCell = $(this);
+                var groupId = currentCell.attr('groupId');
+                var hour = currentCell.attr('hour');
+                var day = currentCell.attr('day');
+
+                var currentCellText = currentCell.text();
+                var currentCellTextArray = currentCellText.split(' ');
+
+                var currentCellSubjectName = currentCellTextArray[0];
+                var currentCellGroupNumber = currentCellTextArray[1];
+                var currentCellActivityName = currentCellTextArray[2];
+                var currentCellHallName = currentCellTextArray[3];
+                var currentCellTeacherName = currentCellTextArray[4];
+
+                var currentCellDay = currentCell.parent().children().first().text();
+                var currentCellDayIndex = 0;
+                switch (currentCellDay) {
+                    case "Monday":
+                        currentCellDayIndex = 0;
+                        break;
+                    case "Tuesday":
+                        currentCellDayIndex = 1;
+                        break;
+                    case "Wednesday":
+                        currentCellDayIndex = 2;
+                        break;
+                    case "Thursday":
+                        currentCellDayIndex = 3;
+                        break;
+                    case "Friday":
+                        currentCellDayIndex = 4;
+                        break;
+                }
+
+                var currentCellHour = currentCell.prevAll().length - 1;
+                var currentCellStartHour = currentCellHour + 8;
+                var currentCellEndHour = currentCellStartHour + 1;
+
+                var currentCellData = {
+                    SubjectName: currentCellSubjectName,
+                    GroupNumber: currentCellGroupNumber,
+                    ActivityName: currentCellActivityName,
+                    HallName: currentCellHallName,
+                    TeacherName: currentCellTeacherName,
+                    DayOfWeek: currentCellDayIndex,
+                    StartHour: currentCellStartHour,
+                    EndHour: currentCellEndHour
+                };
+
+                var currentCellDataJson = JSON.stringify(currentCellData);
+
+                $.ajax({
+                    type: "GET",
+                    url: `/Schedules/Create`,
+                    data: {
+                        groupId: groupId,
+                        dayOfWeek: day,
+                        hour: hour
+                    },
+                    success: function (data) {
+                        var modal = $("#AddScheduleModal");
+                        FadeBackground(true);
+                        modal.html(data);
+                        modal.css("display", "block");
+                    }
+                });
+            });
+
+            $(".filled").click(function (e) {
+                e.stopPropagation();
+                var currentCell = $(this);
+                var groupId = currentCell.attr('groupId');
+                var activityId = currentCell.attr('activityId');
+                var subjectId = currentCell.attr('subjectId');
+                var hallId = currentCell.attr('hallId');
+                var teacherId = currentCell.attr('teacherId');
+                var frequencyId = currentCell.attr('frequencyId');
+                var distributionId = currentCell.attr('distributionId');
+
+                FadeBackground(true);
+
+                function callback() {
+                    $.ajax({
+                        url: '/Schedules/Delete',
+                        type: 'POST',
+                        data: {
+                            activityId: activityId,
+                            groupId: groupId,
+                            subjectId: subjectId,
+                            hallId: hallId,
+                            teacherId: teacherId,
+                            frequencyId: frequencyId,
+                            distributionId: distributionId
+                        },
+                        success: function (result) {
+                            if (result.success != false) {
+                                new ActionNotification('notificationsContainer', 'Successfully deleted schedule data!', 'Success', 4000);
+                                FadeBackground(false);
+                                $('.AlertPopUp').remove();
+                                currentCell.removeClass('filled');
+                                currentCell.remove();
+                            }
+                            else {
+                                new ActionNotification('notificationsContainer', 'Something went wrong!', 'Error', 4000);
+                                FadeBackground(false);
+                                $('.AlertPopUp').remove();
+                            }
+                        },
+                        error: function () {
+                            new ActionNotification('notificationsContainer', 'Something went wrong!', 'Error', 4000);
+                            FadeBackground(false);
+                            $('.AlertPopUp').remove();
+                        }
+                    });
+                }
+
+                var message = "Are you sure that you want to delete this schedule data?";
+                var status = "WARNING";
+                new PopUp(status, message, callback, "Delete", "AlertPopUp");
+            });
+        }
+    </script>
+}

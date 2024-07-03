@@ -1,0 +1,41 @@
+﻿@model ManageMe.BusinessLogic.UserMinimalInfo
+@using System.Security.Claims;
+
+@{
+    var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+}
+
+<div class="card-body">
+    <img src="@Url.Action("GetProfilePicture", "Users", new { id = Model.Id })" style="width: 9vh; height: 9vh; border-radius: 50%" />
+    <p>@Model.Name</p>
+    <p>@Model.Email</p>
+
+    @if (User.IsInRole("Admin") || User.IsInRole("Dean"))
+    {
+        <a class="btn btn-danger" asp-controller="TeacherPermissions" asp-action="Delete" asp-route-id="@Model.Id">
+            Remove
+        </a>
+    }
+
+</div>
+
+<style>
+    .card-body {
+        position: relative;
+        background-size: cover;
+        background-position: center;
+        height: 10vh;
+        display: block;
+        margin-bottom: 10px;
+        background-color: rgba(255,255,255,0.7);
+        width: 50rem;
+        border-radius: 5vh;
+        padding: 0.5vh 0.5vh;
+    }
+
+    .card-body > * {
+        color: black;
+        display: inline-block;
+        margin-right: 1vh;
+    }
+</style>

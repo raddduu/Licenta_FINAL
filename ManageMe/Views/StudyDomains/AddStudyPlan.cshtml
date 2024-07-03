@@ -1,0 +1,114 @@
+﻿@model ManageMe.BusinessLogic.CreateStudyPlanVM
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Add to this Study Domain</h1>
+<h4>
+    Please provide all of the reuiered details
+    regarding how this new subject will be organized.
+</h4>
+<div class="row">
+    <div class="col-md-12">
+        <form asp-action="Create" enctype="multipart/form-data">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            <div class="form-group">
+                <label for="SelectSubjectName" class="control-label">Subject</label>
+                <select id="SelectSubjectName" asp-for="SubjectId" class="form-control" asp-items="ViewBag.Ids"></select>
+            </div>
+            <div class="form-group">
+                <label for="SelectSubjectType" class="control-label">Subject Type</label>
+                <select id="SelectSubjectType" asp-for="SubjectType" class="form-control" asp-items="ViewBag.Ids"></select>
+            </div>
+            <div class="form-group">
+                <label for="CourseCredits" class="control-label">Course Credits</label>
+                <input asp-for="CourseCredits" class="form-control" />
+                <span asp-validation-for="CourseCredits" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="LaboratoryCredits" class="control-label">Laboratory Credits</label>
+                <input asp-for="LaboratoryCredits" class="form-control" />
+                <span asp-validation-for="LaboratoryCredits" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="SeminaryCredits" class="control-label">Seminary Credits</label>
+                <input asp-for="SeminaryCredits" class="form-control" />
+                <span asp-validation-for="SeminaryCredits" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="ProjectCredits" class="control-label">Project Credits</label>
+                <input asp-for="ProjectCredits" class="form-control" />
+                <span asp-validation-for="ProjectCredits" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label for="SelectEvaluationType" class="control-label">Evaluation Type</label>
+                <select id="SelectEvaluationType" asp-for="EvaluationForm" class="form-control" asp-items="ViewBag.Ids"></select>
+            </div>
+            <div class="form-group">
+                <label for="TotalCredits" class="control-label">Total Credits</label>
+                <input asp-for="TotalCredits" class="form-control" />
+                <span asp-validation-for="TotalCredits" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <a id="submitButton" class="btn btn-primary">
+                    Add
+                </a>
+                <a id="cancelButton" class="btn btn-outline-secondary">
+                    Cancel
+                </a>
+            </div>
+        </form>
+    </div>
+</div>
+
+@{
+    await Html.RenderPartialAsync("_ValidationScriptsPartial");
+}
+<script type="text/javascript" src="~/js/FetchDataIntoSelect.js"></script>
+<script type="text/javascript">
+    FetchDataIntoSelect('SelectSubjectName', 'Subjects/GetAllSubjects?groupId=');
+    FetchDataIntoSelect('SelectSubjectType', 'StudyDomains/GetAllSubjectTypes');
+    FetchDataIntoSelect('SelectEvaluationType', 'StudyDomains/GetAllEvaluationTypes');
+
+    $("body").on("click", "#submitButton", function (e) {
+        var subjectId = $('#SelectSubjectName').val();
+        var subjectType = $('#SelectSubjectType').val();
+        var evaluationType = $('#SelectEvaluationType').val();
+        var courseCredits = $('#CourseCredits').val();
+        var laboratoryCredits = $('#LaboratoryCredits').val();
+        var seminaryCredits = $('#SeminaryCredits').val();
+        var projectCredits = $('#ProjectCredits').val();
+        var totalCredits = $('#TotalCredits').val();
+        var subjectOptionality = @Model.SubjectOptionality;
+
+        $.ajax({
+            type: "POST",
+            url: `/StudyPlan/Create`,
+            data: {
+                subjectId: subjectId,
+                subjectType: subjectType,
+                evaluationForm: evaluationType,
+                courseCredits: courseCredits,
+                laboratoryCredits: laboratoryCredits,
+                seminaryCredits: seminaryCredits,
+                projectCredits: projectCredits,
+                totalCredits: totalCredits,
+                studyDomainId: @Model.StudyDomainId,
+                semester: @Model.Semester,
+                subjectOptionality: subjectOptionality
+                    },
+            success: () => {
+                location.reload();
+            },
+            error: () => {
+                new ActionNotification("notificationsContainer", "Something went wrong! Please try again later!", "Error", 4000);
+            }
+        });
+    })
+
+    $("body").on("click", "#cancelButton", function (e) {
+        $("#AddStudyPlanModal").css("display", "none");
+        FadeBackground(false);
+    });
+</script>

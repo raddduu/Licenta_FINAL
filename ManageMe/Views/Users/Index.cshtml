@@ -1,0 +1,157 @@
+﻿@model IEnumerable<ManageMe.BusinessLogic.UserMinimalInfo>
+@{
+    ViewData["Title"] = "Index";
+    var paginationSettings = ViewBag.PaginationSettings as ManageMe.Common.PaginationSettings;
+}
+
+<h1>Discover your community!</h1>
+
+@Html.Partial("SearchEngine", paginationSettings)
+
+@Html.Partial("PaginatedNavigation", paginationSettings)
+
+@foreach (var item in Model)
+{
+    <div class="card channel-member" style="width:100%;">
+        <div class="card-body channel-member" style="width:100%;">
+            <div>
+                <img src="@Url.Action("GetProfilePicture", "Users", new { id = item.Id })" style="width: 9vh; height: 9vh; border-radius: 50%" />
+            </div>
+            <p>@item.Name</p>
+            <p>@item.Email</p>
+            @if (User.IsInRole("Admin") || User.IsInRole("Dean"))
+            {
+                if (!item.Roles.Contains("Lector"))
+                {
+                    <a class="btn btn-primary roleButton" userId="@item.Id" roleName="Lector" actionName="AddTo">
+                        Make Lector
+                    </a>
+                }
+
+                else
+                {
+                    <a class="btn btn-danger roleButton" userId="@item.Id" roleName="Lector" actionName="RemoveFrom">
+                        Revoke Lector
+                    </a>
+                }
+
+                if (!item.Roles.Contains("Assistant"))
+                {
+                    <a class="btn btn-primary roleButton" userId="@item.Id" roleName="Assistant" actionName="AddTo">
+                        Make Assistant
+                    </a>
+                }
+
+                else
+                {
+                    <a class="btn btn-danger roleButton" userId="@item.Id" roleName="Assistant" actionName="RemoveFrom">
+                        Revoke Assistant
+                    </a>
+                }
+
+                if (!item.Roles.Contains("Secretary"))
+                {
+                    <a class="btn btn-primary roleButton" userId="@item.Id" roleName="Secretary" actionName="AddTo">
+                        Make Secretary
+                    </a>
+                }
+
+                else
+                {
+                    <a class="btn btn-danger roleButton" userId="@item.Id" roleName="Secretary" actionName="RemoveFrom">
+                        Revoke Secretary
+                    </a>
+                }
+
+                if (!item.Roles.Contains("Student"))
+                {
+                    <a class="btn btn-primary roleButton" userId="@item.Id" roleName="Student" actionName="AddTo">
+                        Make Student
+                    </a>
+                }
+
+                else
+                {
+                    <a class="btn btn-danger roleButton" userId="@item.Id" roleName="Student" actionName="RemoveFrom">
+                        Revoke Student
+                    </a>
+                }
+
+                if (User.IsInRole("Admin"))
+                {
+                    if (!item.Roles.Contains("Dean"))
+                    {
+                        <a class="btn btn-primary roleButton" userId="@item.Id" roleName="Dean" actionName="AddTo">
+                            Make Dean
+                        </a>
+                    }
+
+                    else
+                    {
+                        <a class="btn btn-danger roleButton" userId="@item.Id" roleName="Dean" actionName="RemoveFrom">
+                            Revoke Dean
+                        </a>
+                    }
+                }
+
+                <a class="btn btn-danger" asp-controller="Users" asp-action="Delete" asp-route-id="@item.Id">
+                    Delete User
+                </a>
+            }
+        </div>
+    </div>
+}
+
+@Html.Partial("PaginatedNavigation", paginationSettings)
+
+@section Scripts{
+    <script type="text/javascript" src="~/js/ActionNotification.js"></script>
+    <script type="text/javascript">
+        $('body').on("click", ".roleButton", function () {
+            var button = $(this);
+            var userId = button.attr("userId");
+            var roleName = button.attr("roleName");
+            var actionName = button.attr("actionName");
+            var url = `/Users/${actionName}Role`;
+            var data = {
+                userId: userId,
+                roleName: roleName
+            };
+
+            $.ajax({
+                url: url,
+                type: "POST",
+                data: data,
+                success: function (response) {
+                    if (response.success) {
+                        if (actionName === "AddTo") {
+                            button.attr("actionName", "RemoveFrom");
+                            button.text(`Revoke ${roleName}`);
+                            button.removeClass("btn-primary");
+                            button.addClass("btn-danger");
+                            new ActionNotification("notificationsContainer", `You have successfully granted the ${roleName} role to this user!`, "Role Change", 4000);
+                        }
+
+                        else {
+                            button.attr("actionName", "AddTo");
+                            button.text(`Make ${roleName}`);
+                            button.removeClass("btn-danger");
+                            button.addClass("btn-primary");
+                            new ActionNotification("notificationsContainer", `You have successfully revoked the ${roleName} role from this user!`, "Role Change", 4000);
+                        }
+                    }
+
+                    else {
+                        new ActionNotification("notificationsContainer", "Something went wrong!", "Error", 4000);
+                    }
+                },
+                error: function (response) {
+                    new ActionNotification("notificationsContainer", "Something went wrong!", "Error", 4000);
+                }
+            });
+        })
+    </script>
+}
+
+
+

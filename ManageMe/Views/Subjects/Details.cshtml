@@ -1,0 +1,290 @@
+﻿@model ManageMe.BusinessLogic.DetailsSubjectVM
+
+@{
+    ViewData["Title"] = "Details";
+
+    var teacherTypeActivityCodes = new Dictionary<string, int>
+    {
+        {"lector", 4},
+        {"seminarist", 6},
+        {"laborant", 3}
+    };
+
+    //var subjectDescription = Model.Description;
+    //var subjectName = Model.Name;
+}
+
+@if (User.IsInRole("Admin") || User.IsInRole("Dean"))
+{
+    <button id="editButton" class="btn btn-primary">Edit</button>
+    <button id="saveButton" class="btn btn-success" style="display:none;">Save Changes</button>
+}
+
+<h1 id="subjectName">@Model.Name</h1>
+<div id="AddTeacherPermissionModal" class="EnterInputPopUp multi-select-popup" style="display:none; overflow:scroll;"></div>
+
+<div>
+    <h5 id="subjectDescription">@Model.Description</h5>
+
+    @if (Model.HasLecture)
+    {
+        <div class="lectors-list">
+            <div style="display: flex; align-items: center; justify-content: space-between; width:50rem; padding: 1rem;">
+                <h3>@Model.Name Lectors</h3>
+
+                @if (User.IsInRole("Admin") || User.IsInRole("Dean"))
+                {
+                    <a class="btn btn-success add-teacher" teacher="@teacherTypeActivityCodes["lector"]" style="width:10rem;">
+                        Add
+                    </a>
+                }
+            </div>
+
+            @foreach (var user in Model.Lectors)
+            {
+                <div class="card channel-member">
+                    <div class="card-body channel-member">
+                        <div>
+                            <img src="@Url.Action("GetProfilePicture", "Users", new { id = user.Id })" style="width: 9vh; height: 9vh; border-radius: 50%" />
+                        </div>
+                        <p>@user.Name</p>
+                        <p>@user.Email</p>
+                        @if (User.IsInRole("Admin") || User.IsInRole("Dean"))
+                        {
+                            <a class="btn btn-danger remove-teacher" teacherId="@user.Id" subjectId="@Model.Id" activityId="4">
+                                Remove
+                            </a>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    
+    @if (Model.HasSeminary)
+    {
+        <div class="seminarists-list">
+            <div style="display: flex; align-items: center; justify-content: space-between; width:50rem; padding: 1rem;">
+                <h3>@Model.Name Seminarists</h3>
+
+                @if (User.IsInRole("Admin") || User.IsInRole("Dean"))
+                {
+                    <a class="btn btn-success add-teacher" teacher="@teacherTypeActivityCodes["seminarist"]" style="width:10rem;">
+                        Add
+                    </a>
+                }
+            </div>
+
+            @foreach (var user in Model.SeminaryAssistants)
+            {
+                <div class="card channel-member">
+                    <div class="card-body channel-member">
+                        <div>
+                            <img src="@Url.Action("GetProfilePicture", "Users", new { id = user.Id })" style="width: 9vh; height: 9vh; border-radius: 50%" />
+                        </div>
+                        <p>@user.Name</p>
+                        <p>@user.Email</p>
+                        @if (User.IsInRole("Admin") || User.IsInRole("Dean"))
+                        {
+                            <a class="btn btn-danger remove-teacher" teacherId="@user.Id" subjectId="@Model.Id" activityId="6">
+                                Remove
+                            </a>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    }
+    
+    @if (Model.HasLaboratory)
+    {
+        <div class="laborants-list">
+            <div style="display: flex; align-items: center; justify-content: space-between; width:50rem; padding: 1rem;">
+                <h3>@Model.Name Laborants</h3>
+
+                @if (User.IsInRole("Admin") || User.IsInRole("Dean"))
+                {
+                    <a class="btn btn-success add-teacher" teacher="@teacherTypeActivityCodes["laborant"]" style="width:10rem;">
+                        Add
+                    </a>
+                }
+            </div>
+
+            @foreach (var user in Model.LaboratoryAssistants)
+            {
+                <div class="card channel-member">
+                    <div class="card-body channel-member">
+                        <div>
+                            <img src="@Url.Action("GetProfilePicture", "Users", new { id = user.Id })" style="width: 9vh; height: 9vh; border-radius: 50%" />
+                        </div>
+                        <p>@user.Name</p>
+                        <p>@user.Email</p>
+                        @if (User.IsInRole("Admin") || User.IsInRole("Dean"))
+                        {
+                            <a class="btn btn-danger remove-teacher" teacherId="@user.Id" subjectId="@Model.Id" activityId="3">
+                                Remove
+                            </a>
+                        }
+                    </div>
+                </div>
+            }
+        </div>
+    }
+</div>
+
+@section Scripts{
+    <script type="text/javascript" src="~/js/HandleJoin.js"></script>
+    <script type="text/javascript" src="~/js/HandleLeave.js"></script>
+    <script type="text/javascript" src="~/js/HandleDelete.js"></script>
+    <script type="text/javascript" src="~/js/FadeBackground.js"></script>
+    <script type="text/javascript" src="~/js/PopUp.js"></script>
+    <script type="text/javascript" src="~/js/AddMemberToChannel.js"></script>
+    <script type="text/javascript" src="~/js/UserInput.js"></script>
+    <script type="text/javascript" src="~/js/AddTeacher.js"></script>
+    <script type="text/javascript" src="~/js/LaunchTeacherSelection.js"></script>
+    <script type="text/javascript" src="~/js/ActionNotification.js"></script>
+    <script type="text/javascript">
+        var descriptionText = $('#subjectDescription').text(); // Get the text
+        descriptionText = descriptionText.replace(/\n/g, '<br>'); // Replace newline characters with <br>
+
+        $("body").on("click", ".add-teacher", function (e) {
+            LaunchTeacherSelection(@Model.Id, e.currentTarget.getAttribute("teacher"));
+        })
+
+        $("body").on("click", ".remove-teacher", function (e) {
+            var teacherId = e.currentTarget.getAttribute("teacherId");
+            var subjectId = e.currentTarget.getAttribute("subjectId");
+            var activityId = e.currentTarget.getAttribute("activityId");
+            FadeBackground(true);
+
+            function callback() {
+                $.ajax({
+                    type: "POST",
+                    url: "/TeacherPermissions/DeleteTeacherPermission",
+                    data: {
+                        teacherId: teacherId,
+                        subjectId: subjectId,
+                        activityId: activityId
+                    },
+                    success: function (data) {
+                        if (data.success) {
+                            localStorage.setItem("reloadPage", true);
+                            localStorage.setItem("removeTeacherStatus", true);
+                            location.reload();
+                        }
+                        else {
+                            new ActionNotification("Failed to remove this teacher from subject", "danger");
+                        }
+                    },
+                    error: function (data) {
+                        new ActionNotification("Failed to remove this teacher from subject", "danger");
+                    }
+                })
+            }
+
+            var message = "You are about to revoke this teacher's right to participate in this activity.\nAre you sure you want to do this ?";
+            var status = "WARNING";
+            new PopUp(status, message, callback, "Delete", "AlertPopUp");
+
+        })
+
+        if (localStorage.getItem("reloadPage") !== null) {
+            if (localStorage.getItem("failedAddsCount") !== null) {
+                if (localStorage.getItem("failedAddsCount") > 0) {
+                    new ActionNotification("notificationsContainer", "Failed to add " + localStorage.getItem("failedAddsCount") + " teachers", "Error", 4000);
+                }
+
+                else {
+                    new ActionNotification("notificationsContainer", "Successfully added teacher's permissions!", "Succsess", 4000);
+                }
+
+                localStorage.removeItem("failedAddsCount");
+                localStorage.removeItem("successfulAddsCount");
+            }
+
+            if (localStorage.getItem("removeTeacherStatus") !== null) {
+                if (localStorage.getItem("removeTeacherStatus") !== false)
+                {
+                    new ActionNotification("notificationsContainer", "Successfully revoked teacher permission", "Succsess", 4000);
+                }
+
+                else {
+                    new ActionNotification("notificationsContainer", "Failed to remove teacher from subject", "Error", 4000);
+                }
+                
+                localStorage.removeItem("removeTeacherStatus");
+            }
+
+            localStorage.removeItem("reloadPage");
+        }
+
+        // Make the subject name and description editable when the "Edit" button is clicked
+        $("#editButton").click(function () {
+            var name = $("#subjectName");
+            var description = $("#subjectDescription");
+
+            name.prop("contenteditable", true);
+            description.prop("contenteditable", true);
+
+            $(this).hide();
+            $("#saveButton").show();
+
+            //add a 2px blue border to the divs with the name and description
+            name.css({
+                "border": "2px solid var(--lightmode-primary)",
+                "border-radius": "10px",
+                "padding": "2px"
+            });
+            description.css({
+                "border": "2px solid var(--lightmode-primary)",
+                "border-radius": "10px",
+                "padding": "2px"
+            });
+        });
+
+        // Save the changes and update the database when the "Save Changes" button is clicked
+        $("#saveButton").click(function () {
+            var name = $("#subjectName");
+            var description = $("#subjectDescription");
+
+            name.prop("contenteditable", false);
+            description.prop("contenteditable", false);
+
+            $(this).hide();
+            $("#editButton").show();
+
+            // Remove the blue border from the divs with the name and description
+            name.css({
+                "border": "none",
+                "padding": "0"
+            });
+            description.css({
+                "border": "none",
+                "padding": "0"
+            });
+
+            // Update the database
+            $.ajax({
+                type: "PUT",
+                url: "/Subjects/Update", // Replace with your update method's URL
+                data: {
+                    id: @Model.Id, // Replace with the actual subject ID
+                    name: name.text(),
+                    description: description.text()
+                },
+                success: function (data) {
+                    if (data.success) {
+                        new ActionNotification("notificationsContainer", "Subject data modified succsessfully", "Success", 3000);
+                    }
+                    else {
+                        new ActionNotification("notificationsContainer", "Subject could not be modified", "Error", 3000);
+                    }
+                },
+                error: function () {
+                    new ActionNotification("notificationsContainer", "Something went wrong! Please try again later!", "Error", 3000);
+                }
+            });
+        });
+    </script>
+}
+

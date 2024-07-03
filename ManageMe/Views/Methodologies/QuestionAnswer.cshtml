@@ -1,0 +1,18 @@
+﻿@if (ViewBag.Errors != null)
+{
+    <div class="alert alert-danger">
+        <p>@ViewBag.Errors</p>
+    </div>
+}
+else
+{
+    if (ViewBag.Texts != null)
+    {
+        <ol>
+            @foreach (var text in ViewBag.Texts)
+            {
+                <li>@text</li>
+            }
+        </ol>
+    }
+}

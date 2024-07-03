@@ -1,0 +1,461 @@
+{
+  "Files": [
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\obj\\Debug\\net8.0\\scopedcss\\projectbundle\\ManageMe.Web.bundle.scp.css",
+      "PackagePath": "staticwebassets\\ManageMe.Web.bundle.scp.css"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\css\\site.css",
+      "PackagePath": "staticwebassets\\css\\site.css"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\favicon.ico",
+      "PackagePath": "staticwebassets\\favicon.ico"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\images\\Classroom-rafiki.png",
+      "PackagePath": "staticwebassets\\images\\Classroom-rafiki.png"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\images\\LOGOHANDMADE.jpg",
+      "PackagePath": "staticwebassets\\images\\LOGOHANDMADE.jpg"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\images\\MAERIA_blue_cu_fata.png",
+      "PackagePath": "staticwebassets\\images\\MAERIA_blue_cu_fata.png"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\images\\MAERIA_blue_cu_fata_saluta-removebg-preview.png",
+      "PackagePath": "staticwebassets\\images\\MAERIA_blue_cu_fata_saluta-removebg-preview.png"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\images\\MAERIA_blue_cu_fata_saluta.png",
+      "PackagePath": "staticwebassets\\images\\MAERIA_blue_cu_fata_saluta.png"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\images\\ManageMeLogo.png",
+      "PackagePath": "staticwebassets\\images\\ManageMeLogo.png"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\images\\Teacher-rafiki.png",
+      "PackagePath": "staticwebassets\\images\\Teacher-rafiki.png"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\images\\Thesis-rafiki.png",
+      "PackagePath": "staticwebassets\\images\\Thesis-rafiki.png"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\images\\administration.jpg",
+      "PackagePath": "staticwebassets\\images\\administration.jpg"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\images\\college students-rafiki.png",
+      "PackagePath": "staticwebassets\\images\\college students-rafiki.png"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\images\\default-profile-picture.jpg",
+      "PackagePath": "staticwebassets\\images\\default-profile-picture.jpg"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\images\\exclamation-circle-fill.png",
+      "PackagePath": "staticwebassets\\images\\exclamation-circle-fill.png"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\images\\flat-woman-chatting-with-chatbot-communicating-ai-robot-assistant.png",
+      "PackagePath": "staticwebassets\\images\\flat-woman-chatting-with-chatbot-communicating-ai-robot-assistant.png"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\images\\happy-diverse-students.jpg",
+      "PackagePath": "staticwebassets\\images\\happy-diverse-students.jpg"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\images\\info-circle.png",
+      "PackagePath": "staticwebassets\\images\\info-circle.png"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\images\\logo-fmi.png",
+      "PackagePath": "staticwebassets\\images\\logo-fmi.png"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\images\\no.png",
+      "PackagePath": "staticwebassets\\images\\no.png"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\images\\pencil.png",
+      "PackagePath": "staticwebassets\\images\\pencil.png"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\images\\personRemove.png",
+      "PackagePath": "staticwebassets\\images\\personRemove.png"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\images\\reply-fill.png",
+      "PackagePath": "staticwebassets\\images\\reply-fill.png"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\images\\send-fill.png",
+      "PackagePath": "staticwebassets\\images\\send-fill.png"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\images\\study.jpg",
+      "PackagePath": "staticwebassets\\images\\study.jpg"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\images\\trashbin.png",
+      "PackagePath": "staticwebassets\\images\\trashbin.png"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\images\\university-building.jpg",
+      "PackagePath": "staticwebassets\\images\\university-building.jpg"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\images\\upgrade.png",
+      "PackagePath": "staticwebassets\\images\\upgrade.png"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\images\\yes.png",
+      "PackagePath": "staticwebassets\\images\\yes.png"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\js\\ActionNotification.js",
+      "PackagePath": "staticwebassets\\js\\ActionNotification.js"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\js\\AddMemberToChannel.js",
+      "PackagePath": "staticwebassets\\js\\AddMemberToChannel.js"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\js\\AddNewMessage.js",
+      "PackagePath": "staticwebassets\\js\\AddNewMessage.js"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\js\\AddTeacher.js",
+      "PackagePath": "staticwebassets\\js\\AddTeacher.js"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\js\\CalendarEdit.js",
+      "PackagePath": "staticwebassets\\js\\CalendarEdit.js"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\js\\ChangeRole.js",
+      "PackagePath": "staticwebassets\\js\\ChangeRole.js"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\js\\FadeBackground.js",
+      "PackagePath": "staticwebassets\\js\\FadeBackground.js"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\js\\FetchDataAsList.js",
+      "PackagePath": "staticwebassets\\js\\FetchDataAsList.js"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\js\\FetchDataIntoSelect.js",
+      "PackagePath": "staticwebassets\\js\\FetchDataIntoSelect.js"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\js\\HandleDelete.js",
+      "PackagePath": "staticwebassets\\js\\HandleDelete.js"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\js\\HandleJoin.js",
+      "PackagePath": "staticwebassets\\js\\HandleJoin.js"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\js\\HandleLeave.js",
+      "PackagePath": "staticwebassets\\js\\HandleLeave.js"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\js\\HandleStudyPlanDelete.js",
+      "PackagePath": "staticwebassets\\js\\HandleStudyPlanDelete.js"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\js\\Info.js",
+      "PackagePath": "staticwebassets\\js\\Info.js"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\js\\JsEditor.js",
+      "PackagePath": "staticwebassets\\js\\JsEditor.js"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\js\\LaunchStudentsSelection.js",
+      "PackagePath": "staticwebassets\\js\\LaunchStudentsSelection.js"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\js\\LaunchTeacherSelection.js",
+      "PackagePath": "staticwebassets\\js\\LaunchTeacherSelection.js"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\js\\LaunchTeacherSelectionForGroup.js",
+      "PackagePath": "staticwebassets\\js\\LaunchTeacherSelectionForGroup.js"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\js\\LocalOptions.js",
+      "PackagePath": "staticwebassets\\js\\LocalOptions.js"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\js\\MultipleCheckTeachers.js",
+      "PackagePath": "staticwebassets\\js\\MultipleCheckTeachers.js"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\js\\MultipleSelectDropdown.js",
+      "PackagePath": "staticwebassets\\js\\MultipleSelectDropdown.js"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\js\\PopUp.js",
+      "PackagePath": "staticwebassets\\js\\PopUp.js"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\js\\UserInput.js",
+      "PackagePath": "staticwebassets\\js\\UserInput.js"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\js\\site.js",
+      "PackagePath": "staticwebassets\\js\\site.js"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\bootstrap\\LICENSE",
+      "PackagePath": "staticwebassets\\lib\\bootstrap"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.css.map"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.css.map"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-grid.rtl.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.css.map"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.css.map"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-reboot.rtl.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.css.map"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.css.map"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap-utilities.rtl.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.css"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.css.map"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.min.css"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.css.map"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\css\\bootstrap.rtl.min.css.map"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.js.map"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.bundle.min.js.map"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.js.map"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.esm.min.js.map"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.js"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.js.map"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.min.js"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map",
+      "PackagePath": "staticwebassets\\lib\\bootstrap\\dist\\js\\bootstrap.min.js.map"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\jquery-validation-unobtrusive\\LICENSE.txt",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.js"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation-unobtrusive\\jquery.validate.unobtrusive.min.js"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\jquery-validation\\LICENSE.md",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\LICENSE.md"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\additional-methods.js"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\jquery-validation\\dist\\additional-methods.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\additional-methods.min.js"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\jquery.validate.js"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\jquery-validation\\dist\\jquery.validate.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery-validation\\dist\\jquery.validate.min.js"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\jquery\\LICENSE.txt",
+      "PackagePath": "staticwebassets\\lib\\jquery\\LICENSE.txt"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\jquery\\dist\\jquery.js",
+      "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.js"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\jquery\\dist\\jquery.min.js",
+      "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.js"
+    },
+    {
+      "Id": "C:\\Users\\RaduI\\source\\repos\\ManageMe\\ManageMe\\wwwroot\\lib\\jquery\\dist\\jquery.min.map",
+      "PackagePath": "staticwebassets\\lib\\jquery\\dist\\jquery.min.map"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.ManageMe.Web.Microsoft.AspNetCore.StaticWebAssets.props",
+      "PackagePath": "build\\Microsoft.AspNetCore.StaticWebAssets.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.build.ManageMe.Web.props",
+      "PackagePath": "build\\ManageMe.Web.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildMultiTargeting.ManageMe.Web.props",
+      "PackagePath": "buildMultiTargeting\\ManageMe.Web.props"
+    },
+    {
+      "Id": "obj\\Debug\\net8.0\\staticwebassets\\msbuild.buildTransitive.ManageMe.Web.props",
+      "PackagePath": "buildTransitive\\ManageMe.Web.props"
+    }
+  ],
+  "ElementsToRemove": []
+}

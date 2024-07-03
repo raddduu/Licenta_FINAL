@@ -1,0 +1,1213 @@
+﻿@model ManageMe.BusinessLogic.DetailsMethodologyVM
+@using ManageMe.BusinessLogic
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+@{
+    void RenderProvisions(IEnumerable<DetailsProvisionVM> provisions, int? articleId, int? parentProvisionId)
+    {
+        var scope = parentProvisionId == -1 ? "Article-Provision" : "Sub-Provision";
+            <ul>
+                @foreach (var provision in provisions)
+                {
+                    <li>
+                        <p>@provision.Text</p>
+
+                        @if (User.IsInRole("Admin") || User.IsInRole("Dean"))
+                        {
+                            <a class="btn btn-danger delete-button provision" provisionId="@provision.Id">Delete</a>
+                            <a class="btn btn-primary editButton provision" provisionId="@provision.Id">Edit</a>
+                            <a class="btn btn-primary saveButton provision" provisionId="@provision.Id" style="display:none;">Save</a>
+                        }
+
+                        @{
+                            RenderProvisions(provision.ChildrenProvisions, -1, provision.Id);
+                        }
+
+                        @if (User.IsInRole("Admin") || User.IsInRole("Dean"))
+                        {
+                            <li class="AddProvisionModal EnterInputPopUp @scope" style="display:none" provisionId="@provision.Id" articleId="-1">
+                                <input type='text' class='form-control ProvisionText' style='margin-bottom:1rem;'>
+                                <a class='SaveProvisionButton btn btn-primary' provisionId="@provision.Id" articleId="-1">Save</a>
+                                <a class='CancelProvisionButton btn btn-outline-secondary @scope'>Cancel</a>
+                            </li>
+                        }
+
+                    </li>
+                }
+            </ul>
+
+        @if (User.IsInRole("Admin") || User.IsInRole("Dean"))
+        {
+            <a class="AddProvisionButton btn btn-primary @scope" style="margin-top: 3rem;" articleId="@articleId" parentProvisionId="@parentProvisionId">Create New @scope</a>
+
+            @if (articleId != -1)
+            {
+                <li class="AddProvisionModal EnterInputPopUp @scope" style="display:none" articleId="@articleId" provisionId="-1">
+                    <input type='text' class='form-control ProvisionText' style='margin-bottom:1rem;'>
+                    <a class='SaveProvisionButton btn btn-primary' articleId="@articleId" provisionId="-1">Save</a>
+                    <a class='CancelProvisionButton btn btn-outline-secondary Article-Provision'>Cancel</a>
+                </li>
+            }
+        }
+    }
+
+    void RenderDetails(IEnumerable<DetailsDetailVM> details, int? paragraphId, int? parentDetailId)
+    {
+        var scope = parentDetailId == -1 ? "Paragraph-Detail" : "Sub-Detail";
+        <ul>
+            @foreach (var detail in details)
+            {
+                <li>
+                    <p>@detail.Text</p>
+
+                    @if (User.IsInRole("Admin") || User.IsInRole("Dean"))
+                    {
+                        <a class="btn btn-danger delete-button detail" detailId="@detail.Id">Delete</a>
+                        <a class="btn btn-primary editButton detail" detailId="@detail.Id">Edit</a>
+                        <a class="btn btn-primary saveButton detail" detailId="@detail.Id" style="display:none;">Save</a>
+                    }
+
+                    @{
+                        RenderDetails(detail.ChildrenDetails, -1, detail.Id);
+                    }
+
+                    @if (User.IsInRole("Admin") || User.IsInRole("Dean"))
+                    {
+                    <li class="AddDetailModal EnterInputPopUp @scope" style="display:none" detailId="@detail.Id" paragraphId="-1">
+                        <input type='text' class='form-control DetailText' style='margin-bottom:1rem;'>
+                        <a class='SaveDetailButton btn btn-primary' detailId="@detail.Id" paragraphId="-1">Save</a>
+                        <a class='CancelDetailButton btn btn-outline-secondary @scope'>Cancel</a>
+                    </li>
+                    }
+
+                </li>
+            }
+        </ul>
+
+        @if (User.IsInRole("Admin") || User.IsInRole("Dean"))
+        {
+            <a class="AddDetailButton btn btn-primary @scope" style="margin-top: 3rem;" paragraphId="@paragraphId" parentDetailId="@parentDetailId">Create New @scope</a>
+
+            @if (paragraphId != -1)
+            {
+                <li class="AddDetailModal EnterInputPopUp @scope" style="display:none" paragraphId="@paragraphId" detailId="-1">
+                    <input type='text' class='form-control DetailText' style='margin-bottom:1rem;'>
+                    <a class='SaveDetailButton btn btn-primary' paragraphId="@paragraphId" detailId="-1">Save</a>
+                    <a class='CancelDetailButton btn btn-outline-secondary Paragraph-Detail'>Cancel</a>
+                </li>
+            }
+        }
+    }
+
+    void RenderSections(IEnumerable<DetailsSectionVM> textSections, int? chapterId, int? parentSectionId)
+    {
+        var scope = parentSectionId == -1 ? "Chapter-Section" : "Sub-Section";
+        <ol>
+            @foreach (var textSection in textSections)
+            {
+                <li>
+                    <h4>
+                        @textSection.Name
+                    </h4>
+
+                    @if (User.IsInRole("Admin") || User.IsInRole("Dean"))
+                    {
+                        <a class="btn btn-danger delete-button textSection" sectionId="@textSection.Id">Delete</a>
+                        <a class="btn btn-primary editButton textSection" sectionId="@textSection.Id">Edit</a>
+                        <a class="btn btn-primary saveButton textSection" sectionId="@textSection.Id" style="display:none;">Save</a>
+                    }
+
+                    <ul>
+                        @foreach (var paragraph in textSection.Paragraphs)
+                        {
+                            <li>
+                                <p>
+                                    @paragraph.Text
+                                </p>
+
+                                @if (User.IsInRole("Admin") || User.IsInRole("Dean"))
+                                {
+                                    <a class="btn btn-danger delete-button paragraph" paragraphId="@paragraph.Id">Delete</a>
+                                    <a class="btn btn-primary editButton paragraph" paragraphId="@paragraph.Id">Edit</a>
+                                    <a class="btn btn-primary saveButton paragraph" paragraphId="@paragraph.Id" style="display:none;">Save</a>
+                                }
+
+                                @{
+                                    RenderDetails(paragraph.Details, paragraph.Id, -1);
+                                }
+                            </li>
+                        }
+
+                        @if (User.IsInRole("Admin") || User.IsInRole("Dean"))
+                        {
+                            <li class="AddParagraphModal EnterInputPopUp" style="display:none" sectionId="@textSection.Id" chapterId="-1">
+                                <textarea type='text' class='form-control ParagraphText' style='margin-bottom:1rem;'></textarea>
+                                <a class='SaveParagraphButton btn btn-primary' sectionId="@textSection.Id">Save</a>
+                                <a class='CancelParagraphButton btn btn-outline-secondary'>Cancel</a>
+                            </li>
+                        }
+                    </ul>
+
+                    @if (User.IsInRole("Admin") || User.IsInRole("Dean"))
+                    {
+                        <a class="AddParagraphButton btn btn-primary" style="margin-top: 3rem;" sectionId="@textSection.Id">Create New Paragraph</a>
+                    }
+
+                    @{
+                        RenderSections(textSection.ChildrenSections, -1, textSection.Id);
+                    }
+
+                    @if (User.IsInRole("Admin") || User.IsInRole("Dean"))
+                    {
+                        <li class="AddSectionModal EnterInputPopUp @scope" style="display:none" sectionId="@textSection.Id" chapterId="-1">
+                            <input type='text' class='form-control SectionText' style='margin-bottom:1rem;'>
+                            <a class='SaveSectionButton btn btn-primary' sectionId="@textSection.Id" chapterId="-1">Save</a>
+                            <a class='CancelSectionButton btn btn-outline-secondary @scope'>Cancel</a>
+                        </li>
+                    }
+                </li>
+            }
+        </ol>
+
+        @if (User.IsInRole("Admin") || User.IsInRole("Dean"))
+        {
+            <a class="AddSectionButton btn btn-primary @scope" style="margin-top: 3rem;" chapterId="@chapterId" parentSectionId="@parentSectionId">Create New @scope</a>
+
+            @if (chapterId != -1)
+            {
+                <li class="AddSectionModal EnterInputPopUp @scope" style="display:none" chapterId="@chapterId" sectionId="-1">
+                    <input type='text' class='form-control SectionText' style='margin-bottom:1rem;'>
+                    <a class='SaveSectionButton btn btn-primary' chapterId="@chapterId" sectionId="-1">Save</a>
+                    <a class='CancelSectionButton btn btn-outline-secondary Chapter-Section'>Cancel</a>
+                </li>
+            }
+        }
+    }
+}
+
+<div style="text-align:center; margin-top:5rem; margin-bottom:5rem;">
+    <h1>
+        @Model.Name
+    </h1>
+    <h3>
+        @Model.Description
+    </h3>
+</div>
+
+<div id="MethodologyHead" style="text-align:center; margin-top:5rem; margin-bottom:5rem;">
+    <h2 style="margin-top:3rem; margin-bottom:3rem;">
+        Chapters
+    </h2>
+
+    <div class="row">
+        <ol id="chaptersList">
+            @foreach (var chapter in Model.Chapters)
+            {
+                <li>
+                    <h3 chapterId="@chapter.Id">
+                        @chapter.Name
+                    </h3>
+
+                    @if (User.IsInRole("Admin") || User.IsInRole("Dean"))
+                    {
+                        <a class="btn btn-danger delete-button chapter" chapterId="@chapter.Id">Delete</a>
+
+                        <a class="btn btn-primary editButton chapter" chapterId="@chapter.Id">Edit</a>
+
+                        <a class="btn btn-primary saveButton chapter" chapterId="@chapter.Id" style="display:none;">Save</a>
+                    }
+                </li>
+            }
+
+            <li id="AddChapterModal" class="EnterInputPopUp" style="display:none">
+                <input type='text' id='ChapterName' class='form-control' style='margin-bottom:1rem;'>
+                <a id='SaveChapterButton' class='btn btn-primary'>Save</a>
+                <a id='CancelChapterButton' class='btn btn-outline-secondary'>Cancel</a>
+            </li>
+        </ol>
+
+        @if (User.IsInRole("Admin") || User.IsInRole("Dean"))
+        {
+            <a id="AddChapterButton" style="margin-top: 3rem;" class="btn btn-primary">Create New Chapter</a>
+        }
+    </div>
+</div>
+
+<div id="MethodologyBody" style="margin-top:5rem; margin-bottom:5rem;">
+    <div>
+        <ol id="detailedChaptersList">
+            @foreach (var chapter in Model.Chapters)
+            {
+                <li>
+                    <h3>
+                        @chapter.Name
+                    </h3>
+
+                    <ul>
+                        @foreach (var article in chapter.Articles)
+                        {
+                            <li>
+                                <p>
+                                    @article.Text
+                                </p>
+
+                                @if (User.IsInRole("Admin") || User.IsInRole("Dean"))
+                                {
+                                    <a class="btn btn-danger delete-button article" articleId="@article.Id">Delete</a>
+
+                                    <a class="btn btn-primary editButton article" articleId="@article.Id">Edit</a>
+
+                                    <a class="btn btn-primary saveButton article" articleId="@article.Id" style="display:none;">Save</a>
+                                }
+                                
+                                @{
+                                    RenderProvisions(article.Provisions, article.Id, -1);
+                                }
+                                
+                            </li>
+                        }
+
+                        <li class="AddArticleModal EnterInputPopUp" style="display:none" chapterId="@chapter.Id">
+                            <textarea class='ArticleText form-control' style='margin-bottom:1rem;'></textarea>
+                            <a class='SaveArticleButton btn btn-primary' chapterId="@chapter.Id">Save</a>
+                            <a class='CancelArticleButton btn btn-outline-secondary'>Cancel</a>
+                        </li>
+                    </ul>
+                    
+                    @if (User.IsInRole("Admin") || User.IsInRole("Dean"))
+                    {
+                        <a class="AddArticleButton btn btn-primary" style="margin-top: 3rem;" chapterId="@chapter.Id">Create New Article</a>
+                    }
+
+                    @{
+                        RenderSections(chapter.Sections, chapter.Id, -1);
+                    }
+                </li>
+            }
+        </ol>
+    </div>
+</div>
+
+
+@{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+@section Scripts {
+    <script type="text/javascript" src="~/js/FadeBackground.js"></script>
+    <script type="text/javascript" src="~/js/PopUp.js"></script>
+    <script type="text/javascript" src="~/js/ActionNotification.js"></script>
+    <script type="text/javascript">
+        var methodologyId = @Model.Id;
+
+        $(document).ready(function () {
+            $("#AddChapterButton").click(function () {
+                var addChapterModal = $("#AddChapterModal");
+                addChapterModal.fadeIn(500);
+
+                $("#AddChapterButton").hide();
+                $("#SaveChapterButton").show();
+            });
+
+            $("body").on("click", "#SaveChapterButton", function (e) {
+                var chapterName = $("#ChapterName").val();
+
+                if (chapterName === "") {
+                    new ActionNotification("notificationsContainer", "Please fill in all the fields!", "Error", 4000);
+                    return;
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Methodologies/AddChapter",
+                    data: {
+                        Name: chapterName.trim(),
+                        MethodologyId: methodologyId
+                    },
+                    success: () => {
+                        //new ActionNotification("notificationsContainer", "Chapter Added Successfully!", "Success", 2000);
+                        location.reload();
+                    },
+                    error: () => {
+                        new ActionNotification("notificationsContainer", "Something went wrong! Please try again later!", "Error", 4000);
+                    }
+                });
+
+                $("#AddChapterModal").fadeOut(500);
+                $("#AddChapterButton").show();
+                $("#SaveChapterButton").hide();
+            });
+
+            $("body").on("click", "#CancelChapterButton", function (e) {
+                $("#AddChapterModal").fadeOut(500);
+                $("#AddChapterButton").show();
+                $("#SaveChapterButton").hide();
+            });
+
+            $(".delete-button.chapter").click(function () {
+                var chapterId = $(this).attr("chapterId");
+                var url = "/Methodologies/DeleteChapter/" + chapterId;
+
+                FadeBackground(true);
+
+                function callback() {
+                    $.ajax({
+                        url: url,
+                        type: "DELETE",
+                        success: function (data) {
+                            if (data.success) {
+                                //new ActionNotification("notificationsContainer", "Chapter deleted succsessfully", "Success", 1000);
+                                FadeBackground(false);
+                                location.reload();
+                            }
+                            else {
+                                new ActionNotification("notificationsContainer", "Chapter deletion failed", "Error", 1000);
+                                FadeBackground(false);
+                            }
+                        }
+                    });
+                }
+
+                var message = "Are you sure that you want to delete this Chapter?";
+                var status = "WARNING";
+                new PopUp(status, message, callback, "Delete", "AlertPopUp");
+            });
+
+            $(".editButton.chapter").click(function () {
+                var chapterId = $(this).attr("chapterId");
+                var chapterName = $(`#chaptersList li:has([chapterId=${chapterId}]) h3`).text();
+
+                $(`#chaptersList li:has([chapterId=${chapterId}]) h3`).replaceWith(`<input type='text' id='ChapterName' class='form-control' value='${chapterName}' style='margin-bottom:1rem;'>`);
+                $(`#chaptersList li:has([chapterId=${chapterId}]) .editButton`).hide();
+                $(`#chaptersList li:has([chapterId=${chapterId}]) .delete-button`).hide();
+                $(`#chaptersList li:has([chapterId=${chapterId}]) .saveButton`).show();
+            });
+
+            $("body").on("click", ".saveButton.chapter", function (e) {
+                var chapterId = $(this).attr("chapterId");
+                var chapterName = $(`#chaptersList li:has([chapterId=${chapterId}]) #ChapterName`).val();
+
+                if (chapterName === "") {
+                    new ActionNotification("notificationsContainer", "Please fill in all the fields!", "Error", 4000);
+                    return;
+                }
+
+                $.ajax({
+                    type: "PUT",
+                    url: "/Methodologies/UpdateChapter",
+                    data: {
+                        Id: chapterId.trim(),
+                        Name: chapterName.trim(),
+                        MethodologyId: methodologyId
+                    },
+                    success: () => {
+                        new ActionNotification("notificationsContainer", "Chapter Edited Successfully!", "Success", 2000);
+                        $(`#chaptersList li:has([chapterId=${chapterId}]) #ChapterName`).replaceWith(`<h3 chapterId="${chapterId}">${chapterName}</h3>`);
+                    },
+                    error: () => {
+                        new ActionNotification("notificationsContainer", "Something went wrong! Please try again later!", "Error", 4000);
+                    }
+                });
+
+                $(`#chaptersList li:has([chapterId=${chapterId}]) .editButton`).show();
+                $(`#chaptersList li:has([chapterId=${chapterId}]) .delete-button`).show();
+                $(`#chaptersList li:has([chapterId=${chapterId}]) .saveButton`).hide();
+            });
+
+            $(".AddChapterSectionButton").click(function () {
+                var chapterId = $(this).attr("chapterId");
+                var addChapterSectionModal = $(`.AddChapterSectionModal[chapterId=${chapterId}]`);
+                addChapterSectionModal.fadeIn(500);
+
+                $(this).hide();
+                $(`.SaveChapterSectionButton[chapterId=${chapterId}]`).show();
+            });
+
+            $("body").on("click", ".SaveChapterSectionButton", function (e) {
+                var chapterId = $(this).attr("chapterId");
+                var chapterSectionName = $(`.AddChapterSectionModal[chapterId=${chapterId}] .ChapterSectionName`).val();
+
+                if (chapterSectionName === "") {
+                    new ActionNotification("notificationsContainer", "Please fill in all the fields!", "Error", 4000);
+                    return;
+                }
+
+                $.ajax({
+                    type: "POST",
+                    url: "/Methodologies/AddSection",
+                    data: {
+                        Name: chapterSectionName.trim(),
+                        ChapterId: chapterId
+                    },
+                    success: () => {
+                        location.reload();
+                    },
+                    error: () => {
+                        new ActionNotification("notificationsContainer", "Something went wrong! Please try again later!", "Error", 4000);
+                    }
+                });
+
+                $(`.AddChapterSectionModal[chapterId=${chapterId}]`).fadeOut(500);
+                $(`.AddChapterSectionButton[chapterId=${chapterId}]`).show();
+                $(`.SaveChapterSectionButton[chapterId=${chapterId}]`).hide();
+            });
+
+            $("body").on("click", ".CancelChapterSectionButton", function (e) {
+                var chapterId = $(this).parent().attr("chapterId");
+                $(`.AddChapterSectionModal[chapterId=${chapterId}]`).fadeOut(500);
+                $(`.AddChapterSectionButton[chapterId=${chapterId}]`).show();
+                $(`.SaveChapterSectionButton[chapterId=${chapterId}]`).hide();
+            });
+
+            $(".delete-button.chapterSection").click(function () {
+                var chapterSectionId = $(this).attr("chapterSectionId");
+                var url = "/Methodologies/DeleteSection/" + chapterSectionId;
+
+                FadeBackground(true);
+
+                function callback() {
+                    $.ajax({
+                        url: url,
+                        type: "DELETE",
+                        success: function (data) {
+                            if (data.success) {
+                                new ActionNotification("notificationsContainer", "Chapter Section deleted succsessfully", "Success", 1000);
+                                FadeBackground(false);
+                                $(`#detailedChaptersList li:has([chapterSectionId=${chapterSectionId}])`).remove();
+                            }
+                            else {
+                                new ActionNotification("notificationsContainer", "Chapter Section deletion failed", "Error", 1000);
+                                FadeBackground(false);
+                            }
+                        }
+                    });
+                }
+
+                var message = "Are you sure that you want to delete this Chapter Section?";
+                var status = "WARNING";
+                new PopUp(status, message, callback, "Delete", "AlertPopUp");
+            });
+
+            $(".editButton.chapterSection").click(function () {
+                var chapterSectionId = $(this).attr("chapterSectionId");
+                var chapterSectionName = $(`#detailedChaptersList li:has([chapterSectionId=${chapterSectionId}]) h4`).text();
+
+                $(`#detailedChaptersList li:has([chapterSectionId=${chapterSectionId}]) h4`).replaceWith(`<input type='text' id='ChapterSectionName' class='form-control' value='${chapterSectionName}' style='margin-bottom:1rem;'>`);
+                $(`#detailedChaptersList li:has([chapterSectionId=${chapterSectionId}]) .editButton`).hide();
+                $(`#detailedChaptersList li:has([chapterSectionId=${chapterSectionId}]) .delete-button`).hide();
+                $(`#detailedChaptersList li:has([chapterSectionId=${chapterSectionId}]) .saveButton`).show();
+            });
+
+            $("body").on("click", ".saveButton.chapterSection", function (e) {
+                var chapterSectionId = $(this).attr("chapterSectionId");
+                var chapterSectionName = $(`#detailedChaptersList li:has([chapterSectionId=${chapterSectionId}]) #ChapterSectionName`).val();
+
+                if (chapterSectionName === "") {
+                    new ActionNotification("notificationsContainer", "Please fill in all the fields!", "Error", 4000);
+                    return;
+                }
+
+                $.ajax({
+                    type: "PUT",
+                    url: "/Methodologies/UpdateSection",
+                    data: {
+                        Id: chapterSectionId.trim(),
+                        Name: chapterSectionName.trim(),
+                    },
+                    success: () => {
+                        new ActionNotification("notificationsContainer", "Chapter Section Edited Successfully!", "Success", 2000);
+                        $(`#detailedChaptersList li:has([chapterSectionId=${chapterSectionId}]) #ChapterSectionName`).replaceWith(`<h4>${chapterSectionName}</h4>`);
+                    },
+                    error: () => {
+                        new ActionNotification("notificationsContainer", "Something went wrong! Please try again later!", "Error", 4000);
+                    }
+                });
+
+                $(`#detailedChaptersList li:has([chapterSectionId=${chapterSectionId}]) .editButton`).show();
+                $(`#detailedChaptersList li:has([chapterSectionId=${chapterSectionId}]) .delete-button`).show();
+                $(`#detailedChaptersList li:has([chapterSectionId=${chapterSectionId}]) .saveButton`).hide();
+            });
+
+            $("body").on("click", ".CancelChapterSectionButton", function (e) {
+                var chapterSectionId = $(this).parent().attr("chapterSectionId");
+                $(`#detailedChaptersList li:has([chapterSectionId=${chapterSectionId}]) #ChapterSectionName`).replaceWith(`<h4>${chapterSectionName}</h4>`);
+                $(`#detailedChaptersList li:has([chapterSectionId=${chapterSectionId}]) .editButton`).show();
+                $(`#detailedChaptersList li:has([chapterSectionId=${chapterSectionId}]) .delete-button`).show();
+                $(`#detailedChaptersList li:has([chapterSectionId=${chapterSectionId}]) .saveButton`).hide();
+            });
+        });
+
+        $(".AddArticleButton").click(function () {
+            var chapterId = $(this).attr("chapterId");
+            var addArticleModal = $(`.AddArticleModal[chapterId=${chapterId}]`);
+            addArticleModal.fadeIn(500);
+
+            $(this).hide();
+            $(`.SaveArticleButton[chapterId=${chapterId}]`).show();
+        });
+
+        $("body").on("click", ".SaveArticleButton", function (e) {
+            var chapterId = $(this).attr("chapterId");
+            var articleText = $(`.AddArticleModal[chapterId=${chapterId}] .ArticleText`).val();
+
+            if (articleText === "") {
+                new ActionNotification("notificationsContainer", "Please fill in all the fields!", "Error", 4000);
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/Methodologies/AddArticle",
+                data: {
+                    Text: articleText.trim(),
+                    ChapterId: chapterId
+                },
+                success: () => {
+                    location.reload();
+                },
+                error: () => {
+                    new ActionNotification("notificationsContainer", "Something went wrong! Please try again later!", "Error", 4000);
+                }
+            });
+
+            $(`.AddArticleModal[chapterId=${chapterId}]`).fadeOut(500);
+            $(`.AddArticleButton[chapterId=${chapterId}]`).show();
+            $(`.SaveArticleButton[chapterId=${chapterId}]`).hide();
+        });
+
+        $("body").on("click", ".CancelArticleButton", function (e) {
+            var chapterId = $(this).parent().attr("chapterId");
+            $(`.AddArticleModal[chapterId=${chapterId}]`).fadeOut(500);
+            $(`.AddArticleButton[chapterId=${chapterId}]`).show();
+            $(`.SaveArticleButton[chapterId=${chapterId}]`).hide();
+        });
+
+        $(".delete-button.article").click(function () {
+            var articleId = $(this).attr("articleId");
+            var url = "/Methodologies/DeleteArticle/" + articleId;
+
+            FadeBackground(true);
+
+            function callback() {
+                $.ajax({
+                    url: url,
+                    type: "DELETE",
+                    success: function (data) {
+                        if (data.success) {
+                            //new ActionNotification("notificationsContainer", "Article deleted succsessfully", "Success", 1000);
+                            FadeBackground(false);
+                            location.reload();
+                        }
+                        else {
+                            new ActionNotification("notificationsContainer", "Article deletion failed", "Error", 1000);
+                            FadeBackground(false);
+                        }
+                    }
+                });
+            }
+
+            var message = "Are you sure that you want to delete this Article?";
+            var status = "WARNING";
+            new PopUp(status, message, callback, "Delete", "AlertPopUp");
+        });
+
+        $(".editButton.article").click(function () {
+            var articleId = $(this).attr("articleId");
+            var articleText = $(`#detailedChaptersList li:has([articleId=${articleId}]) p`).text();
+
+            $(`#detailedChaptersList li:has([articleId=${articleId}]) p`).replaceWith(`<textarea id='ArticleText' class='form-control' style='margin-bottom:1rem;'>${articleText}</textarea>`);
+            $(`#detailedChaptersList li:has([articleId=${articleId}]) .editButton`).hide();
+            $(`#detailedChaptersList li:has([articleId=${articleId}]) .delete-button`).hide();
+            $(`#detailedChaptersList li:has([articleId=${articleId}]) .saveButton`).show();
+        });
+
+        $("body").on("click", ".saveButton.article", function (e) {
+            var articleId = $(this).attr("articleId");
+            var articleText = $(`#detailedChaptersList li:has([articleId=${articleId}]) #ArticleText`).val();
+
+            if (articleText === "") {
+                new ActionNotification("notificationsContainer", "Please fill in all the fields!", "Error", 4000);
+                return;
+            }
+
+            $.ajax({
+                type: "PUT",
+                url: "/Methodologies/UpdateArticle",
+                data: {
+                    Id: articleId.trim(),
+                    Text: articleText.trim()
+                },
+                success: () => {
+                    new ActionNotification("notificationsContainer", "Article Edited Successfully!", "Success", 2000);
+                    $(`#detailedChaptersList li:has([articleId=${articleId}]) #ArticleText`).replaceWith(`<p>${articleText}</p>`);
+                },
+                error: () => {
+                    new ActionNotification("notificationsContainer", "Something went wrong! Please try again later!", "Error", 4000);
+                }
+            });
+
+            $(`#detailedChaptersList li:has([articleId=${articleId}]) .editButton`).show();
+            $(`#detailedChaptersList li:has([articleId=${articleId}]) .delete-button`).show();
+            $(`#detailedChaptersList li:has([articleId=${articleId}]) .saveButton`).hide();
+        });
+
+        $("body").on("click", ".CancelArticleButton", function (e) {
+            var articleId = $(this).parent().attr("articleId");
+            $(`#detailedChaptersList li:has([articleId=${articleId}]) #ArticleText`).replaceWith(`<p>${articleText}</p>`);
+            $(`#detailedChaptersList li:has([articleId=${articleId}]) .editButton`).show();
+            $(`#detailedChaptersList li:has([articleId=${articleId}]) .delete-button`).show();
+            $(`#detailedChaptersList li:has([articleId=${articleId}]) .saveButton`).hide();
+        });
+
+        $(".AddProvisionButton.Sub-Provision").click(function () {
+            var parentProvisionId = $(this).attr("parentProvisionId");
+            var addProvisionModal = $(`.AddProvisionModal[provisionId=${parentProvisionId}]`);
+            addProvisionModal.fadeIn(500);
+
+            $(this).hide();
+            $(`.SaveProvisionButton[provisionId=${parentProvisionId}]`).show();
+        });
+
+        $(".AddProvisionButton.Article-Provision").click(function () {
+            var articleId = $(this).attr("articleId");
+            var addProvisionModal = $(`.AddProvisionModal[articleId=${articleId}]`);
+            addProvisionModal.fadeIn(500);
+
+            $(this).hide();
+            $(`.SaveProvisionButton[articleId=${articleId}]`).show();
+        });
+
+        $("body").on("click", ".SaveProvisionButton", function (e) {
+            var provisionId = $(this).attr("provisionId");
+            var articleId = $(this).attr("articleId");
+
+            var provisionModal = $(`.AddProvisionModal[provisionId=${provisionId}][articleId=${articleId}]`);
+            var inputTag = provisionModal.find('input');
+            var provisionText = inputTag.val();
+
+            if (provisionText === "") {
+                new ActionNotification("notificationsContainer", "Please fill in all the fields!", "Error", 4000);
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/Methodologies/AddProvision",
+                data: {
+                    Text: provisionText.trim(),
+                    ArticleId: articleId,
+                    ParentProvisionId: provisionId
+                },
+                success: () => {
+                    location.reload();
+                },
+                error: () => {
+                    new ActionNotification("notificationsContainer", "Something went wrong! Please try again later!", "Error", 4000);
+                }
+            });
+
+            $(`.AddProvisionModal[provisionId=${provisionId}]`).fadeOut(500);
+            $(`.AddProvisionButton[provisionId=${provisionId}]`).show();
+            $(`.SaveProvisionButton[provisionId=${provisionId}]`).hide();
+        });
+
+        $("body").on("click", ".CancelProvisionButton.Article-Provision", function (e) {
+            var articleId = $(this).parent().attr("articleId");
+            $(`.AddProvisionModal[articleId=${articleId}]`).fadeOut(500);
+            $(`.AddProvisionButton[articleId=${articleId}]`).show();
+            $(`.SaveProvisionButton[articleId=${articleId}]`).hide();
+        });
+
+        $("body").on("click", ".CancelProvisionButton.Sub-Provision", function (e) {
+            var provisionId = $(this).parent().attr("provisionId");
+            $(`.AddProvisionModal[provisionId=${provisionId}]`).fadeOut(500);
+            $(`.AddProvisionButton[provisionId=${provisionId}]`).show();
+            $(`.SaveProvisionButton[provisionId=${provisionId}]`).hide();
+        });
+
+        $(".delete-button.provision").click(function () {
+            var provisionId = $(this).attr("provisionId");
+            var url = "/Methodologies/DeleteProvision/" + provisionId;
+
+            FadeBackground(true);
+
+            function callback() {
+                $.ajax({
+                    url: url,
+                    type: "DELETE",
+                    success: function (data) {
+                        if (data.success) {
+                            new ActionNotification("notificationsContainer", "Provision deleted succsessfully", "Success", 1000);
+                            FadeBackground(false);
+                            location.reload();
+                        }
+                        else {
+                            new ActionNotification("notificationsContainer", "Provision deletion failed", "Error", 1000);
+                            FadeBackground(false);
+                        }
+                    }
+                });
+            }
+
+            var message = "Are you sure that you want to delete this Provision?";
+            var status = "WARNING";
+            new PopUp(status, message, callback, "Delete", "AlertPopUp");
+        });
+
+        $(".editButton.provision").click(function () {
+            var provisionId = $(this).attr("provisionId");
+            var provisionText = $(`#detailedChaptersList li:has([provisionId=${provisionId}]) p`).text();
+
+            $(`#detailedChaptersList li:has([provisionId=${provisionId}]) p`).replaceWith(`<textarea id='ProvisionText' class='form-control' style='margin-bottom:1rem;'>${provisionText}</textarea>`);
+            $(`#detailedChaptersList li:has([provisionId=${provisionId}]) .editButton`).hide();
+            $(`#detailedChaptersList li:has([provisionId=${provisionId}]) .delete-button`).hide();
+            $(`#detailedChaptersList li:has([provisionId=${provisionId}]) .saveButton`).show();
+        });
+
+        $("body").on("click", ".saveButton.provision", function (e) {
+            var provisionId = $(this).attr("provisionId");
+            var provisionText = $(`#detailedChaptersList li:has([provisionId=${provisionId}]) #ProvisionText`).val();
+
+            if (provisionText === "") {
+                new ActionNotification("notificationsContainer", "Please fill in all the fields!", "Error", 4000);
+                return;
+            }
+
+            $.ajax({
+                type: "PUT",
+                url: "/Methodologies/UpdateProvision",
+                data: {
+                    Id: provisionId.trim(),
+                    Text: provisionText.trim()
+                },
+                success: () => {
+                    new ActionNotification("notificationsContainer", "Provision Edited Successfully!", "Success", 2000);
+                    $(`#detailedChaptersList li:has([provisionId=${provisionId}]) #ProvisionText`).replaceWith(`<p>${provisionText}</p>`);
+                },
+                error: () => {
+                    new ActionNotification("notificationsContainer", "Something went wrong! Please try again later!", "Error", 4000);
+                }
+            });
+
+            $(`#detailedChaptersList li:has([provisionId=${provisionId}]) .editButton`).show();
+            $(`#detailedChaptersList li:has([provisionId=${provisionId}]) .delete-button`).show();
+            $(`#detailedChaptersList li:has([provisionId=${provisionId}]) .saveButton`).hide();
+        });
+
+        $("body").on("click", ".CancelProvisionButton.Sub-Provision", function (e) {
+            var provisionId = $(this).parent().attr("provisionId");
+            $(`#detailedChaptersList li:has([provisionId=${provisionId}]) #ProvisionText`).replaceWith(`<p>${provisionText}</p>`);
+            $(`#detailedChaptersList li:has([provisionId=${provisionId}]) .editButton`).show();
+            $(`#detailedChaptersList li:has([provisionId=${provisionId}]) .delete-button`).show();
+            $(`#detailedChaptersList li:has([provisionId=${provisionId}]) .saveButton`).hide();
+        });
+
+        $(".AddDetailButton.Paragraph-Detail").click(function () {
+            var paragraphId = $(this).attr("paragraphId");
+            var addDetailModal = $(`.AddDetailModal[paragraphId=${paragraphId}]`);
+            addDetailModal.fadeIn(500);
+
+            $(this).hide();
+            $(`.SaveDetailButton[paragraphId=${paragraphId}]`).show();
+        });
+
+        $(".AddDetailButton.Sub-Detail").click(function () {
+            var parentDetailId = $(this).attr("parentDetailId");
+            var addDetailModal = $(`.AddDetailModal[detailId=${parentDetailId}]`);
+            addDetailModal.fadeIn(500);
+
+            $(this).hide();
+            $(`.SaveDetailButton[parentDetailId=${parentDetailId}]`).show();
+        });
+
+        $("body").on("click", ".SaveDetailButton", function (e) {
+            var detailId = $(this).attr("detailId");
+            var paragraphId = $(this).attr("paragraphId");
+
+            var detailModal = $(`.AddDetailModal[detailId=${detailId}][paragraphId=${paragraphId}]`);
+            var inputTag = detailModal.find('input');
+            var detailText = inputTag.val();
+
+            if (detailText === "") {
+                new ActionNotification("notificationsContainer", "Please fill in all the fields!", "Error", 4000);
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/Methodologies/AddDetail",
+                data: {
+                    Text: detailText.trim(),
+                    ParagraphId: paragraphId,
+                    ParentDetailId: detailId
+                },
+                success: () => {
+                    location.reload();
+                },
+                error: () => {
+                    new ActionNotification("notificationsContainer", "Something went wrong! Please try again later!", "Error", 4000);
+                }
+            });
+
+            $(`.AddDetailModal[detailId=${detailId}]`).fadeOut(500);
+            $(`.AddDetailButton[detailId=${detailId}]`).show();
+            $(`.SaveDetailButton[detailId=${detailId}]`).hide();
+        });
+
+        $("body").on("click", ".CancelDetailButton.Paragraph-Detail", function (e) {
+            var paragraphId = $(this).parent().attr("paragraphId");
+            $(`.AddDetailModal[paragraphId=${paragraphId}]`).fadeOut(500);
+            $(`.AddDetailButton[paragraphId=${paragraphId}]`).show();
+            $(`.SaveDetailButton[paragraphId=${paragraphId}]`).hide();
+        });
+
+        $("body").on("click", ".CancelDetailButton.Sub-Detail", function (e) {
+            var detailId = $(this).parent().attr("detailId");
+            $(`.AddDetailModal[detailId=${detailId}]`).fadeOut(500);
+            $(`.AddDetailButton[detailId=${detailId}]`).show();
+            $(`.SaveDetailButton[detailId=${detailId}]`).hide();
+        });
+
+        $(".delete-button.detail").click(function () {
+            var detailId = $(this).attr("detailId");
+            var url = "/Methodologies/DeleteDetail/" + detailId;
+
+            FadeBackground(true);
+
+            function callback() {
+                $.ajax({
+                    url: url,
+                    type: "DELETE",
+                    success: function (data) {
+                        if (data.success) {
+                            new ActionNotification("notificationsContainer", "Detail deleted succsessfully", "Success", 1000);
+                            FadeBackground(false);
+                            location.reload();
+                        }
+                        else {
+                            new ActionNotification("notificationsContainer", "Detail deletion failed", "Error", 1000);
+                            FadeBackground(false);
+                        }
+                    }
+                });
+            }
+
+            var message = "Are you sure that you want to delete this Detail?";
+            var status = "WARNING";
+            new PopUp(status, message, callback, "Delete", "AlertPopUp");
+        });
+
+        $(".editButton.detail").click(function () {
+            var detailId = $(this).attr("detailId");
+            var detailText = $(`#detailedChaptersList li:has([detailId=${detailId}]) p`).text();
+
+            $(`#detailedChaptersList li:has([detailId=${detailId}]) p`).replaceWith(`<textarea id='DetailText' class='form-control' style='margin-bottom:1rem;'>${detailText}</textarea>`);
+            $(`#detailedChaptersList li:has([detailId=${detailId}]) .editButton`).hide();
+            $(`#detailedChaptersList li:has([detailId=${detailId}]) .delete-button`).hide();
+            $(`#detailedChaptersList li:has([detailId=${detailId}]) .saveButton`).show();
+        });
+
+        $("body").on("click", ".saveButton.detail", function (e) {
+            var detailId = $(this).attr("detailId");
+            var detailText = $(`#detailedChaptersList li:has([detailId=${detailId}]) #DetailText`).val();
+
+            if (detailText === "") {
+                new ActionNotification("notificationsContainer", "Please fill in all the fields!", "Error", 4000);
+                return;
+            }
+
+            $.ajax({
+                type: "PUT",
+                url: "/Methodologies/UpdateDetail",
+                data: {
+                    Id: detailId.trim(),
+                    Text: detailText.trim()
+                },
+                success: () => {
+                    new ActionNotification("notificationsContainer", "Detail Edited Successfully!", "Success", 2000);
+                    $(`#detailedChaptersList li:has([detailId=${detailId}]) #DetailText`).replaceWith(`<p>${detailText}</p>`);
+                },
+                error: () => {
+                    new ActionNotification("notificationsContainer", "Something went wrong! Please try again later!", "Error", 4000);
+                }
+            });
+
+            $(`#detailedChaptersList li:has([detailId=${detailId}]) .editButton`).show();
+            $(`#detailedChaptersList li:has([detailId=${detailId}]) .delete-button`).show();
+            $(`#detailedChaptersList li:has([detailId=${detailId}]) .saveButton`).hide();
+        });
+
+        $("body").on("click", ".CancelDetailButton.Sub-Detail", function (e) {
+            var detailId = $(this).parent().attr("detailId");
+            $(`#detailedChaptersList li:has([detailId=${detailId}]) #DetailText`).replaceWith(`<p>${detailText}</p>`);
+            $(`#detailedChaptersList li:has([detailId=${detailId}]) .editButton`).show();
+            $(`#detailedChaptersList li:has([detailId=${detailId}]) .delete-button`).show();
+            $(`#detailedChaptersList li:has([detailId=${detailId}]) .saveButton`).hide();
+        });
+
+        $(".AddSectionButton.Sub-Section").click(function () {
+            var parentSectionId = $(this).attr("parentSectionId");
+            var addSectionModal = $(`.AddSectionModal[sectionId=${parentSectionId}]`);
+            addSectionModal.fadeIn(500);
+
+            $(this).hide();
+            $(`.SaveSectionButton[parentSectionId=${parentSectionId}]`).show();
+        });
+
+        $(".AddSectionButton.Chapter-Section").click(function () {
+            var chapterId = $(this).attr("chapterId");
+            var addSectionModal = $(`.AddSectionModal[chapterId=${chapterId}]`);
+            addSectionModal.fadeIn(500);
+
+            $(this).hide();
+            $(`.SaveSectionButton[chapterId=${chapterId}]`).show();
+        });
+
+        $("body").on("click", ".SaveSectionButton", function (e) {
+            var sectionId = $(this).attr("sectionId");
+            var chapterId = $(this).attr("chapterId");
+
+            var sectionModal = $(`.AddSectionModal[sectionId=${sectionId}][chapterId=${chapterId}]`);
+            var inputTag = sectionModal.find('input');
+            var sectionText = inputTag.val();
+
+            if (sectionText === "") {
+                new ActionNotification("notificationsContainer", "Please fill in all the fields!", "Error", 4000);
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/Methodologies/AddSection",
+                data: {
+                    Name: sectionText.trim(),
+                    ChapterId: chapterId,
+                    ParentSectionId: sectionId
+                },
+                success: () => {
+                    location.reload();
+                },
+                error: () => {
+                    new ActionNotification("notificationsContainer", "Something went wrong! Please try again later!", "Error", 4000);
+                }
+            });
+
+            $(`.AddSectionModal[sectionId=${sectionId}]`).fadeOut(500);
+            $(`.AddSectionButton[sectionId=${sectionId}]`).show();
+            $(`.SaveSectionButton[sectionId=${sectionId}]`).hide();
+        });
+
+        $("body").on("click", ".CancelSectionButton.Chapter-Section", function (e) {
+            var chapterId = $(this).parent().attr("chapterId");
+            $(`.AddSectionModal[chapterId=${chapterId}]`).fadeOut(500);
+            $(`.AddSectionButton[chapterId=${chapterId}]`).show();
+            $(`.SaveSectionButton[chapterId=${chapterId}]`).hide();
+        });
+
+        $("body").on("click", ".CancelSectionButton.Sub-Section", function (e) {
+            var sectionId = $(this).parent().attr("sectionId");
+            $(`.AddSectionModal[sectionId=${sectionId}]`).fadeOut(500);
+            $(`.AddSectionButton[sectionId=${sectionId}]`).show();
+            $(`.SaveSectionButton[sectionId=${sectionId}]`).hide();
+        });
+
+        $(".delete-button.section").click(function () {
+            var sectionId = $(this).attr("sectionId");
+            var url = "/Methodologies/DeleteSection/" + sectionId;
+
+            FadeBackground(true);
+
+            function callback() {
+                $.ajax({
+                    url: url,
+                    type: "DELETE",
+                    success: function (data) {
+                        if (data.success) {
+                            new ActionNotification("notificationsContainer", "Section deleted succsessfully", "Success", 1000);
+                            FadeBackground(false);
+                            location.reload();
+                        }
+                        else {
+                            new ActionNotification("notificationsContainer", "Section deletion failed", "Error", 1000);
+                            FadeBackground(false);
+                        }
+                    }
+                });
+            }
+
+            var message = "Are you sure that you want to delete this Section?";
+            var status = "WARNING";
+            new PopUp(status, message, callback, "Delete", "AlertPopUp");
+        });
+
+        $(".editButton.section").click(function () {
+            var sectionId = $(this).attr("sectionId");
+            var sectionText = $(`#detailedChaptersList li:has([sectionId=${sectionId}]) h4`).text();
+
+            $(`#detailedChaptersList li:has([sectionId=${sectionId}]) h4`).replaceWith(`<input type='text' id='SectionText' class='form-control' value='${sectionText}' style='margin-bottom:1rem;'>`);
+            $(`#detailedChaptersList li:has([sectionId=${sectionId}]) .editButton`).hide();
+            $(`#detailedChaptersList li:has([sectionId=${sectionId}]) .delete-button`).hide();
+            $(`#detailedChaptersList li:has([sectionId=${sectionId}]) .saveButton`).show();
+        });
+
+        $("body").on("click", ".saveButton.section", function (e) {
+            var sectionId = $(this).attr("sectionId");
+            var sectionText = $(`#detailedChaptersList li:has([sectionId=${sectionId}]) #SectionText`).val();
+
+            if (sectionText === "") {
+                new ActionNotification("notificationsContainer", "Please fill in all the fields!", "Error", 4000);
+                return;
+            }
+
+            $.ajax({
+                type: "PUT",
+                url: "/Methodologies/UpdateSection",
+                data: {
+                    Id: sectionId.trim(),
+                    Name: sectionText.trim()
+                },
+                success: () => {
+                    new ActionNotification("notificationsContainer", "Section Edited Successfully!", "Success", 2000);
+                    $(`#detailedChaptersList li:has([sectionId=${sectionId}]) #SectionText`).replaceWith(`<h4>${sectionText}</h4>`);
+                },
+                error: () => {
+                    new ActionNotification("notificationsContainer", "Something went wrong! Please try again later!", "Error", 4000);
+                }
+            });
+
+            $(`#detailedChaptersList li:has([sectionId=${sectionId}]) .editButton`).show();
+            $(`#detailedChaptersList li:has([sectionId=${sectionId}]) .delete-button`).show();
+            $(`#detailedChaptersList li:has([sectionId=${sectionId}]) .saveButton`).hide();
+        });
+
+        $("body").on("click", ".CancelSectionButton.Sub-Section", function (e) {
+            var sectionId = $(this).parent().attr("sectionId");
+            $(`#detailedChaptersList li:has([sectionId=${sectionId}]) #SectionText`).replaceWith(`<h4>${sectionText}</h4>`);
+            $(`#detailedChaptersList li:has([sectionId=${sectionId}]) .editButton`).show();
+            $(`#detailedChaptersList li:has([sectionId=${sectionId}]) .delete-button`).show();
+            $(`#detailedChaptersList li:has([sectionId=${sectionId}]) .saveButton`).hide();
+        });
+
+        $(".AddParagraphButton").click(function () {
+            var sectionId = $(this).attr("sectionId");
+            var addParagraphModal = $(`.AddParagraphModal[sectionId=${sectionId}]`);
+            addParagraphModal.fadeIn(500);
+
+            $(this).hide();
+            $(`.SaveParagraphButton[sectionId=${sectionId}]`).show();
+        });
+
+        $("body").on("click", ".SaveParagraphButton", function (e) {
+            var sectionId = $(this).attr("sectionId");
+            var paragraphText = $(`.AddParagraphModal[sectionId=${sectionId}] .ParagraphText`).val();
+
+            if (paragraphText === "") {
+                new ActionNotification("notificationsContainer", "Please fill in all the fields!", "Error", 4000);
+                return;
+            }
+
+            $.ajax({
+                type: "POST",
+                url: "/Methodologies/AddParagraph",
+                data: {
+                    Text: paragraphText.trim(),
+                    SectionId: sectionId
+                },
+                success: () => {
+                    location.reload();
+                },
+                error: () => {
+                    new ActionNotification("notificationsContainer", "Something went wrong! Please try again later!", "Error", 4000);
+                }
+            });
+
+            $(`.AddParagraphModal[sectionId=${sectionId}]`).fadeOut(500);
+            $(`.AddParagraphButton[sectionId=${sectionId}]`).show();
+            $(`.SaveParagraphButton[sectionId=${sectionId}]`).hide();
+        });
+
+        $("body").on("click", ".CancelParagraphButton", function (e) {
+            var sectionId = $(this).parent().attr("sectionId");
+            $(`.AddParagraphModal[sectionId=${sectionId}]`).fadeOut(500);
+            $(`.AddParagraphButton[sectionId=${sectionId}]`).show();
+            $(`.SaveParagraphButton[sectionId=${sectionId}]`).hide();
+        });
+
+        $(".delete-button.paragraph").click(function () {
+            var paragraphId = $(this).attr("paragraphId");
+            var url = "/Methodologies/DeleteParagraph/" + paragraphId;
+
+            FadeBackground(true);
+
+            function callback() {
+                $.ajax({
+                    url: url,
+                    type: "DELETE",
+                    success: function (data) {
+                        if (data.success) {
+                            new ActionNotification("notificationsContainer", "Paragraph deleted succsessfully", "Success", 1000);
+                            FadeBackground(false);
+                            location.reload();
+                        }
+                        else {
+                            new ActionNotification("notificationsContainer", "Paragraph deletion failed", "Error", 1000);
+                            FadeBackground(false);
+                        }
+                    }
+                });
+            }
+
+            var message = "Are you sure that you want to delete this Paragraph?";
+            var status = "WARNING";
+            new PopUp(status, message, callback, "Delete", "AlertPopUp");
+        });
+
+        $(".editButton.paragraph").click(function () {
+            var paragraphId = $(this).attr("paragraphId");
+            var paragraphText = $(`#detailedChaptersList li:has([paragraphId=${paragraphId}]) p`).text();
+
+            $(`#detailedChaptersList li:has([paragraphId=${paragraphId}]) p`).replaceWith(`<textarea id='ParagraphText' class='form-control' style='margin-bottom:1rem;'>${paragraphText}</textarea>`);
+            $(`#detailedChaptersList li:has([paragraphId=${paragraphId}]) .editButton`).hide();
+            $(`#detailedChaptersList li:has([paragraphId=${paragraphId}]) .delete-button`).hide();
+            $(`#detailedChaptersList li:has([paragraphId=${paragraphId}]) .saveButton`).show();
+        });
+
+        $("body").on("click", ".saveButton.paragraph", function (e) {
+            var paragraphId = $(this).attr("paragraphId");
+            var paragraphText = $(`#detailedChaptersList li:has([paragraphId=${paragraphId}]) #ParagraphText`).val();
+
+            if (paragraphText === "") {
+                new ActionNotification("notificationsContainer", "Please fill in all the fields!", "Error", 4000);
+                return;
+            }
+
+            $.ajax({
+                type: "PUT",
+                url: "/Methodologies/UpdateParagraph",
+                data: {
+                    Id: paragraphId.trim(),
+                    Text: paragraphText.trim()
+                },
+                success: () => {
+                    new ActionNotification("notificationsContainer", "Paragraph Edited Successfully!", "Success", 2000);
+                    $(`#detailedChaptersList li:has([paragraphId=${paragraphId}]) #ParagraphText`).replaceWith(`<p>${paragraphText}</p>`);
+                },
+                error: () => {
+                    new ActionNotification("notificationsContainer", "Something went wrong! Please try again later!", "Error", 4000);
+                }
+            });
+
+            $(`#detailedChaptersList li:has([paragraphId=${paragraphId}]) .editButton`).show();
+            $(`#detailedChaptersList li:has([paragraphId=${paragraphId}]) .delete-button`).show();
+            $(`#detailedChaptersList li:has([paragraphId=${paragraphId}]) .saveButton`).hide();
+        });
+
+        $("body").on("click", ".CancelParagraphButton", function (e) {
+            var paragraphId = $(this).parent().attr("paragraphId");
+            $(`#detailedChaptersList li:has([paragraphId=${paragraphId}]) #ParagraphText`).replaceWith(`<p>${paragraphText}</p>`);
+            $(`#detailedChaptersList li:has([paragraphId=${paragraphId}]) .editButton`).show();
+            $(`#detailedChaptersList li:has([paragraphId=${paragraphId}]) .delete-button`).show();
+            $(`#detailedChaptersList li:has([paragraphId=${paragraphId}]) .saveButton`).hide();
+        });
+    </script>
+}

@@ -1,0 +1,16 @@
+﻿@model IEnumerable<ManageMe.BusinessLogic.UserMinimalInfo>
+@using System.Security.Claims;
+
+@{
+    var currentUserId = User.FindFirstValue(ClaimTypes.NameIdentifier);
+}
+
+@foreach (var user in Model)
+{
+    <div class="select-option">
+        <img src="@Url.Action("GetProfilePicture", "Users", new { id = user.Id })" style="width: 9vh; height: 9vh; border-radius: 50%" />
+        <p>@user.Name</p>
+        <p>@user.Email</p>
+    </div>
+}
+
